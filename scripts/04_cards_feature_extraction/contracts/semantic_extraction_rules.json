@@ -1,0 +1,2694 @@
+{
+  "version": "2026-05-12",
+  "purpose": "Declarative text rules used by extract_semantic_facts.py. Humans and LLMs should grow game knowledge here instead of adding new domain rules to Python.",
+  "default_source_fields": ["rules_lines", "effect_lines"],
+  "trigger_rules": [
+    {
+      "rule_id": "trigger_self_played",
+      "rule_version": 1,
+      "pattern": "\\bWhen you play (?:me|this|it)\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["self_played"],
+      "event_defaults": {"subject": "self"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_self_dies",
+      "rule_version": 1,
+      "pattern": "\\bWhen (?:I|this|me) die?s?\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["self_dies"],
+      "event_defaults": {"subject": "self"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_self_discarded",
+      "rule_version": 1,
+      "pattern": "\\bWhen you discard me\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["self_discarded"],
+      "event_defaults": {"subject": "self"},
+      "confidence": 0.88
+    },
+    {
+      "rule_id": "trigger_friendly_unit_dies",
+      "rule_version": 1,
+      "pattern": "\\bWhen (?:a|one or more|another|a buffed)?\\s*(?:non-[A-Za-z]+\\s+)?friendly units? dies?\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["friendly_unit_dies"],
+      "event_defaults": {"subject": "friendly_unit"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_your_unit_dies",
+      "rule_version": 1,
+      "pattern": "\\bWhen (?:another\\s+)?(?:non-[A-Za-z]+\\s+)?unit you control dies?\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["friendly_unit_dies"],
+      "event_defaults": {"subject": "friendly_unit"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_enemy_unit_dies",
+      "rule_version": 1,
+      "pattern": "\\bWhen one or more enemy units die\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["enemy_unit_dies"],
+      "event_defaults": {"subject": "enemy_unit", "amount": "one_or_more"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_self_conquers_or_holds",
+      "rule_version": 1,
+      "pattern": "\\bWhen I conquer or hold\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["self_conquers", "self_holds"],
+      "event_defaults": {"subject": "self"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_self_conquers",
+      "rule_version": 1,
+      "pattern": "\\bWhen I conquer\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["self_conquers"],
+      "event_defaults": {"subject": "self"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_self_holds",
+      "rule_version": 1,
+      "pattern": "\\bWhen I hold\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["self_holds"],
+      "event_defaults": {"subject": "self"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_battlefield_conquered",
+      "rule_version": 1,
+      "pattern": "\\bWhen you conquer here\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["battlefield_conquered"],
+      "event_defaults": {"subject": "you"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_battlefield_held",
+      "rule_version": 1,
+      "pattern": "\\bWhen you hold here\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["battlefield_held"],
+      "event_defaults": {"subject": "you"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_player_conquers_or_holds",
+      "rule_version": 1,
+      "pattern": "\\bWhen you conquer or hold\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["battlefield_conquered", "battlefield_held"],
+      "event_defaults": {"subject": "you"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_player_conquers",
+      "rule_version": 1,
+      "pattern": "\\bWhen you conquer\\b(?!\\s+(?:here|or\\s+hold))",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["battlefield_conquered"],
+      "event_defaults": {"subject": "you"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_player_holds",
+      "rule_version": 1,
+      "pattern": "\\bWhen you hold\\b(?!\\s+here)",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["battlefield_held"],
+      "event_defaults": {"subject": "you"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_player_or_ally_holds",
+      "rule_version": 1,
+      "pattern": "\\bWhen you or an ally hold\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["battlefield_held"],
+      "event_defaults": {"subject": "you_or_ally"},
+      "confidence": 0.88
+    },
+    {
+      "rule_id": "trigger_self_attacks_or_defends",
+      "rule_version": 1,
+      "pattern": "\\bWhen I attack or defend\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["self_attacks", "self_defends"],
+      "event_defaults": {"subject": "self"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_self_attacks",
+      "rule_version": 1,
+      "pattern": "\\bWhen I attack\\b(?!\\s+or\\s+defend)",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["self_attacks"],
+      "event_defaults": {"subject": "self"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_combat_won",
+      "rule_version": 1,
+      "pattern": "\\bWhen (?:I|you) win a combat\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["combat_won"],
+      "event_defaults": {"subject": "winner"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_self_moves",
+      "rule_version": 1,
+      "pattern": "\\bWhen I move(?: to a battlefield)?\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["self_moves"],
+      "event_defaults": {"subject": "self"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_you_move_enemy_unit",
+      "rule_version": 1,
+      "pattern": "\\bWhen you move an enemy unit\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["unit_moved"],
+      "event_defaults": {"subject": "you", "target": {"kind": "unit", "controller": "opponent"}},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_self_leaves_board",
+      "rule_version": 1,
+      "pattern": "\\bWhen this leaves the board\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["self_leaves_board"],
+      "event_defaults": {"subject": "self"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_rune_recycled",
+      "rule_version": 1,
+      "pattern": "\\bWhen you recycle a rune\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["rune_recycled"],
+      "event_defaults": {"subject": "you"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_card_recycled",
+      "rule_version": 1,
+      "pattern": "\\bWhen you recycle one or more cards?(?: to your Main Deck)?\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["card_recycled"],
+      "event_defaults": {"subject": "you"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_unit_stunned",
+      "rule_version": 1,
+      "pattern": "\\bWhen you stun one or more enemy units?\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["unit_stunned"],
+      "event_defaults": {"subject": "enemy_unit", "amount": "one_or_more"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_unit_buffed",
+      "rule_version": 1,
+      "pattern": "\\bWhen you buff a friendly unit\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["unit_buffed"],
+      "event_defaults": {"subject": "friendly_unit"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_spell_played",
+      "rule_version": 1,
+      "pattern": "\\bWhen (?:a player|you) plays? a spell\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["spell_played"],
+      "event_defaults": {"subject": "player"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_unit_played",
+      "rule_version": 1,
+      "pattern": "\\bWhen (?:a player|you) plays? (?:a|\\[Mighty\\]) unit\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["unit_played"],
+      "event_defaults": {"subject": "unit"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_equipment_attached_to_self",
+      "rule_version": 1,
+      "pattern": "\\bWhen you attach an Equipment to me\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["equipment_attached"],
+      "event_defaults": {"subject": "equipment", "target": "self"},
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "trigger_unit_becomes_mighty",
+      "rule_version": 1,
+      "pattern": "\\bWhen one of your units becomes \\[Mighty\\]\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "trigger_events",
+      "events": ["unit_becomes_mighty"],
+      "event_defaults": {"subject": "friendly_unit"},
+      "confidence": 0.9
+    }
+  ],
+  "condition_rules": [
+    {
+      "rule_id": "condition_control_this_battlefield",
+      "rule_version": 1,
+      "pattern": "\\bWhile you control this battlefield\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "condition_state",
+      "condition_id": "you_control_this_battlefield",
+      "confidence": 0.86
+    },
+    {
+      "rule_id": "condition_while_attacker",
+      "rule_version": 1,
+      "pattern": "\\bwhile (?:I'?m|it's|this is) an attacker\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "condition_state",
+      "condition_id": "while_attacker",
+      "confidence": 0.86
+    },
+    {
+      "rule_id": "condition_while_defender",
+      "rule_version": 1,
+      "pattern": "\\bwhile (?:I'?m|it's|this is) a defender\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "condition_state",
+      "condition_id": "while_defender",
+      "confidence": 0.86
+    },
+    {
+      "rule_id": "condition_while_buffed",
+      "rule_version": 1,
+      "pattern": "\\bwhile (?:I'?m|it's|this is|a unit here is) buffed\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "condition_state",
+      "condition_id": "while_buffed",
+      "confidence": 0.84
+    },
+    {
+      "rule_id": "restriction_additional_cost_prevents_self_kill",
+      "rule_version": 1,
+      "pattern": "\\bIf you paid my additional cost, you don't kill a unit this way\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.9,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "prevent",
+          "payload": {
+            "conditions": [{"if": "additional_cost_paid"}],
+            "modifiers": [{"action": "kill", "target": "your_unit", "polarity": "prevention"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "replacement_next_unit_death_heal_recall",
+      "rule_version": 1,
+      "pattern": "\\bThe next time (?:that unit|it) would die this turn, heal it, exhaust it, and recall it instead\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.88,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "replacement_effect",
+          "predicate": "prevent",
+          "payload": {
+            "target": {"kind": "unit", "reference": "chosen_unit"},
+            "prevented_event": "unit_dies",
+            "replacement": "heal_exhaust_recall",
+            "replacement_outputs": [
+              {"action": "heal", "object": "unit"},
+              {"action": "exhaust", "object": "unit"},
+              {"action": "return_to_hand", "object": "unit"}
+            ],
+            "duration": "this_turn",
+            "limit": "next_time",
+            "polarity": "replacement"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "replacement_friendly_unit_death_kill_self_heal_recall",
+      "rule_version": 1,
+      "pattern": "\\bIf a friendly unit would die, kill this instead\\. Heal that unit, exhaust it, and recall it\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.88,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "replacement_effect",
+          "predicate": "prevent",
+          "payload": {
+            "target": {"kind": "unit", "controller": "friendly"},
+            "prevented_event": "unit_dies",
+            "replacement": "kill_self_heal_exhaust_recall",
+            "replacement_outputs": [
+              {"action": "kill", "object": "self"},
+              {"action": "heal", "object": "unit"},
+              {"action": "exhaust", "object": "unit"},
+              {"action": "return_to_hand", "object": "unit"}
+            ],
+            "polarity": "replacement"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "replacement_attached_unit_death_kill_source_heal_recall",
+      "rule_version": 1,
+      "pattern": "\\bIf I would die, kill Guardian Angel instead\\. Heal me, exhaust me, and recall me\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.88,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "replacement_effect",
+          "predicate": "prevent",
+          "payload": {
+            "target": {"kind": "unit", "scope": "attached_unit"},
+            "prevented_event": "unit_dies",
+            "replacement": "kill_source_heal_exhaust_recall",
+            "replacement_outputs": [
+              {"action": "kill", "object": "source_gear"},
+              {"action": "heal", "object": "unit"},
+              {"action": "exhaust", "object": "unit"},
+              {"action": "return_to_hand", "object": "unit"}
+            ],
+            "polarity": "replacement"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "replacement_controlled_unit_death_heal_recall",
+      "rule_version": 1,
+      "pattern": "\\bIf another unit you control here would die, if it has less Might than me, instead heal it, exhaust it, and recall it\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.86,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "replacement_effect",
+          "predicate": "prevent",
+          "payload": {
+            "target": {"kind": "unit", "controller": "you", "location": "here"},
+            "prevented_event": "unit_dies",
+            "replacement": "heal_exhaust_recall",
+            "replacement_outputs": [
+              {"action": "heal", "object": "unit"},
+              {"action": "exhaust", "object": "unit"},
+              {"action": "return_to_hand", "object": "unit"}
+            ],
+            "conditions": [{"comparison": "target_might_less_than_self"}],
+            "polarity": "replacement"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "replacement_battlefield_unit_death_paid_heal_recall",
+      "rule_version": 1,
+      "pattern": "\\bIf a unit here would die during combat, its controller may pay (?P<cost>(?::rb_rune_[a-z]+:)+) to heal it, exhaust it, and recall it instead\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.86,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "replacement_effect",
+          "predicate": "prevent",
+          "payload": {
+            "target": {"kind": "unit", "location": "here"},
+            "prevented_event": "unit_dies",
+            "replacement": "paid_heal_exhaust_recall",
+            "replacement_outputs": [
+              {"action": "heal", "object": "unit"},
+              {"action": "exhaust", "object": "unit"},
+              {"action": "return_to_hand", "object": "unit"}
+            ],
+            "costs": [{"raw": {"$group": "cost", "transform": "strip"}}],
+            "payer": {"scope": "affected_object"},
+            "conditions": [{"timing": "during_combat"}],
+            "polarity": "replacement"
+          }
+        }
+      ]
+    }
+  ],
+  "cost_rules": [
+    {
+      "rule_id": "additional_cost_to_play_self",
+      "rule_version": 1,
+      "pattern": "\\bYou may (?P<verb>pay|spend|kill|discard|recycle|exhaust) (?P<body>.+?) as an additional cost to play (?:me|this)\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "additional_cost",
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "optional_exhaust_self",
+      "rule_version": 1,
+      "pattern": "\\byou may exhaust me\\b(?=\\s+to\\b)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.9,
+      "facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "exhaust",
+          "payload": {
+            "costs": [{"action": "exhaust", "subject": "self"}],
+            "modality": "optional"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "spend_my_buff_cost",
+      "rule_version": 1,
+      "pattern": "\\bSpend my buff:",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.84,
+      "facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "spend",
+          "payload": {
+            "costs": [{"action": "spend_buff", "subject": "self"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "pay_resource_to_effect",
+      "rule_version": 1,
+      "pattern": "\\b(?:(?P<payer>you|they|its controller|that unit's controller)\\s+may\\s+)?pay\\s+(?P<cost>(?::rb_(?:energy_\\d+|rune_[a-z]+):)+|(?:(?:any amount of|\\d+)\\s+)?(?:Energy|:rb_(?:energy_\\d+|rune_[a-z]+):))\\s+to\\s+(?P<effect>score \\d+ points?|\\[Add\\] that much (?:Energy|:rb_(?:energy_\\d+|rune_[a-z]+):)|deal that much damage[^.]*|heal [^.]*|\\[Buff\\] it)",
+      "flags": ["IGNORECASE"],
+      "builder": "pay_resource_cost",
+      "confidence": 0.88
+    },
+    {
+      "rule_id": "activation_cost",
+      "rule_version": 1,
+      "pattern": ".+",
+      "flags": ["IGNORECASE"],
+      "builder": "activation_cost",
+      "confidence": 0.88
+    }
+  ],
+  "effect_rules": [
+    {
+      "rule_id": "play_token",
+      "rule_version": 1,
+      "pattern": "\\bplay (?P<count>a|an|one|two|three|four|five|six|\\d+)\\s+(?:(?P<pre_state>ready|exhausted)\\s+)?(?:(?P<might>\\d+)\\s+:rb_might:\\s+)?(?P<tag>[A-Z][A-Za-z'-]+(?:\\s+[A-Z][A-Za-z'-]+)*)\\s+(?P<type>unit|gear)\\s+tokens?(?:\\s+with\\s+\\[[^\\]]+\\])?(?:\\s+(?P<post_state>ready|exhausted))?(?:\\s+(?:to|into|in|at)\\s+(?:your base|the base|a battlefield|different locations|here))?",
+      "flags": ["IGNORECASE"],
+      "builder": "token_creation",
+      "confidence": 0.88
+    },
+    {
+      "rule_id": "play_card_from_zone",
+      "rule_version": 1,
+      "pattern": "\\b(?:you may\\s+)?play (?P<target>(?:an? |one of your |your )?(?:unit|spell|gear|Equipment|card|[A-Z][A-Za-z'-]+(?:\\s+[A-Z][A-Za-z'-]+)*)[^.]*?) from (?P<zone>your trash|trash|your hand|hand)(?P<tail>[^.]*)",
+      "flags": ["IGNORECASE"],
+      "builder": "play_from_zone",
+      "confidence": 0.86,
+      "evidence_trim": "."
+    },
+    {
+      "rule_id": "play_banished_card",
+      "rule_version": 1,
+      "pattern": "\\bplay (?P<target>(?:a|an|the)?\\s*(?:unit|spell|gear|card|it)[^.]*?) (?P<zone>banished) with this\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "play_from_zone",
+      "confidence": 0.82,
+      "evidence_trim": "."
+    },
+    {
+      "rule_id": "play_referenced_cards",
+      "rule_version": 1,
+      "pattern": "\\beach player plays those cards, ignoring Energy costs\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.8,
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "produced_event",
+          "predicate": "play",
+          "payload": {
+            "event": {"id": "card_played", "produced": true},
+            "target": {"kind": "card", "reference": "those_cards"},
+            "modifiers": [{"cost": "energy_ignored"}],
+            "outputs": [{"id": "card_played", "action": "play", "object": "card"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "discard_cards",
+      "rule_version": 1,
+      "pattern": "\\b[Dd]iscard (?P<amount>\\d+)\\b",
+      "builder": "template",
+      "confidence": 0.84,
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "card_flow",
+          "predicate": "discard",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "card_discarded", "produced": true},
+            "amounts": [{"value": {"$group": "amount", "transform": "int"}, "unit": "card"}],
+            "outputs": [{"id": "card_discarded", "action": "discard", "object": "card"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "draw_cards",
+      "rule_version": 1,
+      "pattern": "\\b[Dd]raws? (?P<amount>\\d+)(?:\\s+for each (?P<per>[^.,]+?)(?=\\.|,|$))?",
+      "builder": "draw_cards",
+      "confidence": 0.94,
+      "facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "card_flow",
+          "predicate": "draw",
+          "modality": "line_optional",
+          "payload": {
+            "outputs": [{"id": "card_drawn", "action": "draw", "object": "card"}],
+            "amounts": [{"value": {"$group": "amount", "transform": "int"}, "unit": "card"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "control_change",
+      "rule_version": 1,
+      "pattern": "\\b(?P<verb>Gain|Take|Lose) control of (?P<target>[^.]+)",
+      "flags": ["IGNORECASE"],
+      "builder": "control_change",
+      "confidence": 0.88
+    },
+    {
+      "rule_id": "discard_hand",
+      "rule_version": 1,
+      "pattern": "\\b(?:each player discards their hand|they discard that card)\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "card_flow",
+          "predicate": "discard",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "card_discarded", "produced": true},
+            "target": {"kind": "card", "zone": "hand"},
+            "outputs": [{"id": "card_discarded", "action": "discard", "object": "card"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "put_card_top_bottom",
+      "rule_version": 1,
+      "pattern": "\\bput a card from your hand on the top or bottom of your Main Deck\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.9,
+      "facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "card_flow",
+          "predicate": "move",
+          "modality": "line_optional",
+          "payload": {
+            "outputs": [{"id": "deck_card_put_top_or_bottom", "action": "move", "object": "card"}],
+            "object": {"kind": "card", "zone": "hand"},
+            "target": {"zone": "main_deck", "location": "top_or_bottom"}
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "place_target_top_bottom_main_deck",
+      "rule_version": 1,
+      "pattern": "\\b(?:its owner places|place) (?P<object>[^.]+?) on the top or bottom of (?P<owner>their|your|its) Main Deck\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.84,
+      "facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "movement",
+          "predicate": "move",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "card_moved", "produced": true},
+            "outputs": [{"id": "deck_card_put_top_or_bottom", "action": "move", "object": "card"}],
+            "object": {"raw": {"$group": "object", "transform": "strip"}},
+            "destination": {"zone": "main_deck", "location": "top_or_bottom", "owner": {"$group": "owner", "transform": "casefold"}}
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "put_top_deck_cards_into_trash",
+      "rule_version": 1,
+      "pattern": "\\bput the top (?P<amount>\\d+) cards? of your Main Deck into your trash\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.84,
+      "facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "movement",
+          "predicate": "move",
+          "modality": "line_optional",
+          "payload": {
+            "amounts": [{"value": {"$group": "amount", "transform": "int"}, "unit": "card"}],
+            "event": {"id": "card_moved", "produced": true},
+            "object": {"kind": "card", "zone": "main_deck", "location": "top"},
+            "destination": {"zone": "trash", "owner": "your"}
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "put_cards_in_trash",
+      "rule_version": 1,
+      "pattern": "\\bput (?P<object>each|it|them) in (?P<owner>its|their|your) trash\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.8,
+      "facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "movement",
+          "predicate": "move",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "card_moved", "produced": true},
+            "object": {"kind": "card", "raw": {"$group": "object", "transform": "strip"}},
+            "destination": {"zone": "trash", "owner": {"$group": "owner", "transform": "casefold"}}
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "channel_rune",
+      "rule_version": 1,
+      "pattern": "\\bchannels? (?P<amount>\\d+) rune(?:s)?(?: exhausted)?\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.9,
+      "facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "resource_change",
+          "predicate": "channel",
+          "modality": "line_optional",
+          "payload": {
+            "outputs": [{"id": "rune_channeled", "action": "channel", "object": "rune"}],
+            "amounts": [{"value": {"$group": "amount", "transform": "int"}, "unit": "rune"}],
+            "modifiers": {"$if_match_contains": "exhausted", "then": [{"state": "exhausted"}], "else": []}
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "recycle_number_from_zone",
+      "rule_version": 1,
+      "pattern": "\\brecycle (?P<amount>\\d+) (?:cards? )?from your trash\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.84,
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "card_flow",
+          "predicate": "recycle",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "card_recycled", "produced": true},
+            "target": {"kind": "card", "zone": "trash"},
+            "amounts": [{"value": {"$group": "amount", "transform": "int"}, "unit": "card"}],
+            "outputs": [{"id": "card_recycled", "action": "recycle", "object": "card"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "add_resource",
+      "rule_version": 1,
+      "pattern": "\\[Add\\]\\s+(?:(?P<amount>that much|\\d+|an additional)\\s+)?(?P<symbols>(?:(?:Energy|:rb_(?:energy_\\d+|rune_[a-z]+):)\\s*)+)",
+      "flags": ["IGNORECASE"],
+      "builder": "add_resource",
+      "confidence": 0.88
+    },
+    {
+      "rule_id": "gain_xp",
+      "rule_version": 1,
+      "pattern": "\\bgain (?P<amount>\\d+) XP\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.9,
+      "facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "resource_change",
+          "predicate": "gain_xp",
+          "modality": "line_optional",
+          "payload": {
+            "outputs": [{"id": "xp_gained", "action": "gain_xp", "object": "xp"}],
+            "amounts": [{"value": {"$group": "amount", "transform": "int"}, "unit": "xp"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "choose_named_tag",
+      "rule_version": 1,
+      "pattern": "\\b(?:As you play this, )?name a tag\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "targeting_or_scope",
+          "fact_type": "target_scope",
+          "predicate": "choose",
+          "payload": {
+            "object": {"kind": "tag"},
+            "conditions": [{"applies_to": "play_self"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "play_self_for_alternate_cost",
+      "rule_version": 1,
+      "pattern": "\\byou may play me for (?P<cost>(?::rb_[a-z0-9_]+:)+)(?=\\W|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "permission",
+          "predicate": "play",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"kind": "card", "scope": "self"},
+            "costs": [{"raw": {"$group": "cost", "transform": "strip"}}],
+            "alternative_cost": true
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "play_self_from_zone",
+      "rule_version": 1,
+      "pattern": "\\byou may play me from (?P<zone>your trash|trash) for (?P<cost>(?::rb_[a-z0-9_]+:)+)(?=\\W|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.84,
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "produced_event",
+          "predicate": "play",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "card_played", "produced": true},
+            "target": {"kind": "card", "scope": "self", "zone": "trash"},
+            "costs": [{"raw": {"$group": "cost", "transform": "strip"}}],
+            "outputs": [{"id": "card_played", "action": "play", "object": "card"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "pay_to_play_self",
+      "rule_version": 1,
+      "pattern": "\\byou may pay (?P<cost>(?::rb_[a-z0-9_]+:)+) to play me\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.84,
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "produced_event",
+          "predicate": "play",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "card_played", "produced": true},
+            "target": {"kind": "card", "scope": "self"},
+            "costs": [{"raw": {"$group": "cost", "transform": "strip"}}],
+            "outputs": [{"id": "card_played", "action": "play", "object": "card"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "banish_self",
+      "rule_version": 1,
+      "pattern": "\\byou may banish me\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "card_flow",
+          "predicate": "banish",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "card_banished", "produced": true},
+            "target": {"kind": "card", "scope": "self"},
+            "outputs": [{"id": "card_banished", "action": "banish", "object": "card"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "banish_target",
+      "rule_version": 1,
+      "pattern": "\\b[Bb]anish(?:es)? (?P<target>(?!me\\b)[^.]+?)(?:\\.|,| then|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "evidence_trim": ".,",
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "card_flow",
+          "predicate": "banish",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "card_banished", "produced": true},
+            "target": {"raw": {"$group": "target", "transform": "strip"}},
+            "outputs": [{"id": "card_banished", "action": "banish", "object": "card"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "weaponmaster_equip",
+      "rule_version": 1,
+      "pattern": "\\[Weaponmaster\\][^.]*?\\[Equip\\] one of your Equipment to me for (?P<cost>:rb_rune_[a-z]+:) less",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.86,
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "produced_event",
+          "predicate": "attach",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "equipment_attached", "produced": true},
+            "object": {"kind": "gear", "controller": "you"},
+            "target": {"kind": "card", "scope": "self"},
+            "outputs": [{"id": "equipment_attached", "action": "attach", "object": "gear"}]
+          }
+        },
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "static_modifier",
+          "predicate": "reduce_cost",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"kind": "gear", "controller": "you"},
+            "costs": [{"raw": {"$group": "cost", "transform": "strip"}}],
+            "amounts": [{"value": 1, "unit": "rune", "symbol": {"$group": "cost", "transform": "strip"}}],
+            "outputs": [{"id": "gear_cost_reduced", "action": "reduce_cost", "object": "gear"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "attach_equipment",
+      "rule_version": 1,
+      "pattern": "\\b[Aa]ttach (?P<object>this|it|that Equipment|one of its Equipment|one of your Equipment|an Equipment you control|a detached Equipment you control|an attached Equipment you control) to (?P<target>[^.]+?)(?:\\.|,| or|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.84,
+      "evidence_trim": ".,",
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "produced_event",
+          "predicate": "attach",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "equipment_attached", "produced": true},
+            "object": {"raw": {"$group": "object", "transform": "strip"}, "kind": "gear"},
+            "target": {"raw": {"$group": "target", "transform": "strip"}},
+            "outputs": [{"id": "equipment_attached", "action": "attach", "object": "gear"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "detach_equipment",
+      "rule_version": 1,
+      "pattern": "\\b[Dd]etach (?P<object>an Equipment|that Equipment|it|one of its Equipment)(?: from (?P<target>[^.]+?))?(?:\\.|,|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "evidence_trim": ".,",
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "produced_event",
+          "predicate": "detach",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "equipment_detached", "produced": true},
+            "object": {"raw": {"$group": "object", "transform": "strip"}, "kind": "gear"},
+            "target": {"raw": {"$group": "target", "transform": "strip"}},
+            "outputs": [{"id": "equipment_detached", "action": "detach", "object": "gear"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "return_card_from_trash_to_hand",
+      "rule_version": 1,
+      "pattern": "\\b[Rr]eturn (?P<object>[^.]+?) from your trash to your hand\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "card_flow",
+          "predicate": "return_to_hand",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "card_moved", "produced": true},
+            "object": {"raw": {"$group": "object", "transform": "strip"}, "zone": "trash"},
+            "target": {"zone": "hand", "controller": "you"},
+            "outputs": [{"id": "card_returned_to_hand", "action": "return_to_hand", "object": "card"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "return_card_from_trash_to_champion_zone",
+      "rule_version": 1,
+      "pattern": "\\b[Rr]eturn (?P<object>[^.]+?) from your trash to your Champion Zone\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.8,
+      "facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "card_flow",
+          "predicate": "return_to_hand",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "card_moved", "produced": true},
+            "object": {"raw": {"$group": "object", "transform": "strip"}, "zone": "trash"},
+            "target": {"zone": "champion_zone", "controller": "you"},
+            "outputs": [{"id": "card_returned_to_hand", "action": "return_to_hand", "object": "card"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "choose_tag_from_list",
+      "rule_version": 1,
+      "pattern": "\\bchoose (?P<tags>(?:[A-Z][A-Za-z'-]+,?\\s*)+(?:or\\s+[A-Z][A-Za-z'-]+))\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.78,
+      "facts": [
+        {
+          "semantic_role": "targeting_or_scope",
+          "fact_type": "target_scope",
+          "predicate": "choose",
+          "payload": {
+            "object": {"kind": "tag", "raw": {"$group": "tags", "transform": "strip"}}
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "gain_that_tag",
+      "rule_version": 1,
+      "pattern": "\\bI gain that tag\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.78,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "state_modifier",
+          "predicate": "gain_keyword",
+          "payload": {
+            "target": {"kind": "card", "scope": "self"},
+            "outputs": [{"id": "tag_gained", "action": "gain_keyword", "object": "tag"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "grant_keyword_to_target",
+      "rule_version": 1,
+      "pattern": "\\bgive (?P<target>[^.]+?)\\s+(?:this turn\\s+)?(?P<keywords>(?:\\[[^\\]]+\\](?:\\s*,\\s*(?:and\\s+)?|\\s+and\\s+)?)+)(?:\\s+equal to [^.(]+)?(?:\\s+this turn)?(?=\\W|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "keyword_grant",
+      "confidence": 0.84
+    },
+    {
+      "rule_id": "target_gains_keywords",
+      "rule_version": 1,
+      "pattern": "\\b(?P<target>[^.]+?) gains (?P<keywords>(?:\\[[^\\]]+\\](?:\\s*,\\s*(?:and\\s+)?|\\s+and\\s+)?)+)(?: this combat| this turn)?\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "keyword_grant",
+      "confidence": 0.82
+    },
+    {
+      "rule_id": "target_gives_keywords",
+      "rule_version": 1,
+      "pattern": "\\b(?P<target>Your Equipment each|Your [^.]+? each|Equipment) give (?P<keywords>(?:\\[[^\\]]+\\](?:\\s*,\\s*(?:and\\s+)?|\\s+and\\s+)?)+)(?=\\W|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "keyword_grant",
+      "confidence": 0.8
+    },
+    {
+      "rule_id": "target_has_keywords",
+      "rule_version": 1,
+      "pattern": "\\b(?P<target>(?:I|your|Your|friendly|Friendly|enemy|Enemy|units?|Units?|[A-Z][^.]*?)[^.]*?) have (?P<keywords>(?:\\[[^\\]]+\\](?:\\s*,\\s*(?:and\\s+)?|\\s+and\\s+)?)+)(?:\\s+(?::rb_(?:energy_\\d+|rune_[a-z]+):)+)?(?: if [^.]+?)?(?:\\.|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "keyword_grant",
+      "confidence": 0.82
+    },
+    {
+      "rule_id": "counter_spell",
+      "rule_version": 1,
+      "pattern": "\\bCounter (?P<object>an enemy spell or ability|a spell|that spell)(?P<tail>[^.]*)",
+      "flags": ["IGNORECASE"],
+      "builder": "counter_spell",
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "return_to_owner_hand",
+      "rule_version": 1,
+      "pattern": "\\bReturn (?P<object>[^.]+?) to (?P<owner>its|their|your|my) owner(?:'s|s'|s)? hands?\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.86,
+      "facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "movement",
+          "predicate": "return_to_hand",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "card_moved", "produced": true},
+            "object": {"raw": {"$group": "object", "transform": "strip"}},
+            "target": {"zone": "hand", "owner": {"$group": "owner", "transform": "casefold"}},
+            "outputs": [{"id": "unit_recalled", "action": "return_to_hand", "object": "card"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "look_reveal_top_deck",
+      "rule_version": 1,
+      "pattern": "\\b(?:each player )?(?P<verb>looks? at|reveals?) the top (?P<amount>\\d+|one|two|three|four|five)?\\s*cards? of (?P<deck>your|their|an opponent's|each opponent's)?\\s*Main Deck\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "look_reveal_top_deck",
+      "confidence": 0.84
+    },
+    {
+      "rule_id": "recycle_target_card",
+      "rule_version": 1,
+      "pattern": "\\brecycle (?P<target>(?:another |a |an |one of your |your )?(?:friendly |enemy )?(?:unit|card|gear)[^.]*?)(?=\\s+to\\b|\\.|,|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "evidence_trim": ".,",
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "card_flow",
+          "predicate": "recycle",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "card_recycled", "produced": true},
+            "target": {"raw": {"$group": "target", "transform": "strip"}},
+            "outputs": [{"id": "card_recycled", "action": "recycle", "object": "card"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "recycle_card",
+      "rule_version": 1,
+      "pattern": "\\b(?:You may recycle it|Recycle (?:any of them|the rest|the remaining cards|the other|it|that card|them)|recycles? the rest|their owners recycle them|then recycle it)\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "recycle_card",
+      "confidence": 0.88
+    },
+    {
+      "rule_id": "recycle_rune",
+      "rule_version": 1,
+      "pattern": "\\brecycle (?:(?:a|one|\\d+)\\s+)?(?:of your\\s+)?runes?\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "recycle_rune",
+      "confidence": 0.84
+    },
+    {
+      "rule_id": "kill_enemy_unit",
+      "rule_version": 1,
+      "pattern": "\\bkill an enemy unit\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "kill_event",
+      "event_id": "enemy_unit_dies",
+      "target": {"kind": "unit", "controller": "opponent", "scope": "enemy"},
+      "confidence": 0.88
+    },
+    {
+      "rule_id": "kill_each_player_unit",
+      "rule_version": 1,
+      "pattern": "\\beach player must kill one of their units\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "kill_event",
+      "event_id": "unit_dies",
+      "target": {"kind": "unit", "controller": "each_player", "amount": 1},
+      "confidence": 0.88
+    },
+    {
+      "rule_id": "kill_opponent_unit",
+      "rule_version": 1,
+      "pattern": "\\bkill one of their units\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "kill_event",
+      "event_id": "unit_dies",
+      "target": {"kind": "unit", "controller": "opponent", "amount": 1},
+      "confidence": 0.88
+    },
+    {
+      "rule_id": "kill_friendly_unit",
+      "rule_version": 1,
+      "pattern": "\\bkill (?:a|one|another) friendly unit\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "kill_event",
+      "event_id": "friendly_unit_dies",
+      "target": {"kind": "unit", "controller": "friendly", "amount": 1},
+      "confidence": 0.88
+    },
+    {
+      "rule_id": "kill_any_number_friendly_units",
+      "rule_version": 1,
+      "pattern": "\\bkill any number of friendly units\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "kill_event",
+      "event_id": "friendly_unit_dies",
+      "target": {"kind": "unit", "controller": "friendly", "amount": "any_number"},
+      "confidence": 0.86
+    },
+    {
+      "rule_id": "kill_any_number_units",
+      "rule_version": 1,
+      "pattern": "\\bkill any number of units(?: at a battlefield)?\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "kill_event",
+      "event_id": "unit_dies",
+      "target": {"kind": "unit", "amount": "any_number"},
+      "confidence": 0.84
+    },
+    {
+      "rule_id": "kill_all_units",
+      "rule_version": 1,
+      "pattern": "\\bkill all units\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "kill_event",
+      "event_id": "unit_dies",
+      "target": {"kind": "unit", "amount": "all"},
+      "confidence": 0.84
+    },
+    {
+      "rule_id": "kill_all_gear",
+      "rule_version": 1,
+      "pattern": "\\bkill all gear\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "kill_event",
+      "event_id": "gear_dies",
+      "target": {"kind": "gear", "amount": "all"},
+      "confidence": 0.84
+    },
+    {
+      "rule_id": "kill_it_next_damage",
+      "rule_version": 1,
+      "pattern": "\\bkill it the next time it takes damage this turn\\b|\\bWhen any unit takes damage this turn, kill it\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "kill_event",
+      "event_id": "unit_dies",
+      "target": {"kind": "unit", "condition": "takes_damage_this_turn"},
+      "confidence": 0.82
+    },
+    {
+      "rule_id": "kill_those_units",
+      "rule_version": 1,
+      "pattern": "\\bkill those units\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "kill_event",
+      "event_id": "unit_dies",
+      "target": {"kind": "unit", "reference": "chosen_units"},
+      "confidence": 0.82
+    },
+    {
+      "rule_id": "kill_generic_unit",
+      "rule_version": 1,
+      "pattern": "\\bkill a unit(?: at a battlefield)?\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "kill_event",
+      "event_id": "unit_dies",
+      "target": {"kind": "unit"},
+      "confidence": 0.84
+    },
+    {
+      "rule_id": "each_player_kills_unit",
+      "rule_version": 1,
+      "pattern": "\\beach player kills one of their units\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "kill_event",
+      "event_id": "unit_dies",
+      "target": {"kind": "unit", "controller": "each_player", "amount": 1},
+      "confidence": 0.86
+    },
+    {
+      "rule_id": "kill_gear",
+      "rule_version": 1,
+      "pattern": "\\bkill a gear\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "kill_event",
+      "event_id": "gear_dies",
+      "target": {"kind": "gear"},
+      "confidence": 0.88
+    },
+    {
+      "rule_id": "each_player_kills_gear",
+      "rule_version": 1,
+      "pattern": "\\beach player kills one of their gear\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "kill_event",
+      "event_id": "gear_dies",
+      "target": {"kind": "gear", "controller": "each_player", "amount": 1},
+      "confidence": 0.86
+    },
+    {
+      "rule_id": "kill_self",
+      "rule_version": 1,
+      "pattern": "\\bKill this\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "kill_event",
+      "event_id": "self_dies",
+      "target": {"kind": "card", "scope": "self"},
+      "fact_type": "produced_event",
+      "confidence": 0.88
+    },
+    {
+      "rule_id": "deal_damage",
+      "rule_version": 1,
+      "pattern": "\\b[Dd]eal (?P<amount>\\d+) to (?P<target>[^.]+)",
+      "builder": "template",
+      "confidence": 0.86,
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "damage",
+          "predicate": "damage",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "damage_dealt", "produced": true},
+            "amounts": [{"value": {"$group": "amount", "transform": "int"}, "unit": "damage"}],
+            "target": {"raw": {"$group": "target", "transform": "strip"}}
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "deal_split_damage",
+      "rule_version": 1,
+      "pattern": "\\b[Dd]eal (?P<amount>\\d+) damage split among (?P<target>[^.]+)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "damage",
+          "predicate": "damage",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "damage_dealt", "produced": true},
+            "amounts": [{"value": {"$group": "amount", "transform": "int"}, "unit": "damage"}],
+            "target": {"raw": {"$group": "target", "transform": "strip"}},
+            "distribution": "split"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "deal_variable_damage",
+      "rule_version": 1,
+      "pattern": "\\b(?:[Dd]eal|(?:It|They|We) deals?) (?P<amount>that much(?: damage)?|damage equal to (?:my|their|its|our|that unit's) Mights?|damage equal to my \\[[^\\]]+\\]|its Energy cost) (?:as damage )?to (?P<target>[^.]+)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.78,
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "damage",
+          "predicate": "damage",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "damage_dealt", "produced": true},
+            "amounts": [{"value": {"$group": "amount", "transform": "casefold"}, "unit": "damage"}],
+            "target": {"raw": {"$group": "target", "transform": "strip"}}
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "damage_enough_to_kill_units",
+      "rule_version": 1,
+      "pattern": "\\bAny amount of your damage is enough to kill enemy units\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "static_modifier",
+          "predicate": "damage",
+          "payload": {
+            "target": {"kind": "unit", "controller": "opponent"},
+            "threshold": "any_damage_kills",
+            "outputs": [{"id": "damage_dealt", "action": "damage", "object": "unit"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "double_damage_to_target",
+      "rule_version": 1,
+      "pattern": "\\bDouble all damage that would be dealt to (?P<target>[^.]+?) this turn\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "static_modifier",
+          "predicate": "modify_stat",
+          "payload": {
+            "target": {"raw": {"$group": "target", "transform": "strip"}},
+            "stat": "damage",
+            "multiplier": 2,
+            "duration": "this_turn",
+            "outputs": [{"id": "damage_modified", "action": "modify_stat", "object": "damage"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "double_might_to_target",
+      "rule_version": 1,
+      "pattern": "\\b[Dd]ouble (?P<target>my|[^.]+?) Might this (?:turn|combat)\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "payload": {
+            "target": {"raw": {"$group": "target", "transform": "strip"}},
+            "stat": "might",
+            "multiplier": 2,
+            "duration": {"$if_match_contains": "this combat", "then": "this_combat", "else": "this_turn"},
+            "outputs": [{"id": "might_modified", "action": "modify_stat", "object": "might"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "increase_might_to_other_might",
+      "rule_version": 1,
+      "pattern": "\\b(?:This turn,\\s+)?increase (?P<target>[^.]+?) Might to the Might of (?P<basis>[^.]+?)(?:\\.|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.8,
+      "evidence_trim": ".",
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "payload": {
+            "target": {"raw": {"$group": "target", "transform": "strip"}, "kind": "unit", "controller": "friendly", "reference": "chosen_unit"},
+            "amounts": [{"value": "match_source_might", "unit": "might"}],
+            "duration": {"$if_match_contains": "this turn", "then": "this_turn", "else": null},
+            "scaling": {"basis": {"$group": "basis", "transform": "strip"}},
+            "outputs": [{"id": "might_modified", "action": "modify_stat", "object": "might"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "bonus_damage_modifier",
+      "rule_version": 1,
+      "pattern": "\\b(?:spells and abilities|your spells and abilities) deal (?P<amount>\\d+) Bonus Damage\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.88,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "static_modifier",
+          "predicate": "modify_stat",
+          "modality": "static",
+          "payload": {
+            "target": {"kind": "damage", "source": "spell_or_ability"},
+            "amounts": [{"value": {"$group": "amount", "transform": "int"}, "unit": "bonus_damage"}],
+            "outputs": [{"id": "bonus_damage_added", "action": "modify_stat", "object": "damage"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "next_spell_bonus_damage",
+      "rule_version": 1,
+      "pattern": "\\bThe next spell you play this turn deals (?P<amount>\\d+) Bonus Damage\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.84,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "static_modifier",
+          "predicate": "modify_stat",
+          "payload": {
+            "target": {"kind": "damage", "source": "next_spell"},
+            "amounts": [{"value": {"$group": "amount", "transform": "int"}, "unit": "bonus_damage"}],
+            "duration": "this_turn",
+            "outputs": [{"id": "bonus_damage_added", "action": "modify_stat", "object": "damage"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "self_enters_exhausted",
+      "rule_version": 1,
+      "pattern": "\\b(?:This|I) enters exhausted\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.93,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "entry_state",
+          "predicate": "enter_exhausted",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"kind": "card", "scope": "self"},
+            "event": {"id": "self_enters", "subject": "self"},
+            "modifiers": [{"state": "exhausted"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "self_enters_ready",
+      "rule_version": 1,
+      "pattern": "\\bI enter ready\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.93,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "entry_state",
+          "predicate": "enter_ready",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"kind": "card", "scope": "self"},
+            "event": {"id": "self_enters", "subject": "self"},
+            "modifiers": [{"state": "ready"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "tokens_enter_ready",
+      "rule_version": 1,
+      "pattern": "\\bYour tokens enter ready\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.94,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "entry_state",
+          "predicate": "enter_ready",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"kind": "token", "controller": "you"},
+            "event": {"id": "token_enters", "subject": "your_token"},
+            "outputs": [{"id": "token_enters_ready", "action": "enter_ready", "object": "your_token"}],
+            "modifiers": [{"state": "ready"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "ready_self",
+      "rule_version": 1,
+      "pattern": "\\bready me\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.92,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "state_modifier",
+          "predicate": "ready",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"kind": "card", "scope": "self"},
+            "outputs": [{"id": "self_ready", "action": "ready", "object": "self"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "ready_unit",
+      "rule_version": 1,
+      "pattern": "(?<!enter\\s)\\bReady (?P<target>(?!me\\b)[^.]+?)(?:\\.|,|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "evidence_trim": ".,",
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "state_modifier",
+          "predicate": "ready",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"raw": {"$group": "target", "transform": "strip"}},
+            "outputs": [{"id": "unit_ready", "action": "ready", "object": "unit"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "units_enter_ready_static",
+      "rule_version": 1,
+      "pattern": "\\b(?P<target>Units you play this turn|(?:(?:Other friendly|Friendly|Your)[^.]*?units?)) enter ready\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.84,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "entry_state",
+          "predicate": "enter_ready",
+          "payload": {
+            "event": {"id": "token_enters", "produced": true},
+            "target": {"raw": {"$group": "target", "transform": "strip"}},
+            "outputs": [{"id": "token_enters_ready", "action": "enter_ready", "object": "unit"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "repeat_effect",
+      "rule_version": 1,
+      "pattern": "\\bRepeat this [^.]+ effect\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "repeat_effect",
+      "confidence": 0.88
+    },
+    {
+      "rule_id": "gear_cost_modifier",
+      "rule_version": 1,
+      "pattern": "\\b(?:the first )?friendly non-token gear played each turn costs :rb_energy_(?P<amount>\\d+): (?P<direction>less|more)\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "gear_cost_modifier",
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "give_might",
+      "rule_version": 1,
+      "pattern": "\\bgive (?P<target>[^.]+?) (?P<delta>[+-]\\d+) :rb_might:(?:\\s+and\\s+(?:\\[[^\\]]+\\](?:\\s+and\\s+)?)+)?(?: this turn)?(?=\\W|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.86,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"raw": {"$group": "target", "transform": "strip"}},
+            "amounts": [{"value": {"$group": "delta", "transform": "int"}, "unit": "might"}],
+            "duration": {"$if_match_contains": "this turn", "then": "this_turn", "else": null},
+            "outputs": [{"id": "might_modified", "action": "modify_stat", "object": "might"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "give_might_equal_to_source_might",
+      "rule_version": 1,
+      "pattern": "\\bgive \\+:rb_might: equal to its Might to (?P<target>[^.]+?) this turn\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"raw": {"$group": "target", "transform": "strip"}},
+            "amounts": [{"value": "source_might", "unit": "might"}],
+            "duration": "this_turn",
+            "outputs": [{"id": "might_modified", "action": "modify_stat", "object": "might"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "self_has_might_modifier",
+      "rule_version": 1,
+      "pattern": "\\bI have(?: an additional)? (?P<delta>[+-]\\d+) :rb_might:(?=\\W|$)(?![^.]*\\bfor each\\b)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.84,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"kind": "card", "scope": "self"},
+            "amounts": [{"value": {"$group": "delta", "transform": "int"}, "unit": "might"}],
+            "outputs": [{"id": "might_modified", "action": "modify_stat", "object": "might"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "intrinsic_combat_might_modifier",
+      "rule_version": 1,
+      "pattern": "\\[(?:Assault|Shield)(?: \\d+)?\\]\\s*\\(\\+(?P<amount>\\d+) :rb_might: while I'?m an? (?P<combat_role>attacker|defender)\\.\\)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.88,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"kind": "card", "scope": "self"},
+            "amounts": [{"value": {"$group": "amount", "transform": "int"}, "unit": "might"}],
+            "duration": "while",
+            "conditions": [{"state": {"$format": "while_{combat_role}"}}],
+            "outputs": [{"id": "might_modified", "action": "modify_stat", "object": "might"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "intrinsic_combat_might_modifier_attack_or_defense",
+      "rule_version": 1,
+      "pattern": "\\[(?:Assault|Shield)(?: \\d+)?\\], \\[(?:Assault|Shield)(?: \\d+)?\\]\\s*\\(\\+(?P<amount>\\d+) :rb_might: while I'?m an attacker or defender\\.\\)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.88,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"kind": "card", "scope": "self"},
+            "amounts": [{"value": {"$group": "amount", "transform": "int"}, "unit": "might"}],
+            "duration": "while",
+            "conditions": [{"state": "while_attacker"}, {"state": "while_defender"}],
+            "outputs": [{"id": "might_modified", "action": "modify_stat", "object": "might"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "self_might_for_each",
+      "rule_version": 1,
+      "pattern": "\\bI (?:get|have) (?P<delta>[+-]\\d+) :rb_might: for each (?P<basis>[^.]+?)(?:\\.|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "evidence_trim": ".",
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"kind": "card", "scope": "self"},
+            "amounts": [{"value": {"$group": "delta", "transform": "int"}, "unit": "might"}],
+            "scaling": {"per": {"$group": "basis", "transform": "strip"}},
+            "outputs": [{"id": "might_modified", "action": "modify_stat", "object": "might"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "self_might_increased_by_basis",
+      "rule_version": 1,
+      "pattern": "\\bMy Might is increased by (?P<basis>[^.]+?)(?:\\.|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.8,
+      "evidence_trim": ".",
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "payload": {
+            "target": {"kind": "card", "scope": "self"},
+            "amounts": [{"value": "variable", "unit": "might"}],
+            "scaling": {"per": {"$group": "basis", "transform": "strip"}},
+            "outputs": [{"id": "might_modified", "action": "modify_stat", "object": "might"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "unit_has_might_modifier",
+      "rule_version": 1,
+      "pattern": "\\b(?P<target>(?:it|they|a unit[^.]*|an enemy unit[^.]*|a friendly unit[^.]*|enemy units?[^.]*|friendly units?[^.]*|your units?[^.]*)) has (?P<delta>[+-]\\d+) :rb_might:(?=\\W|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.8,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"kind": "unit", "raw": {"$group": "target", "transform": "strip"}},
+            "amounts": [{"value": {"$group": "delta", "transform": "int"}, "unit": "might"}],
+            "outputs": [{"id": "might_modified", "action": "modify_stat", "object": "might"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "self_gets_might_buff",
+      "rule_version": 1,
+      "pattern": "\\bI get a (?P<delta>[+-]\\d+) :rb_might: buff\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"kind": "card", "scope": "self"},
+            "amounts": [{"value": {"$group": "delta", "transform": "int"}, "unit": "might"}],
+            "modifiers": [{"state": "buff"}],
+            "outputs": [{"id": "might_modified", "action": "modify_stat", "object": "might"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "static_might_modifier",
+      "rule_version": 1,
+      "pattern": "\\b(?P<target>(?:your|other friendly|friendly|enemy)?\\s*[^.]*?units?[^.]*) have (?P<delta>[+-]\\d+) :rb_might:(?=\\W|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "static_modifier",
+          "predicate": "modify_stat",
+          "modality": "static",
+          "payload": {
+            "target": {"raw": {"$group": "target", "transform": "strip"}},
+            "amounts": [{"value": {"$group": "delta", "transform": "int"}, "unit": "might"}],
+            "outputs": [{"id": "might_modified", "action": "modify_stat", "object": "might"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "buff_unit",
+      "rule_version": 1,
+      "pattern": "\\b(?:\\[Buff\\]\\s*)?[Bb]uff (?P<target>[^.]+?)(?:\\.|,| this turn|$)",
+      "builder": "template",
+      "confidence": 0.84,
+      "evidence_trim": ".,",
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "state_modifier",
+          "predicate": "buff",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "unit_buffed", "produced": true},
+            "target": {"raw": {"$group": "target", "transform": "strip"}},
+            "outputs": [{"id": "unit_buffed", "action": "buff", "object": "unit"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "stun_unit",
+      "rule_version": 1,
+      "pattern": "\\b\\[?Stun\\]?\\s+(?P<target>[^.]+?)(?:\\.|,|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.86,
+      "evidence_trim": ".,",
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "state_modifier",
+          "predicate": "stun",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "unit_stunned", "produced": true},
+            "target": {"raw": {"$group": "target", "transform": "strip"}},
+            "outputs": [{"id": "unit_stunned", "action": "stun", "object": "unit"}],
+            "duration": "this_turn"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "play_self_to_location_permission",
+      "rule_version": 1,
+      "pattern": "\\b(?:You may play me|I can be played|Play me only) to (?P<destination>(?:(?:an?|the|its)\\s+)?(?:(?:open|occupied|enemy|friendly)\\s+)*battlefield[^.]*?)(?:\\.|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "evidence_trim": ".",
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "permission",
+          "predicate": "play",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"kind": "card", "scope": "self"},
+            "destination": {"raw": {"$group": "destination", "transform": "strip"}}
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "self_move_permission",
+      "rule_version": 1,
+      "pattern": "\\bI can move from battlefield to battlefield\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.78,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "permission",
+          "predicate": "move",
+          "payload": {
+            "target": {"kind": "card", "scope": "self"},
+            "source": {"zone": "battlefield"},
+            "destination": {"zone": "battlefield"}
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "units_move_here_from_anywhere_permission",
+      "rule_version": 1,
+      "pattern": "\\bUnits can move here from anywhere\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.78,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "permission",
+          "predicate": "move",
+          "payload": {
+            "target": {"kind": "unit"},
+            "source": {"zone": "anywhere"},
+            "destination": {"location": "here"}
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "self_moved_with_unit_permission",
+      "rule_version": 1,
+      "pattern": "\\bI may be moved with it\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.8,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "permission",
+          "predicate": "move",
+          "modality": "optional",
+          "payload": {
+            "target": {"kind": "card", "scope": "self"},
+            "conditions": [{"event_ref": "friendly_unit_moves_from_my_location"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "play_units_to_location_permission",
+      "rule_version": 1,
+      "pattern": "\\b(?P<target>Friendly units|friendly units|your units|units) (?:may|can) be played to (?P<destination>(?:an? |the )?(?:open |occupied |enemy )?battlefields?[^.]*?)(?:\\.|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "evidence_trim": ".",
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "permission",
+          "predicate": "play",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"kind": "unit", "raw": {"$group": "target", "transform": "strip"}},
+            "destination": {"raw": {"$group": "destination", "transform": "strip"}}
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "restrict_opponent_units_to_base",
+      "rule_version": 1,
+      "pattern": "\\bopponents can only play units to their base\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.86,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "play",
+          "payload": {
+            "target": {"kind": "unit", "controller": "opponent"},
+            "destination": {"zone": "base", "controller": "opponent"},
+            "restriction": "only"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "prevent_ready_enemy_units_gear",
+      "rule_version": 1,
+      "pattern": "\\bspells and abilities can't ready enemy units and gear\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.86,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "prevent",
+          "payload": {
+            "target": {"kinds": ["unit", "gear"], "controller": "opponent"},
+            "source": "spell_or_ability",
+            "prevented_action": "ready"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "prevent_target_combat_damage_dealt",
+      "rule_version": 1,
+      "pattern": "\\b(?P<target>(?:enemy|friendly|your|opponent|they)[^.]*?units?[^.]*|they) don't deal combat damage(?: this turn)?\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "prevent",
+          "payload": {
+            "target": {"raw": {"$group": "target", "transform": "strip"}},
+            "prevented_action": "deal_combat_damage"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "prevent_chosen_by_enemy_spells",
+      "rule_version": 1,
+      "pattern": "\\b(?P<target>I|your units here[^.]*|Your units here[^.]*|friendly units[^.]*|Friendly units[^.]*) can't be chosen by enemy spells and abilities\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "prevent",
+          "payload": {
+            "target": {"raw": {"$group": "target", "transform": "strip"}},
+            "source": "enemy_spell_or_ability",
+            "prevented_action": "choose"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "prevent_units_played_here",
+      "rule_version": 1,
+      "pattern": "\\bUnits can't be played here\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.88,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "prevent",
+          "payload": {
+            "target": {"kind": "unit"},
+            "destination": {"location": "here"},
+            "prevented_action": "play"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "prevent_units_move_to_base",
+      "rule_version": 1,
+      "pattern": "\\b(?P<target>I|Units?) can't move(?: from (?P<source>here))? to base\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.86,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "prevent",
+          "payload": {
+            "target": {"kind": "unit", "raw": {"$group": "target", "transform": "strip"}},
+            "source": {"location": {"$group": "source", "transform": "casefold", "default": null}},
+            "destination": {"zone": "base"},
+            "prevented_action": "move"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "prevent_next_damage_to_chosen_unit",
+      "rule_version": 1,
+      "pattern": "\\bThe next time that unit would be dealt damage this turn, prevent it\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.86,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "replacement_effect",
+          "predicate": "prevent",
+          "payload": {
+            "target": {"kind": "unit", "reference": "chosen_unit"},
+            "prevented_event": "damage_dealt",
+            "duration": "this_turn",
+            "limit": "next_time",
+            "polarity": "prevention"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "move_unit",
+      "rule_version": 1,
+      "pattern": "(?<!can )(?<!When you )\\bMove (?P<target>(?:up to [^.]+?|[^.]+?))(?: to (?P<destination>[^.]+?))?(?:\\.|,| then|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "evidence_trim": ".,",
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "movement",
+          "predicate": "move",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "unit_moved", "produced": true},
+            "target": {"raw": {"$group": "target", "transform": "strip"}},
+            "location": {"$group": "destination", "transform": "strip", "default": null},
+            "outputs": [{"id": "unit_moved", "action": "move", "object": "unit"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "recall_unit",
+      "rule_version": 1,
+      "pattern": "\\brecall (?P<target>[^.]+?)(?:\\.|,| instead| at end of turn|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "evidence_trim": ".,",
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "movement",
+          "predicate": "return_to_hand",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "unit_moved", "produced": true},
+            "target": {"raw": {"$group": "target", "transform": "strip"}, "zone": "base"},
+            "outputs": [{"id": "unit_recalled", "action": "return_to_hand", "object": "unit"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "generic_cost_reduction",
+      "rule_version": 1,
+      "pattern": "\\b(?:reduce|reducing|reduced by) (?P<body>[^.]*?:rb_energy_(?P<amount>\\d+):[^.]*)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.78,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "static_modifier",
+          "predicate": "reduce_cost",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"kind": "card", "raw": {"$group": "body", "transform": "strip"}},
+            "amounts": [{"value": {"$group": "amount", "transform": "int"}, "unit": "energy"}],
+            "outputs": [{"id": "play_cost_reduced", "action": "reduce_cost", "object": "card"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "costs_less_energy",
+      "rule_version": 1,
+      "pattern": "\\b(?P<target>This ability|This|I|The next [^.]+?|The first [^.]+?|(?:friendly|enemy|your|opposing|other friendly|units?|spells?|gear|cards?)[^.]{0,80}?)\\s+costs?\\s+(?P<body>:rb_energy_(?P<amount>\\d+):[^.]*?)\\s+less\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.8,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "static_modifier",
+          "predicate": "reduce_cost",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"raw": {"$group": "target", "transform": "strip"}},
+            "duration": {"$if_match_contains": "this turn", "then": "this_turn", "else": null},
+            "amounts": [{"value": {"$group": "amount", "transform": "int"}, "unit": "energy"}],
+            "outputs": [{"id": "play_cost_reduced", "action": "reduce_cost", "object": "card"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "generic_cost_increase",
+      "rule_version": 1,
+      "pattern": "\\bcosts?\\s+(?!no more than\\b)(?P<body>(?:(?!\\bcosts?\\b|\\bor more\\b).)*?:rb_energy_(?P<amount>\\d+):(?:(?!\\bcosts?\\b|\\bor more\\b).)*?)\\s+more(?: to play this turn)?\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "static_modifier",
+          "predicate": "increase_cost",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"kind": "card", "raw": {"$group": "body", "transform": "strip"}},
+            "amounts": [{"value": {"$group": "amount", "transform": "int"}, "unit": "energy"}],
+            "outputs": [{"id": "play_cost_increased", "action": "increase_cost", "object": "card"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "energy_cost_threshold",
+      "rule_version": 1,
+      "pattern": "\\bcosts? (?P<body>[^.]*?:rb_energy_(?P<amount>\\d+):[^.]*?) or more\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "cost_threshold",
+          "payload": {
+            "target": {"kind": "card", "raw": {"$group": "body", "transform": "strip"}},
+            "cost_constraints": [{"resource": "energy", "minimum": {"$group": "amount", "transform": "int"}}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "cost_cap_constraint",
+      "rule_version": 1,
+      "pattern": "\\bcost(?:s|ing)? no more than (?P<body>[^.]+?)(?:\\.|,| and| from|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "evidence_trim": ".,",
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "cost_cap_constraint",
+          "payload": {
+            "target": {"kind": "card"},
+            "cost_text": {"$group": "body", "transform": "strip"},
+            "cost_constraints": [{"raw": {"$group": "body", "transform": "strip"}, "maximum": true}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "variable_energy_cost_reduction",
+      "rule_version": 1,
+      "pattern": "\\bReduce (?P<target>[^.]+?) Energy cost by (?P<basis>[^.]+?)(?:\\.|$)",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.78,
+      "evidence_trim": ".",
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "static_modifier",
+          "predicate": "reduce_cost",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"kind": "card", "raw": {"$group": "target", "transform": "strip"}},
+            "amounts": [{"value": "variable", "unit": "energy"}],
+            "scaling": {"basis": {"$group": "basis", "transform": "strip"}},
+            "outputs": [{"id": "play_cost_reduced", "action": "reduce_cost", "object": "card"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "prevent_spell_ability_damage",
+      "rule_version": 1,
+      "pattern": "\\bPrevent all spell and ability damage this turn\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.9,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "prevent",
+          "payload": {
+            "target": {"kind": "damage", "source": "spell_or_ability"},
+            "duration": "this_turn",
+            "polarity": "prevention",
+            "prevented_event": "damage_dealt"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "prevent_self_combat_damage_dealt",
+      "rule_version": 1,
+      "pattern": "\\bI don't deal combat damage\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.86,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "prevent",
+          "payload": {
+            "target": {"kind": "damage", "source": "self"},
+            "damage_kind": "combat",
+            "polarity": "prevention"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "prevent_self_damage_taken",
+      "rule_version": 1,
+      "pattern": "\\bI don't take damage\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.84,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "prevent",
+          "payload": {
+            "target": {"kind": "card", "scope": "self"},
+            "prevented_event": "damage_dealt",
+            "polarity": "prevention"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "self_any_number_buffs",
+      "rule_version": 1,
+      "pattern": "\\bI can have any number of buffs\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.84,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "permission",
+          "predicate": "buff",
+          "payload": {
+            "target": {"kind": "card", "scope": "self"},
+            "limit": "any_number"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "score_points",
+      "rule_version": 1,
+      "pattern": "\\b(?:gain|gains|increase|score) (?P<amount>\\d+) points?\\b|\\bpoints needed to win the game by (?P<needed>\\d+)\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "score_points",
+      "confidence": 0.8
+    },
+    {
+      "rule_id": "prevent_score_here",
+      "rule_version": 1,
+      "pattern": "\\bPlayers can't score here until their third turn\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "prevent",
+          "payload": {
+            "target": {"kind": "player"},
+            "location": "here",
+            "prevented_action": "score",
+            "duration": "until_third_turn"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "prevent_opponents_gain_points",
+      "rule_version": 1,
+      "pattern": "\\bopponents can't gain points\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "prevent",
+          "payload": {
+            "target": {"kind": "player", "controller": "opponent"},
+            "prevented_action": "score",
+            "duration": "while",
+            "conditions": [{"state": "self_at_battlefield"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "swap_unit_might",
+      "rule_version": 1,
+      "pattern": "\\bSwap the Might of two units at the same battlefield this turn\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "payload": {
+            "target": {"kind": "unit", "amount": 2, "location": "battlefield"},
+            "amounts": [{"value": "swap", "unit": "might"}],
+            "outputs": [{"id": "might_modified", "action": "modify_stat", "object": "might"}],
+            "operation": "swap",
+            "duration": "this_turn",
+            "constraints": [{"same_location": "battlefield"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "win_game_condition",
+      "rule_version": 1,
+      "pattern": "\\byou win the game\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "score_change",
+          "predicate": "score",
+          "modality": "line_optional",
+          "payload": {
+            "outputs": [{"id": "game_won", "action": "score", "object": "game"}],
+            "win_condition": true
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "replace_battlefield",
+      "rule_version": 1,
+      "pattern": "\\byou may replace this with the battlefield it replaced\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.8,
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "replacement_effect",
+          "predicate": "move",
+          "modality": "line_optional",
+          "payload": {
+            "event": {"id": "card_moved", "produced": true},
+            "target": {"kind": "card", "scope": "self"},
+            "outputs": [{"id": "battlefield_replaced", "action": "move", "object": "battlefield"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "token_play_copy_replacement",
+      "rule_version": 1,
+      "pattern": "\\bif you would play a token unit[^.]*you may play that token and an additional copy of it instead\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "replacement_effect",
+          "predicate": "copy",
+          "modality": "line_optional",
+          "payload": {
+            "target": {"kind": "token", "card_types": ["unit"]},
+            "outputs": [{"id": "token_copied", "action": "copy", "object": "token"}],
+            "replaced_event": "unit_played",
+            "replacement": "additional_copy",
+            "replacement_outputs": [
+              {"id": "unit_played", "action": "play", "object": "token_unit"},
+              {"id": "token_copied", "action": "copy", "object": "token"}
+            ],
+            "limit": "once_each_turn",
+            "conditions": [{"state": "self_at_battlefield"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "copy_attached_unit_text",
+      "rule_version": 1,
+      "pattern": "\\bAs this is attached to a unit, copy that unit's text to this Equipment's effect text for as long as this is attached to it\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.84,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "copy_effect",
+          "predicate": "copy",
+          "payload": {
+            "target": {"kind": "unit", "attachment_role": "attached_to"},
+            "outputs": [{"id": "card_copied", "action": "copy", "object": "text"}],
+            "activation_context": "attached",
+            "inactive_until_attached": true,
+            "applies_to": "top_most_card",
+            "duration": "while_attached"
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "token_becomes_copy_of_unit",
+      "rule_version": 1,
+      "pattern": "\\bIt becomes a copy of (?:that|another) unit(?: there)?\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "copy_effect",
+          "predicate": "copy",
+          "payload": {
+            "target": {"kind": "unit"},
+            "outputs": [{"id": "card_copied", "action": "copy", "object": "card"}]
+          }
+        }
+      ]
+    },
+    {
+      "rule_id": "self_becomes_copy_when_played",
+      "rule_version": 1,
+      "pattern": "\\bI become a copy of something when played\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.82,
+      "facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "copy_effect",
+          "predicate": "copy",
+          "payload": {
+            "target": {"kind": "card", "scope": "self"},
+            "outputs": [{"id": "card_copied", "action": "copy", "object": "card"}],
+            "conditions": [{"event": "self_played"}]
+          }
+        }
+      ]
+    }
+  ],
+  "reminder_rules": [
+    {
+      "rule_id": "temporary_self_dies",
+      "rule_version": 1,
+      "pattern": "\\bKill (?:this|me) at the start of (?:its controller's|your) Beginning Phase, before scoring\\b",
+      "flags": ["IGNORECASE"],
+      "builder": "template",
+      "confidence": 0.9,
+      "facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "produced_event",
+          "predicate": "kill",
+          "payload": {
+            "event": {"id": "self_dies", "produced": true},
+            "conditions": [{"timing": "start_of_controller_beginning_phase", "before": "scoring"}]
+          }
+        }
+      ]
+    }
+  ]
+}

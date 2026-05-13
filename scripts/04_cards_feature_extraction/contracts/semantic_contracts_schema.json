@@ -1,0 +1,63 @@
+{
+  "version": "2026-05-12",
+  "purpose": "Human-readable schema for JSON semantic contracts. Runtime validation is implemented by semantic_contracts.py.",
+  "files": {
+    "semantic_ontology.json": {
+      "required_top_level_arrays": [
+        "semantic_roles",
+        "fact_types",
+        "actions",
+        "events",
+        "outputs",
+        "relation_types",
+        "web_uses"
+      ],
+      "description": "Registry of ids. New long-lived game knowledge ids should be added here before rules reference them."
+    },
+    "semantic_extraction_rules.json": {
+      "rule_sections": [
+        "trigger_rules",
+        "condition_rules",
+        "cost_rules",
+        "effect_rules",
+        "reminder_rules"
+      ],
+      "required_rule_fields": [
+        "rule_id",
+        "rule_version",
+        "pattern",
+        "builder",
+        "confidence"
+      ],
+      "description": "Regex-driven extraction rules. Rules can either declare fact templates or use a named mechanical builder for structured captures."
+    },
+    "semantic_relation_rules.json": {
+      "rule_sections": [
+        "event_enables",
+        "identity_event_relations",
+        "direct_synergy"
+      ],
+      "description": "Fact selector rules for enables, enabled_by, deck_synergy, and similar_effect behavior."
+    },
+    "semantic_quality_policy.json": {
+      "required_top_level_fields": [
+        "optional_governors",
+        "relation_event_ignore",
+        "effect_predicates_as_trigger",
+        "relational_keywords",
+        "blind_spot_buckets",
+        "broad_relation_count_threshold",
+        "similarity",
+        "domain_leakage"
+      ],
+      "description": "Audit, broadness, and web reporting policy."
+    }
+  },
+  "template_language": {
+    "$group": "Reads a named regex capture group.",
+    "transform": "Optional transform: int, word_number, strip, casefold, slug.",
+    "default": "Value to use when a capture group is absent or empty.",
+    "$format": "Formats a string with regex capture groups, for example :rb_energy_{amount}:.",
+    "$if_match_contains": "Returns then/else based on whether the matched evidence contains a substring."
+  }
+}

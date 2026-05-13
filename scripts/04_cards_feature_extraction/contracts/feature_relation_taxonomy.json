@@ -1,0 +1,1087 @@
+{
+  "version": "2026-05-12",
+  "purpose": "Target semantic contract for turning card text inventory into deterministic semantic facts and later web relations.",
+  "web_goals": [
+    "find_cards_enabled_by_a_card",
+    "find_cards_that_enable_a_card",
+    "find_cards_with_similar_effects",
+    "filter_by_domain",
+    "filter_by_trigger",
+    "filter_by_cost_or_stats",
+    "rank_by_stats",
+    "score_deck_synergy"
+  ],
+  "relation_roles": {
+    "event_produced": "The unit can create an event or resource that may enable another card.",
+    "trigger_observed": "The unit observes an event or timing window and can be enabled by something else.",
+    "payoff_output": "The unit produces a payoff such as draw, damage, token, buff, resource, or score.",
+    "cost_or_requirement": "The unit asks for a payment, additional cost, sacrifice, discard, timing, or state requirement.",
+    "restriction_or_permission": "The unit permits, forbids, narrows, or broadens what can happen.",
+    "state_or_modifier": "The unit changes state, stats, keywords, combat behavior, duration, or replacement behavior.",
+    "targeting_or_scope": "The unit identifies affected objects, players, locations, or scopes.",
+    "identity_or_descriptor": "The unit describes card identity, tags, keywords, traits, or deckbuilding facts."
+  },
+  "semantic_axes": {
+    "action": "Verb or game operation: draw, deal, play, kill, move, attach, counter, banish, etc.",
+    "object": "Affected game object: unit, spell, gear, token, card, player, battlefield, rune, XP, etc.",
+    "event": "Game event represented or observed: dies, played, attacks, holds, conquers, moves, scores, etc.",
+    "trigger": "Timing or conditional hook that observes an event.",
+    "cost": "Energy, rune, exhaust, sacrifice, discard, XP, or additional cost.",
+    "resource": "Energy, rune, XP, card draw, or other generated resource.",
+    "symbol": "Inline Riftbound symbol token such as :rb_energy_1:, :rb_rune_fury:, or :rb_exhaust:.",
+    "output": "Effect output that matters for similarity or synergy.",
+    "target": "Targeting and ownership scope.",
+    "location": "Zone or place: here, base, battlefield, hand, deck, trash, Champion Zone.",
+    "stat": "Might, Power, Energy, score, point, or numeric stat change.",
+    "keyword": "Bracketed keyword or granted/suppressed keyword.",
+    "duration": "Duration window such as this turn, next time, while, until, or for as long as.",
+    "modality": "May, must, can, cannot, optional, required, only.",
+    "polarity": "Positive, negative, replacement, prevention, suppression, restriction.",
+    "amount": "Numeric parameter.",
+    "identity": "Card type, tag, trait, subtype, or named identity.",
+    "extraction_seed": "Language pattern likely to become a deterministic semantic extraction rule."
+  },
+  "family_mappings": {
+    "ability_sharing": {
+      "roles": [
+        "state_or_modifier"
+      ],
+      "axes": [
+        "keyword",
+        "identity"
+      ],
+      "web_uses": [
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "medium",
+      "semantic_targets": [
+        "trait_patterns"
+      ]
+    },
+    "attachment_modifier": {
+      "roles": [
+        "event_produced",
+        "state_or_modifier",
+        "targeting_or_scope"
+      ],
+      "axes": [
+        "action",
+        "object",
+        "target"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "enables",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "actions",
+        "attachment_patterns",
+        "targets"
+      ]
+    },
+    "banish_effect": {
+      "roles": [
+        "event_produced",
+        "payoff_output",
+        "state_or_modifier"
+      ],
+      "axes": [
+        "action",
+        "object",
+        "location"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "enables",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "actions",
+        "banish_patterns",
+        "zones"
+      ]
+    },
+    "buff_effect": {
+      "roles": [
+        "event_produced",
+        "payoff_output",
+        "state_or_modifier"
+      ],
+      "axes": [
+        "action",
+        "stat",
+        "keyword",
+        "duration"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "enables",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "actions",
+        "duration_patterns",
+        "numeric_patterns"
+      ]
+    },
+    "choice_modal": {
+      "roles": [
+        "restriction_or_permission"
+      ],
+      "axes": [
+        "modality",
+        "action"
+      ],
+      "web_uses": [
+        "similarity"
+      ],
+      "priority": "low",
+      "semantic_targets": [
+        "conditions"
+      ]
+    },
+    "combat_modifier": {
+      "roles": [
+        "event_produced",
+        "trigger_observed",
+        "state_or_modifier"
+      ],
+      "axes": [
+        "event",
+        "action",
+        "object",
+        "stat",
+        "polarity"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "enables",
+        "similarity",
+        "filters",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "combat_patterns",
+        "triggers"
+      ]
+    },
+    "conditional_resolution": {
+      "roles": [
+        "trigger_observed",
+        "restriction_or_permission"
+      ],
+      "axes": [
+        "trigger",
+        "modality"
+      ],
+      "web_uses": [
+        "similarity"
+      ],
+      "priority": "medium",
+      "semantic_targets": [
+        "conditions"
+      ]
+    },
+    "contextual_clarification": {
+      "roles": [
+        "restriction_or_permission"
+      ],
+      "axes": [
+        "modality",
+        "location",
+        "duration"
+      ],
+      "web_uses": [
+        "similarity"
+      ],
+      "priority": "low",
+      "semantic_targets": [
+        "conditions",
+        "zones"
+      ]
+    },
+    "control_change": {
+      "roles": [
+        "event_produced",
+        "state_or_modifier"
+      ],
+      "axes": [
+        "action",
+        "target",
+        "duration",
+        "polarity"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "enables",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "actions",
+        "targets"
+      ]
+    },
+    "copy_effect": {
+      "roles": [
+        "state_or_modifier",
+        "identity_or_descriptor"
+      ],
+      "axes": [
+        "action",
+        "identity",
+        "object"
+      ],
+      "web_uses": [
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "copy_patterns"
+      ]
+    },
+    "cost_modifier": {
+      "roles": [
+        "cost_or_requirement",
+        "restriction_or_permission"
+      ],
+      "axes": [
+        "cost",
+        "resource",
+        "modality",
+        "amount"
+      ],
+      "web_uses": [
+        "filters",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "conditions",
+        "cost_patterns",
+        "numeric_patterns",
+        "symbols"
+      ]
+    },
+    "counter_effect": {
+      "roles": [
+        "event_produced",
+        "payoff_output",
+        "restriction_or_permission"
+      ],
+      "axes": [
+        "action",
+        "object",
+        "polarity"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "enables",
+        "similarity"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "actions"
+      ]
+    },
+    "damage_effect": {
+      "roles": [
+        "event_produced",
+        "payoff_output"
+      ],
+      "axes": [
+        "action",
+        "object",
+        "amount",
+        "stat"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "enables",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "actions",
+        "combat_patterns",
+        "numeric_patterns"
+      ]
+    },
+    "deck_manipulation": {
+      "roles": [
+        "event_produced",
+        "payoff_output"
+      ],
+      "axes": [
+        "action",
+        "object",
+        "location",
+        "amount"
+      ],
+      "web_uses": [
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "actions",
+        "deck_patterns",
+        "zones"
+      ]
+    },
+    "deckbuilding_restriction": {
+      "roles": [
+        "restriction_or_permission",
+        "identity_or_descriptor"
+      ],
+      "axes": [
+        "modality",
+        "identity",
+        "amount"
+      ],
+      "web_uses": [
+        "filters"
+      ],
+      "priority": "medium",
+      "semantic_targets": [
+        "conditions"
+      ]
+    },
+    "duration_modifier": {
+      "roles": [
+        "state_or_modifier"
+      ],
+      "axes": [
+        "duration",
+        "modality"
+      ],
+      "web_uses": [
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "medium",
+      "semantic_targets": [
+        "conditions",
+        "duration_patterns"
+      ]
+    },
+    "effect_equivalence": {
+      "roles": [
+        "state_or_modifier",
+        "identity_or_descriptor"
+      ],
+      "axes": [
+        "identity",
+        "polarity"
+      ],
+      "web_uses": [
+        "similarity"
+      ],
+      "priority": "medium",
+      "semantic_targets": [
+        "trait_patterns"
+      ]
+    },
+    "effect_suppression": {
+      "roles": [
+        "restriction_or_permission",
+        "state_or_modifier"
+      ],
+      "axes": [
+        "polarity",
+        "action"
+      ],
+      "web_uses": [
+        "similarity"
+      ],
+      "priority": "medium",
+      "semantic_targets": [
+        "conditions",
+        "copy_patterns"
+      ]
+    },
+    "entry_state": {
+      "roles": [
+        "event_produced",
+        "state_or_modifier"
+      ],
+      "axes": [
+        "event",
+        "action",
+        "duration"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "enables",
+        "similarity"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "trait_patterns"
+      ]
+    },
+    "hide_modifier": {
+      "roles": [
+        "state_or_modifier",
+        "restriction_or_permission"
+      ],
+      "axes": [
+        "keyword",
+        "cost",
+        "timing"
+      ],
+      "web_uses": [
+        "filters",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "conditions",
+        "keywords"
+      ]
+    },
+    "keyword_modifier": {
+      "roles": [
+        "event_produced",
+        "state_or_modifier",
+        "identity_or_descriptor"
+      ],
+      "axes": [
+        "keyword",
+        "action",
+        "duration"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "enables",
+        "filters",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "keywords",
+        "trait_patterns"
+      ]
+    },
+    "keyword_reminder": {
+      "roles": [
+        "identity_or_descriptor"
+      ],
+      "axes": [
+        "keyword",
+        "extraction_seed"
+      ],
+      "web_uses": [
+        "filters",
+        "similarity"
+      ],
+      "priority": "medium",
+      "semantic_targets": [
+        "keywords"
+      ]
+    },
+    "location_restriction": {
+      "roles": [
+        "targeting_or_scope",
+        "restriction_or_permission"
+      ],
+      "axes": [
+        "location",
+        "target",
+        "scope"
+      ],
+      "web_uses": [
+        "filters",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "targets",
+        "zones"
+      ]
+    },
+    "modal_option": {
+      "roles": [
+        "restriction_or_permission"
+      ],
+      "axes": [
+        "modality",
+        "object"
+      ],
+      "web_uses": [
+        "similarity"
+      ],
+      "priority": "low",
+      "semantic_targets": [
+        "card_types",
+        "conditions"
+      ]
+    },
+    "movement_modifier": {
+      "roles": [
+        "event_produced",
+        "state_or_modifier",
+        "targeting_or_scope"
+      ],
+      "axes": [
+        "action",
+        "location",
+        "target"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "enables",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "actions",
+        "movement_patterns",
+        "targets",
+        "zones"
+      ]
+    },
+    "play_permission": {
+      "roles": [
+        "restriction_or_permission",
+        "event_produced"
+      ],
+      "axes": [
+        "action",
+        "location",
+        "modality"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "enables",
+        "filters",
+        "similarity"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "actions",
+        "conditions",
+        "permission_patterns",
+        "zones"
+      ]
+    },
+    "play_restriction": {
+      "roles": [
+        "restriction_or_permission"
+      ],
+      "axes": [
+        "polarity",
+        "action",
+        "duration"
+      ],
+      "web_uses": [
+        "filters",
+        "similarity"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "actions",
+        "conditions",
+        "permission_patterns"
+      ]
+    },
+    "ready_exhaust_effect": {
+      "roles": [
+        "event_produced",
+        "state_or_modifier",
+        "cost_or_requirement"
+      ],
+      "axes": [
+        "action",
+        "cost",
+        "duration",
+        "polarity"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "enables",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "actions",
+        "cost_patterns",
+        "symbols",
+        "trait_patterns"
+      ]
+    },
+    "replacement_effect": {
+      "roles": [
+        "state_or_modifier",
+        "restriction_or_permission"
+      ],
+      "axes": [
+        "polarity",
+        "trigger",
+        "duration"
+      ],
+      "web_uses": [
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "conditions",
+        "duration_patterns"
+      ]
+    },
+    "removal_or_healing": {
+      "roles": [
+        "event_produced",
+        "trigger_observed",
+        "payoff_output",
+        "state_or_modifier"
+      ],
+      "axes": [
+        "action",
+        "event",
+        "object",
+        "polarity",
+        "duration"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "enables",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "actions",
+        "conditions",
+        "removal_healing_patterns",
+        "trigger_event_patterns",
+        "trigger_modifier_patterns",
+        "triggers"
+      ]
+    },
+    "resource_add_ability": {
+      "roles": [
+        "event_produced",
+        "payoff_output",
+        "cost_or_requirement"
+      ],
+      "axes": [
+        "resource",
+        "action",
+        "cost",
+        "timing"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "enables",
+        "filters",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "actions",
+        "resource_patterns",
+        "symbols"
+      ]
+    },
+    "resource_generation": {
+      "roles": [
+        "event_produced",
+        "payoff_output"
+      ],
+      "axes": [
+        "resource",
+        "action",
+        "amount"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "enables",
+        "filters",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "actions",
+        "numeric_patterns",
+        "resource_patterns",
+        "symbols"
+      ]
+    },
+    "score_modifier": {
+      "roles": [
+        "event_produced",
+        "payoff_output"
+      ],
+      "axes": [
+        "stat",
+        "amount",
+        "event"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "medium",
+      "semantic_targets": [
+        "numeric_patterns",
+        "score_patterns"
+      ]
+    },
+    "stat_modifier": {
+      "roles": [
+        "payoff_output",
+        "state_or_modifier"
+      ],
+      "axes": [
+        "stat",
+        "amount",
+        "duration",
+        "target"
+      ],
+      "web_uses": [
+        "filters",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "combat_patterns",
+        "duration_patterns",
+        "numeric_patterns"
+      ]
+    },
+    "stun_effect": {
+      "roles": [
+        "event_produced",
+        "state_or_modifier",
+        "restriction_or_permission"
+      ],
+      "axes": [
+        "keyword",
+        "polarity",
+        "duration",
+        "target"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "enables",
+        "filters",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "combat_patterns",
+        "keywords"
+      ]
+    },
+    "symbol_option": {
+      "roles": [
+        "cost_or_requirement",
+        "identity_or_descriptor"
+      ],
+      "axes": [
+        "cost",
+        "resource",
+        "symbol"
+      ],
+      "web_uses": [
+        "filters",
+        "similarity"
+      ],
+      "priority": "medium",
+      "semantic_targets": [
+        "cost_patterns",
+        "symbols"
+      ]
+    },
+    "tag_reference": {
+      "roles": [
+        "identity_or_descriptor",
+        "targeting_or_scope"
+      ],
+      "axes": [
+        "identity",
+        "target"
+      ],
+      "web_uses": [
+        "filters",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "medium",
+      "semantic_targets": [
+        "targets",
+        "trait_patterns"
+      ]
+    },
+    "target_protection": {
+      "roles": [
+        "restriction_or_permission",
+        "state_or_modifier"
+      ],
+      "axes": [
+        "target",
+        "polarity",
+        "keyword"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "filters",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "conditions",
+        "target_protection_patterns",
+        "targets"
+      ]
+    },
+    "target_selection": {
+      "roles": [
+        "targeting_or_scope"
+      ],
+      "axes": [
+        "target",
+        "object",
+        "modality"
+      ],
+      "web_uses": [
+        "filters",
+        "similarity"
+      ],
+      "priority": "medium",
+      "semantic_targets": [
+        "card_types",
+        "targets"
+      ]
+    },
+    "timing_window": {
+      "roles": [
+        "trigger_observed",
+        "restriction_or_permission"
+      ],
+      "axes": [
+        "trigger",
+        "timing",
+        "modality"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "filters",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "conditions",
+        "trigger_event_patterns",
+        "triggers"
+      ]
+    },
+    "token_creation": {
+      "roles": [
+        "event_produced",
+        "payoff_output"
+      ],
+      "axes": [
+        "action",
+        "object",
+        "amount",
+        "identity",
+        "location"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "enables",
+        "filters",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "card_types",
+        "numeric_patterns",
+        "token_patterns",
+        "zones"
+      ]
+    },
+    "trait_identity": {
+      "roles": [
+        "identity_or_descriptor",
+        "state_or_modifier"
+      ],
+      "axes": [
+        "identity",
+        "keyword",
+        "stat"
+      ],
+      "web_uses": [
+        "filters",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "medium",
+      "semantic_targets": [
+        "trait_patterns"
+      ]
+    },
+    "trigger_modifier": {
+      "roles": [
+        "trigger_observed",
+        "state_or_modifier"
+      ],
+      "axes": [
+        "trigger",
+        "duration",
+        "amount"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "filters",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "trigger_event_patterns",
+        "trigger_modifier_patterns",
+        "triggers"
+      ]
+    },
+    "turn_sequence": {
+      "roles": [
+        "event_produced",
+        "restriction_or_permission"
+      ],
+      "axes": [
+        "timing",
+        "event"
+      ],
+      "web_uses": [
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "medium",
+      "semantic_targets": [
+        "conditions",
+        "triggers"
+      ]
+    },
+    "type_exclusion": {
+      "roles": [
+        "identity_or_descriptor",
+        "restriction_or_permission"
+      ],
+      "axes": [
+        "identity",
+        "polarity"
+      ],
+      "web_uses": [
+        "filters"
+      ],
+      "priority": "low",
+      "semantic_targets": [
+        "card_types",
+        "conditions"
+      ]
+    },
+    "usage_restriction": {
+      "roles": [
+        "restriction_or_permission",
+        "cost_or_requirement"
+      ],
+      "axes": [
+        "modality",
+        "timing",
+        "cost"
+      ],
+      "web_uses": [
+        "filters",
+        "similarity"
+      ],
+      "priority": "medium",
+      "semantic_targets": [
+        "conditions",
+        "permission_patterns"
+      ]
+    },
+    "xp_progression": {
+      "roles": [
+        "trigger_observed",
+        "payoff_output",
+        "cost_or_requirement"
+      ],
+      "axes": [
+        "resource",
+        "amount",
+        "trigger"
+      ],
+      "web_uses": [
+        "enabled_by",
+        "enables",
+        "filters",
+        "similarity",
+        "deck_synergy"
+      ],
+      "priority": "high",
+      "semantic_targets": [
+        "conditions",
+        "numeric_patterns",
+        "resource_patterns"
+      ]
+    }
+  },
+  "semantic_targets": {
+    "actions": "Action verbs and game operations found in card text.",
+    "attachment_patterns": "Attach, detach, equip, equipment movement.",
+    "banish_patterns": "Banish effects and banished-zone references.",
+    "card_types": "Card type identity and references.",
+    "combat_patterns": "Attack, defend, conquer, hold, and combat modifier language.",
+    "conditions": "Conditional, timing, and modality language.",
+    "copy_patterns": "Copy and becomes-a-copy language.",
+    "cost_patterns": "Additional costs, ignored costs, discounts, spend/pay requirements.",
+    "deck_patterns": "Draw, discard, recycle, reveal, search, top-deck manipulation.",
+    "duration_patterns": "This turn, next time, while, until, for as long as.",
+    "keywords": "Bracketed keywords and keyword-grant language.",
+    "movement_patterns": "Move, recall, return to hand/base, swap locations.",
+    "numeric_patterns": "Numbers, amounts, comparisons, and stat quantities.",
+    "permission_patterns": "Can/may/cannot play, use only, timing restrictions.",
+    "removal_healing_patterns": "Kill, die, heal, recall, and death-prevention language.",
+    "resource_patterns": "Channel, add, gain XP, gain rune/energy.",
+    "score_patterns": "Score and victory point effects.",
+    "symbols": "Inline Riftbound symbol tokens and symbol-derived costs/resources.",
+    "target_protection_patterns": "Cannot be chosen, deflect-like protection.",
+    "targets": "Targeting, ownership, controller, and affected-object scope.",
+    "token_patterns": "Token creation and token identity language.",
+    "trait_patterns": "Tags, named traits, and subtype-like descriptors.",
+    "trigger_event_patterns": "Typed event produced/observed pairs for enablement analysis.",
+    "trigger_modifier_patterns": "Language that modifies trigger frequency or trigger windows.",
+    "triggers": "Event-observing trigger language.",
+    "zones": "Zone, battlefield, base, deck, hand, trash, and location language."
+  }
+}

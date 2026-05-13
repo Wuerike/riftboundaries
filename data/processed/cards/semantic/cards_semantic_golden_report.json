@@ -1,0 +1,48 @@
+{
+  "version": "2026-05-12",
+  "summary": {
+    "example_count": 40,
+    "expected_fact_count": 73,
+    "matched_fact_count": 73,
+    "missing_fact_count": 0,
+    "pass": true,
+    "regression_pass": true,
+    "relation_expectations_pass": true,
+    "relation_invariants_pass": true,
+    "dataset_invariants_pass": true
+  },
+  "failures": [],
+  "regressions": {
+    "summary": {
+      "fixture_count": 90,
+      "expected_regression_fact_count": 119,
+      "forbidden_regression_fact_count": 51,
+      "pass": true
+    },
+    "failures": []
+  },
+  "relation_expectations": {
+    "summary": {
+      "expected_relation_count": 46,
+      "pass": true
+    },
+    "failures": []
+  },
+  "relation_invariants": {
+    "summary": {
+      "relation_count": 14590,
+      "invariant_count": 16,
+      "pass": true
+    },
+    "failures": []
+  },
+  "dataset_invariants": {
+    "summary": {
+      "card_count": 767,
+      "published_relation_type_count": 4,
+      "invariant_count": 6,
+      "pass": true
+    },
+    "failures": []
+  }
+}

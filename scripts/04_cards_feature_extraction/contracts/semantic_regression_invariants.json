@@ -1,0 +1,2211 @@
+{
+  "version": "2026-05-13",
+  "purpose": "Negative and cross-artifact regression checks for known semantic relation bugs.",
+  "fact_expectations": [
+    {
+      "name": "Vaults of Helia",
+      "play_id": "play:vaults-of-helia:1e3f93ce",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "static_modifier",
+          "predicate": "increase_cost",
+          "evidence": "cost :rb_energy_1: more to play this turn"
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "reduce_cost",
+          "evidence": "cost :rb_energy_1: more to play this turn"
+        }
+      ]
+    },
+    {
+      "name": "Vex, Cheerless",
+      "play_id": "play:vex-cheerless:13c868ee",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "static_modifier",
+          "predicate": "increase_cost",
+          "evidence": "cost :rb_energy_1::rb_rune_rainbow: more",
+          "payload": {"amounts": [{"value": 1, "unit": "energy"}]}
+        },
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "static_modifier",
+          "predicate": "reduce_cost",
+          "evidence": "friendly spells cost :rb_energy_1::rb_rune_rainbow: less",
+          "payload": {"target": {"kind": "spell", "controller": "friendly"}, "amounts": [{"value": 1, "unit": "energy"}]}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "reduce_cost",
+          "evidence": "cost :rb_energy_1::rb_rune_rainbow: more"
+        }
+      ]
+    },
+    {
+      "name": "Safety Inspector",
+      "play_id": "play:safety-inspector:f2278612",
+      "expected_facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "predicate": "prevent",
+          "evidence": "If you paid my additional cost, you don't kill a unit this way"
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "kill",
+          "evidence": "kill a unit"
+        }
+      ]
+    },
+    {
+      "name": "Heroic Charge",
+      "play_id": "play:heroic-charge:9df18b52",
+      "expected_facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "state_modifier",
+          "predicate": "stun",
+          "evidence": "Stun] an enemy unit at its location"
+        },
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "evidence": "Give a friendly unit +1 :rb_might: this turn"
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "keyword_grant",
+          "predicate": "gain_keyword",
+          "evidence": "Give a friendly unit +1 :rb_might: this turn and [Stun]",
+          "payload": {
+            "keywords": ["stun"]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Defy",
+      "play_id": "play:defy:8cd6b1c5",
+      "expected_facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "predicate": "cost_cap_constraint",
+          "evidence": "costs no more than :rb_energy_4: and"
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "increase_cost",
+          "evidence": "costs no more than"
+        }
+      ]
+    },
+    {
+      "name": "Lux, Illuminated",
+      "play_id": "play:lux-illuminated:145673bb",
+      "expected_facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "predicate": "cost_threshold",
+          "evidence": "costs :rb_energy_5: or more"
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "increase_cost",
+          "evidence": "costs :rb_energy_5: or more"
+        }
+      ]
+    },
+    {
+      "name": "Ancient Henge",
+      "play_id": "play:ancient-henge:9117108a",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "resource_change",
+          "predicate": "add_resource",
+          "evidence": "[Add] that much :rb_rune_rainbow:",
+          "payload": {
+            "amounts": [{"unit": "rune", "domain": "any", "value": "variable"}],
+            "resource": {"resource": "rune", "domain": "any", "amount": "variable"}
+          }
+        },
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "pay",
+          "evidence": "Pay any amount of Energy to [Add] that much :rb_rune_rainbow:",
+          "payload": {
+            "costs": [{"resource": "energy", "amount": "variable"}],
+            "conditions": [{"applies_to": "add_resource"}]
+          }
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "identity_or_descriptor",
+          "predicate": "has_keyword",
+          "payload": {"object": {"id": "add"}}
+        }
+      ]
+    },
+    {
+      "name": "Atakhan",
+      "play_id": "play:atakhan:a7ae219e",
+      "expected_facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "additional_cost",
+          "predicate": "kill",
+          "evidence": "You may kill a friendly unit as an additional cost to play me"
+        },
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "reduce_cost",
+          "payload": {"target": {"kind": "card", "scope": "self"}, "amounts": [{"value": 1, "unit": "energy"}]}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "pay",
+          "payload": {"costs": [{"resource": "energy", "amount": 1}]}
+        }
+      ]
+    },
+    {
+      "name": "Poppy, Defender of the Meek",
+      "play_id": "play:poppy-defender-of-the-meek:689e74c0",
+      "expected_facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "additional_cost",
+          "predicate": "spend",
+          "evidence": "You may spend 3 XP as an additional cost to play me"
+        },
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "reduce_cost",
+          "payload": {"target": {"kind": "card", "scope": "self"}, "amounts": [{"value": 3, "unit": "energy"}]}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "pay",
+          "payload": {"costs": [{"resource": "energy", "amount": 3}]}
+        }
+      ]
+    },
+    {
+      "name": "Raging Firebrand",
+      "play_id": "play:raging-firebrand:0fe72c50",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "reduce_cost",
+          "payload": {
+            "target": {"kind": "spell", "controller": "you"},
+            "duration": "this_turn",
+            "amounts": [{"value": 5, "unit": "energy"}]
+          }
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Glorious Executioner",
+      "play_id": "play:glorious-executioner:c8e2e2b2",
+      "expected_facts": [
+        {
+          "semantic_role": "trigger_observed",
+          "predicate": "observe_event",
+          "evidence": "When you win a combat",
+          "payload": {"event": {"id": "combat_won"}}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Mageseeker Warden",
+      "play_id": "play:mageseeker-warden:f27157dd",
+      "expected_facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "predicate": "prevent",
+          "payload": {"prevented_action": "ready"}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "ready",
+          "evidence": "ready enemy units and gear"
+        }
+      ]
+    },
+    {
+      "name": "Rockfall Path",
+      "play_id": "play:rockfall-path:f690a406",
+      "expected_facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "predicate": "prevent",
+          "payload": {"prevented_action": "play"}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "play"
+        }
+      ]
+    },
+    {
+      "name": "Disposal Order",
+      "play_id": "play:disposal-order:68d05fb8",
+      "expected_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "recycle",
+          "payload": {"choice_mode": "choose_one", "exclusive": true}
+        },
+        {
+          "semantic_role": "payoff_output",
+          "predicate": "draw",
+          "payload": {"choice_mode": "choose_one", "exclusive": true}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "recycle",
+          "payload": {"option_index": 1}
+        }
+      ]
+    },
+    {
+      "name": "Dancing Grenade",
+      "play_id": "play:dancing-grenade:1ebb941d",
+      "expected_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "damage",
+          "evidence": "Deal 2 to a unit",
+          "payload": {"modality": "required"}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "damage",
+          "evidence": "Deal 2 to a unit",
+          "payload": {"modality": "optional"}
+        }
+      ]
+    },
+    {
+      "name": "The Academy",
+      "play_id": "play:the-academy:f9fe7741",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "gain_keyword",
+          "payload": {"keywords": ["repeat"], "modality": "required"}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "gain_keyword",
+          "payload": {"modality": "optional"}
+        }
+      ]
+    },
+    {
+      "name": "The Candlelit Sanctum",
+      "play_id": "play:the-candlelit-sanctum:c79c6213",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "predicate": "look",
+          "evidence": "look at the top two cards of your Main Deck",
+          "payload": {"modality": "required", "amounts": [{"value": 2, "unit": "card"}]}
+        },
+        {
+          "semantic_role": "event_produced",
+          "predicate": "recycle",
+          "evidence": "You may recycle one or both of them",
+          "payload": {"modality": "optional"}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "predicate": "look",
+          "evidence": "look at the top two cards of your Main Deck",
+          "payload": {"modality": "optional"}
+        }
+      ]
+    },
+    {
+      "name": "Unlicensed Armory",
+      "play_id": "play:unlicensed-armory:c5b38ea1",
+      "expected_facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "pay",
+          "evidence": "Discard 1, :rb_exhaust:",
+          "payload": {"modality": "required"}
+        },
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "pay",
+          "evidence": "you may pay :rb_rune_fury: to heal it, exhaust it, and recall it instead",
+          "payload": {"modality": "optional"}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "pay",
+          "evidence": "Discard 1, :rb_exhaust:",
+          "payload": {"modality": "optional"}
+        }
+      ]
+    },
+    {
+      "name": "Rocket Barrage",
+      "play_id": "play:rocket-barrage:1ee001f2",
+      "expected_facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "additional_cost",
+          "predicate": "pay",
+          "evidence": "[Repeat] :rb_energy_4::rb_rune_mind:",
+          "payload": {"modality": "optional", "repeat": true, "conditions": [{"applies_to": "repeat_effect"}]}
+        },
+        {
+          "semantic_role": "event_produced",
+          "predicate": "damage",
+          "payload": {"choice_mode": "choose_one", "exclusive": true, "option_index": 0}
+        },
+        {
+          "semantic_role": "event_produced",
+          "predicate": "kill",
+          "payload": {"choice_mode": "choose_one", "exclusive": true, "option_index": 1}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "pay",
+          "evidence": "[Repeat] :rb_energy_4::rb_rune_mind:"
+        }
+      ]
+    },
+    {
+      "name": "Curtain Call",
+      "play_id": "play:curtain-call:ca540b49",
+      "expected_facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "additional_cost",
+          "predicate": "pay",
+          "evidence": "[Repeat] — :rb_energy_1:",
+          "payload": {"modality": "optional", "repeat": true, "conditions": [{"applies_to": "repeat_effect"}]}
+        },
+        {
+          "semantic_role": "payoff_output",
+          "predicate": "draw",
+          "payload": {"choice_mode": "choose_one", "exclusive": true, "option_index": 0}
+        },
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "modify_stat",
+          "payload": {"choice_mode": "choose_one", "exclusive": true, "option_index": 3}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "pay",
+          "evidence": "[Repeat] — :rb_energy_1:"
+        }
+      ]
+    },
+    {
+      "name": "Aphelios, Exalted",
+      "play_id": "play:aphelios-exalted:b81e7f1f",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "ready",
+          "payload": {"choice_mode": "choose_one", "exclusive": true, "option_index": 0}
+        },
+        {
+          "semantic_role": "payoff_output",
+          "predicate": "channel",
+          "payload": {"choice_mode": "choose_one", "exclusive": true, "option_index": 1}
+        },
+        {
+          "semantic_role": "event_produced",
+          "predicate": "buff",
+          "payload": {"choice_mode": "choose_one", "exclusive": true, "option_index": 2}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Udyr, Wildman",
+      "play_id": "play:udyr-wildman:2c26ef78",
+      "expected_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "damage",
+          "payload": {"choice_mode": "choose_one", "exclusive": true, "option_index": 0}
+        },
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "gain_keyword",
+          "payload": {"choice_mode": "choose_one", "exclusive": true, "option_index": 3}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "King's Edict",
+      "play_id": "play:king-s-edict:9f9dcab4",
+      "expected_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "kill",
+          "payload": {"target": {"reference": "chosen_units"}}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "kill",
+          "payload": {"choice_mode": "choose_one"}
+        }
+      ]
+    },
+    {
+      "name": "Buhru Captain",
+      "play_id": "play:buhru-captain:9f954111",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "predicate": "draw",
+          "evidence": "draw 1",
+          "payload": {"modality": "optional", "choice_mode": "choose_one", "exclusive": true, "option_index": 0}
+        },
+        {
+          "semantic_role": "event_produced",
+          "predicate": "buff",
+          "evidence": "buff me",
+          "payload": {"modality": "optional", "choice_mode": "choose_one", "exclusive": true, "option_index": 1}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "buff",
+          "evidence": "buff a unit"
+        },
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "modify_stat",
+          "evidence": "give it a +1 :rb_might:"
+        }
+      ]
+    },
+    {
+      "name": "Salvage",
+      "play_id": "play:salvage:52f03a91",
+      "expected_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "kill",
+          "evidence": "kill up to one gear",
+          "payload": {"modality": "optional", "target": {"kind": "gear", "maximum": 1}}
+        },
+        {
+          "semantic_role": "payoff_output",
+          "predicate": "draw",
+          "evidence": "Draw 1",
+          "payload": {"modality": "required"}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "kill",
+          "evidence": "kill up to one gear",
+          "payload": {"modality": "required"}
+        },
+        {
+          "semantic_role": "payoff_output",
+          "predicate": "draw",
+          "evidence": "Draw 1",
+          "payload": {"modality": "optional"}
+        }
+      ]
+    },
+    {
+      "name": "Whirlwind",
+      "play_id": "play:whirlwind:70daa021",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "predicate": "return_to_hand",
+          "evidence": "return a unit to its owner's hand",
+          "payload": {"modality": "optional"}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "predicate": "return_to_hand",
+          "evidence": "return a unit to its owner's hand",
+          "payload": {"modality": "required"}
+        }
+      ]
+    },
+    {
+      "name": "Valley of Idols",
+      "play_id": "play:valley-of-idols:988d52df",
+      "expected_facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "pay",
+          "evidence": "they may pay :rb_energy_1: to [Buff] it",
+          "payload": {
+            "modality": "optional",
+            "costs": [{"resource": "energy", "amount": 1}],
+            "conditions": [{"applies_to": "buff"}],
+            "payer": {"scope": "triggered_player"}
+          }
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "modify_stat",
+          "evidence": "Give it a +1 :rb_might:"
+        },
+        {
+          "semantic_role": "event_produced",
+          "predicate": "buff",
+          "evidence": "buff if it doesn't have one"
+        }
+      ]
+    },
+    {
+      "name": "Rabadon's Deathcrown",
+      "play_id": "play:rabadon-s-deathcrown:2161f7df",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "modify_stat",
+          "payload": {"activation_context": "attached", "inactive_until_attached": true, "applies_to": "top_most_card"}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "modify_stat",
+          "payload": {"activation_context": "static"}
+        }
+      ]
+    },
+    {
+      "name": "Heimerdinger, Inventor",
+      "play_id": "play:heimerdinger-inventor:2b2dc5bb",
+      "expected_facts": [],
+      "forbidden_facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "pay",
+          "evidence": "I have all :rb_exhaust:"
+        }
+      ]
+    },
+    {
+      "name": "Forge of the Fluft",
+      "play_id": "play:forge-of-the-fluft:4ea8d456",
+      "expected_facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "predicate": "require",
+          "evidence": "While you control this battlefield"
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "attach",
+          "evidence": "Attach an Equipment you control to a unit you control"
+        }
+      ]
+    },
+    {
+      "name": "Grandmaster at Arms",
+      "play_id": "play:grandmaster-at-arms:117140a0",
+      "expected_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "attach",
+          "evidence": "Attach a detached Equipment you control to a unit you control",
+          "payload": {"object": {"kind": "gear"}, "target": {"kind": "unit", "controller": "you"}}
+        },
+        {
+          "semantic_role": "event_produced",
+          "predicate": "attach",
+          "evidence": "Attach an attached Equipment you control to a unit you control",
+          "payload": {"object": {"kind": "gear"}, "target": {"kind": "unit", "controller": "you"}}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Veiled Temple",
+      "play_id": "play:veiled-temple:c24f22f7",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "ready",
+          "evidence": "ready a friendly gear",
+          "payload": {"modality": "optional", "target": {"kind": "gear", "controller": "friendly"}}
+        },
+        {
+          "semantic_role": "event_produced",
+          "predicate": "detach",
+          "evidence": "detach it",
+          "payload": {"modality": "optional", "object": {"kind": "gear"}}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Counter Strike",
+      "play_id": "play:counter-strike:cfba558c",
+      "expected_facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "predicate": "prevent",
+          "payload": {"prevented_event": "damage_dealt", "limit": "next_time"}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "damage"
+        }
+      ]
+    },
+    {
+      "name": "Highlander",
+      "play_id": "play:highlander:fa089001",
+      "expected_facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "replacement_effect",
+          "predicate": "prevent",
+          "payload": {"prevented_event": "unit_dies", "replacement": "heal_exhaust_recall", "limit": "next_time"}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Guardian Angel",
+      "play_id": "play:guardian-angel:3a0c3bdc",
+      "expected_facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "replacement_effect",
+          "predicate": "prevent",
+          "payload": {
+            "prevented_event": "unit_dies",
+            "replacement": "kill_source_heal_exhaust_recall",
+            "activation_context": "attached",
+            "inactive_until_attached": true
+          }
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Zhonya's Hourglass",
+      "play_id": "play:zhonya-s-hourglass:fcfa3dbc",
+      "expected_facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "replacement_effect",
+          "predicate": "prevent",
+          "payload": {"prevented_event": "unit_dies", "replacement": "kill_self_heal_exhaust_recall"}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Soraka, Wanderer",
+      "play_id": "play:soraka-wanderer:81c0ff4a",
+      "expected_facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "replacement_effect",
+          "predicate": "prevent",
+          "payload": {
+            "prevented_event": "unit_dies",
+            "replacement": "heal_exhaust_recall",
+            "conditions": [{"comparison": "target_might_less_than_self"}]
+          }
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Zilean, Time Mage",
+      "play_id": "play:zilean-time-mage:8fb4d0e9",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "replacement_effect",
+          "predicate": "copy",
+          "payload": {
+            "replaced_event": "unit_played",
+            "replacement": "additional_copy",
+            "limit": "once_each_turn",
+            "conditions": [{"state": "self_at_battlefield"}],
+            "replacement_outputs": [
+              {"id": "unit_played", "action": "play"},
+              {"id": "token_copied", "action": "copy"}
+            ]
+          }
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Switcheroo",
+      "play_id": "play:switcheroo:fd706962",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "evidence": "Swap the Might of two units at the same battlefield this turn",
+          "payload": {
+            "operation": "swap",
+            "duration": "this_turn",
+            "amounts": [{"value": "swap", "unit": "might"}],
+            "target": {"kind": "unit", "amount": 2, "location": "battlefield"}
+          }
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Tianna Crownguard",
+      "play_id": "play:tianna-crownguard:2a0d765b",
+      "expected_facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "prevent",
+          "evidence": "opponents can't gain points",
+          "payload": {
+            "target": {"kind": "player", "controller": "opponent"},
+            "prevented_action": "score",
+            "duration": "while",
+            "conditions": [{"state": "self_at_battlefield"}]
+          }
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Forgotten Monument",
+      "play_id": "play:forgotten-monument:5c511235",
+      "expected_facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "prevent",
+          "evidence": "Players can't score here until their third turn",
+          "payload": {
+            "target": {"kind": "player"},
+            "location": "here",
+            "prevented_action": "score",
+            "duration": "until_third_turn"
+          }
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Vilemaw's Lair",
+      "play_id": "play:vilemaw-s-lair:d12d78ce",
+      "expected_facts": [
+        {
+          "semantic_role": "restriction_or_permission",
+          "predicate": "prevent",
+          "payload": {
+            "prevented_action": "move",
+            "destination": {"zone": "base"}
+          }
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "move"
+        }
+      ]
+    },
+    {
+      "name": "Angle Shot",
+      "play_id": "play:angle-shot:f8a4b638",
+      "expected_facts": [
+        {"semantic_role": "event_produced", "predicate": "attach"},
+        {"semantic_role": "event_produced", "predicate": "detach"}
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "attach",
+          "payload": {"target": {"kind": "gear"}}
+        }
+      ]
+    },
+    {
+      "name": "Ahri, Inquisitive",
+      "play_id": "play:ahri-inquisitive:d6396fae",
+      "expected_facts": [
+        {
+          "semantic_role": "trigger_observed",
+          "predicate": "observe_event",
+          "payload": {"event": {"id": "self_attacks"}}
+        },
+        {
+          "semantic_role": "trigger_observed",
+          "predicate": "observe_event",
+          "payload": {"event": {"id": "self_defends"}}
+        },
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "payload": {
+            "target": {"kind": "unit", "controller": "opponent", "location": "here"},
+            "duration": "this_turn",
+            "amounts": [{"value": -2, "unit": "might"}]
+          }
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "keyword_grant",
+          "predicate": "gain_keyword"
+        }
+      ]
+    },
+    {
+      "name": "Emperor of the Sands",
+      "play_id": "play:emperor-of-the-sands:122152ab",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "keyword_grant",
+          "predicate": "gain_keyword",
+          "payload": {"keywords": ["weaponmaster"], "target": {"raw": "Sand Soldiers you play"}}
+        },
+        {
+          "semantic_role": "targeting_or_scope",
+          "fact_type": "keyword_reference",
+          "predicate": "reference_keyword",
+          "evidence": "[Equip]",
+          "payload": {"object": {"id": "equip"}}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "identity_or_descriptor",
+          "predicate": "has_keyword",
+          "payload": {"object": {"id": "weaponmaster"}}
+        },
+        {
+          "semantic_role": "identity_or_descriptor",
+          "predicate": "has_keyword",
+          "payload": {"object": {"id": "equip"}}
+        }
+      ]
+    },
+    {
+      "name": "Karthus, Eternal",
+      "play_id": "play:karthus-eternal:bc9cc407",
+      "expected_facts": [
+        {
+          "semantic_role": "targeting_or_scope",
+          "fact_type": "keyword_reference",
+          "predicate": "reference_keyword",
+          "evidence": "[Deathknell]",
+          "payload": {"object": {"id": "deathknell"}}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "identity_or_descriptor",
+          "predicate": "has_keyword",
+          "payload": {"object": {"id": "deathknell"}}
+        }
+      ]
+    },
+    {
+      "name": "Lillia, Protector of Dreams",
+      "play_id": "play:lillia-protector-of-dreams:21163b7d",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "keyword_grant",
+          "predicate": "gain_keyword",
+          "payload": {"keywords": ["tank"], "target": {"raw": "Your token units"}}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "identity_or_descriptor",
+          "predicate": "has_keyword",
+          "payload": {"object": {"id": "tank"}}
+        }
+      ]
+    },
+    {
+      "name": "Fading Memories",
+      "play_id": "play:fading-memories:c9a46092",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "keyword_grant",
+          "predicate": "gain_keyword",
+          "payload": {"keywords": ["temporary"]}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "identity_or_descriptor",
+          "predicate": "has_keyword",
+          "payload": {"object": {"id": "temporary"}}
+        }
+      ]
+    },
+    {
+      "name": "Turn to Dust",
+      "play_id": "play:turn-to-dust:4f8c78cc",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "keyword_grant",
+          "predicate": "gain_keyword",
+          "payload": {"keywords": ["temporary"], "target": {"raw": "a gear"}}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "identity_or_descriptor",
+          "predicate": "has_keyword",
+          "payload": {"object": {"id": "temporary"}}
+        }
+      ]
+    },
+    {
+      "name": "Fiora, Victorious",
+      "play_id": "play:fiora-victorious:92559485",
+      "expected_facts": [
+        {
+          "semantic_role": "targeting_or_scope",
+          "fact_type": "keyword_reference",
+          "predicate": "reference_keyword",
+          "evidence": "[Mighty]",
+          "payload": {"object": {"id": "mighty"}}
+        },
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "keyword_grant",
+          "predicate": "gain_keyword",
+          "payload": {"keywords": ["deflect", "ganking", "shield"], "target": {"raw": "I"}}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "identity_or_descriptor",
+          "predicate": "has_keyword",
+          "payload": {"object": {"id": "mighty"}}
+        },
+        {
+          "semantic_role": "identity_or_descriptor",
+          "predicate": "has_keyword",
+          "payload": {"object": {"id": "deflect"}}
+        }
+      ]
+    },
+    {
+      "name": "Syndra, Transcendent",
+      "play_id": "play:syndra-transcendent:61065ad6",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "keyword_grant",
+          "predicate": "gain_keyword",
+          "payload": {"keywords": ["repeat"], "target": {"raw": "your spells"}}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "identity_or_descriptor",
+          "predicate": "has_keyword",
+          "payload": {"object": {"id": "repeat"}}
+        }
+      ]
+    },
+    {
+      "name": "Laurent Bladekeeper",
+      "play_id": "play:laurent-bladekeeper:31152886",
+      "expected_facts": [
+        {
+          "semantic_role": "identity_or_descriptor",
+          "fact_type": "keyword_marker",
+          "predicate": "has_keyword",
+          "evidence": "Ganking",
+          "payload": {"object": {"id": "ganking"}}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Windsinger",
+      "play_id": "play:windsinger:ed5dbfe9",
+      "expected_facts": [
+        {
+          "semantic_role": "identity_or_descriptor",
+          "fact_type": "keyword_marker",
+          "predicate": "has_keyword",
+          "evidence": "Hidden",
+          "payload": {"object": {"id": "hidden"}}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Might of Demacia - Starter",
+      "play_id": "play:might-of-demacia-starter:2872a00c",
+      "expected_facts": [
+        {
+          "semantic_role": "trigger_observed",
+          "fact_type": "event_trigger",
+          "predicate": "observe_event",
+          "evidence": "When you conquer",
+          "payload": {"event": {"id": "battlefield_conquered", "subject": "you"}}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "The Boss",
+      "play_id": "play:the-boss:0851aa4f",
+      "expected_facts": [
+        {
+          "semantic_role": "trigger_observed",
+          "fact_type": "event_trigger",
+          "predicate": "observe_event",
+          "evidence": "When you conquer",
+          "payload": {"event": {"id": "battlefield_conquered", "subject": "you"}}
+        },
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "state_modifier",
+          "predicate": "ready",
+          "evidence": "ready me",
+          "payload": {"target": {"kind": "card", "scope": "self"}, "outputs": [{"id": "self_ready"}]}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Blade Dancer",
+      "play_id": "play:blade-dancer:5986d065",
+      "expected_facts": [
+        {
+          "semantic_role": "trigger_observed",
+          "fact_type": "event_trigger",
+          "predicate": "observe_event",
+          "evidence": "When you conquer",
+          "payload": {"event": {"id": "battlefield_conquered", "subject": "you"}}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Piltover Enforcer",
+      "play_id": "play:piltover-enforcer:e232b8fc",
+      "expected_facts": [
+        {
+          "semantic_role": "trigger_observed",
+          "fact_type": "event_trigger",
+          "predicate": "observe_event",
+          "evidence": "When you conquer",
+          "payload": {"event": {"id": "battlefield_conquered", "subject": "you"}}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Void Burrower",
+      "play_id": "play:void-burrower:a1700d73",
+      "expected_facts": [
+        {
+          "semantic_role": "trigger_observed",
+          "fact_type": "event_trigger",
+          "predicate": "observe_event",
+          "evidence": "When you conquer",
+          "payload": {"event": {"id": "battlefield_conquered", "subject": "you"}}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Blast Cone",
+      "play_id": "play:blast-cone:55eeaf2f",
+      "expected_facts": [
+        {
+          "semantic_role": "trigger_observed",
+          "predicate": "observe_event",
+          "evidence": "When you move an enemy unit",
+          "payload": {"event": {"id": "unit_moved", "target": {"kind": "unit", "controller": "opponent"}}}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "move",
+          "evidence": "move an enemy unit",
+          "payload": {"modality": "required"}
+        }
+      ]
+    },
+    {
+      "name": "Minefield",
+      "play_id": "play:minefield:74a8186e",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "movement",
+          "predicate": "move",
+          "evidence": "put the top 2 cards of your Main Deck into your trash",
+          "payload": {
+            "amounts": [{"value": 2, "unit": "card"}],
+            "event": {"id": "card_moved"},
+            "object": {"kind": "card", "zone": "main_deck", "location": "top"},
+            "destination": {"zone": "trash", "owner": "your"}
+          }
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Virtuoso",
+      "play_id": "play:virtuoso:45a055f3",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "movement",
+          "predicate": "move",
+          "evidence": "put each in its trash",
+          "payload": {
+            "event": {"id": "card_moved"},
+            "object": {"kind": "card", "raw": "each"},
+            "destination": {"zone": "trash", "owner": "its"}
+          }
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Ravenborn Tome",
+      "play_id": "play:ravenborn-tome:f46fe953",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "modify_stat",
+          "payload": {"target": {"kind": "damage", "source": "next_spell"}, "duration": "this_turn"}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "modify_stat",
+          "payload": {"activation_context": "attached"}
+        }
+      ]
+    },
+    {
+      "name": "Fortified Position",
+      "play_id": "play:fortified-position:31bb26b4",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "keyword_grant",
+          "predicate": "gain_keyword",
+          "evidence": "It gains [Shield 2] this combat",
+          "payload": {"target": {"kind": "unit", "scope": "chosen"}, "keywords": ["shield"], "duration": "this_combat"}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "keyword_grant",
+          "predicate": "gain_keyword",
+          "evidence": "It gains [Shield 2] this combat",
+          "payload": {"target": {"kind": "card", "scope": "self"}}
+        }
+      ]
+    },
+    {
+      "name": "Svellsongur",
+      "play_id": "play:svellsongur:fe56614e",
+      "expected_facts": [
+        {"semantic_role": "event_produced", "predicate": "attach"},
+        {
+          "semantic_role": "state_or_modifier",
+          "predicate": "copy",
+          "payload": {"activation_context": "attached", "inactive_until_attached": true, "applies_to": "top_most_card"}
+        }
+      ],
+      "forbidden_facts": [
+        {"semantic_role": "event_produced", "predicate": "detach"}
+      ]
+    },
+    {
+      "name": "Spinning Axe",
+      "play_id": "play:spinning-axe:54c823a0",
+      "expected_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "attach",
+          "evidence": "attach it to a unit you control",
+          "payload": {"object": {"kind": "gear"}, "target": {"kind": "unit", "controller": "you"}}
+        },
+        {
+          "semantic_role": "event_produced",
+          "predicate": "attach",
+          "evidence": "Attach this to a unit you control",
+          "payload": {"object": {"kind": "gear"}, "target": {"kind": "unit", "controller": "you"}}
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "event_produced",
+          "predicate": "detach"
+        }
+      ]
+    },
+    {
+      "name": "Invert Timelines",
+      "play_id": "play:invert-timelines:7a3cc22a",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "card_flow",
+          "predicate": "draw",
+          "evidence": "draws 4",
+          "payload": {"amounts": [{"value": 4, "unit": "card"}]}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Show of Strength",
+      "play_id": "play:show-of-strength:08603631",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "card_flow",
+          "predicate": "draw",
+          "evidence": "Draw 1 for each of your [Mighty] units",
+          "payload": {"scaling": {"per": "your [Mighty] units"}}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Right of Conquest",
+      "play_id": "play:right-of-conquest:87ead7a5",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "card_flow",
+          "predicate": "draw",
+          "evidence": "draw 1 for each battlefield you or allies control",
+          "payload": {"scaling": {"per": "battlefield you or allies control"}}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Mystic Reversal",
+      "play_id": "play:mystic-reversal:81f30bae",
+      "expected_facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "control_change",
+          "predicate": "gain_control",
+          "evidence": "Gain control of a spell",
+          "payload": {"event": {"id": "control_changed"}, "target": {"kind": "spell"}}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Possession",
+      "play_id": "play:possession:3fc2de2b",
+      "expected_facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "control_change",
+          "predicate": "gain_control",
+          "evidence": "Take control of it",
+          "payload": {"target": {"kind": "unit", "controller": "opponent", "location": "battlefield"}}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Hostile Takeover",
+      "play_id": "play:hostile-takeover:a5a73bd7",
+      "expected_facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "control_change",
+          "predicate": "gain_control",
+          "evidence": "Take control of an enemy unit at a battlefield",
+          "payload": {"target": {"kind": "unit", "controller": "opponent", "location": "battlefield"}}
+        },
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "control_change",
+          "predicate": "lose_control",
+          "evidence": "Lose control of that unit",
+          "payload": {"timing": "end_of_turn"}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Power Nexus",
+      "play_id": "play:power-nexus:9604775f",
+      "expected_facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "pay",
+          "evidence": "you may pay :rb_rune_rainbow::rb_rune_rainbow::rb_rune_rainbow::rb_rune_rainbow: to score 1 point",
+          "payload": {
+            "costs": [
+              {"resource": "rune", "domain": "any", "amount": 1},
+              {"resource": "rune", "domain": "any", "amount": 1},
+              {"resource": "rune", "domain": "any", "amount": 1},
+              {"resource": "rune", "domain": "any", "amount": 1}
+            ],
+            "conditions": [{"applies_to": "score"}],
+            "modality": "optional"
+          }
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Altar of Blood",
+      "play_id": "play:altar-of-blood:da048a2d",
+      "expected_facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "pay",
+          "evidence": "its controller may pay :rb_rune_rainbow::rb_rune_rainbow::rb_rune_rainbow: to heal it, exhaust it, and recall it instead",
+          "payload": {
+            "costs": [
+              {"resource": "rune", "domain": "any", "amount": 1},
+              {"resource": "rune", "domain": "any", "amount": 1},
+              {"resource": "rune", "domain": "any", "amount": 1}
+            ],
+            "conditions": [{"applies_to": "heal"}],
+            "modality": "optional",
+            "payer": {"scope": "affected_object"}
+          }
+        },
+        {
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "replacement_effect",
+          "predicate": "prevent",
+          "payload": {
+            "prevented_event": "unit_dies",
+            "replacement": "paid_heal_exhaust_recall",
+            "target": {"kind": "unit", "location": "here"}
+          }
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Hextech Anomaly",
+      "play_id": "play:hextech-anomaly:bf2a39e8",
+      "expected_facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "pay",
+          "evidence": "Pay any amount of :rb_rune_rainbow: to [Add] that much Energy",
+          "payload": {
+            "costs": [{"resource": "rune", "domain": "any", "amount": "variable"}],
+            "conditions": [{"applies_to": "add_resource"}]
+          }
+        },
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "resource_change",
+          "predicate": "add_resource",
+          "evidence": "[Add] that much Energy",
+          "payload": {
+            "amounts": [{"value": "variable", "unit": "energy"}],
+            "resource": {"resource": "energy", "amount": "variable"}
+          }
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Seal of Strength",
+      "play_id": "play:seal-of-strength:57429223",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "resource_change",
+          "predicate": "add_resource",
+          "evidence": "[Add] :rb_rune_body:",
+          "payload": {
+            "amounts": [{"unit": "rune", "domain": "body", "value": 1}],
+            "resource": {"resource": "rune", "domain": "body", "amount": 1}
+          }
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Chem-Baroness",
+      "play_id": "play:chem-baroness:c5c203e8",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "resource_change",
+          "predicate": "add_resource",
+          "evidence": "[ADD] an additional :rb_energy_1:",
+          "payload": {
+            "additional": true,
+            "amounts": [{"unit": "energy", "value": 1, "additional": true}],
+            "resource": {"resource": "energy", "amount": 1, "additional": true}
+          }
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Gold",
+      "play_id": "play:gold:6cfbe394",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "resource_change",
+          "predicate": "add_resource",
+          "evidence": "[Add] :rb_rune_rainbow:",
+          "payload": {
+            "amounts": [{"unit": "rune", "domain": "any", "value": 1}],
+            "resource": {"resource": "rune", "domain": "any", "amount": 1}
+          }
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "identity_or_descriptor",
+          "predicate": "has_keyword",
+          "payload": {"object": {"id": "add"}}
+        }
+      ]
+    },
+    {
+      "name": "Honeyfruit",
+      "play_id": "play:honeyfruit:51dd9a16",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "resource_change",
+          "predicate": "add_resource",
+          "evidence": "[Add] :rb_energy_1::rb_rune_rainbow:",
+          "payload": {
+            "amounts": [
+              {"unit": "energy", "value": 1},
+              {"unit": "rune", "domain": "any", "value": 1}
+            ]
+          }
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "identity_or_descriptor",
+          "predicate": "has_keyword",
+          "payload": {"object": {"id": "add"}}
+        }
+      ]
+    },
+    {
+      "name": "Malzahar, Fanatic",
+      "play_id": "play:malzahar-fanatic:e463fe1c",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "resource_change",
+          "predicate": "add_resource",
+          "evidence": "[Add] :rb_rune_rainbow::rb_rune_rainbow:",
+          "payload": {
+            "amounts": [{"unit": "rune", "domain": "any", "value": 2}],
+            "resource": {"resource": "rune", "domain": "any", "amount": 2}
+          }
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "identity_or_descriptor",
+          "predicate": "has_keyword",
+          "payload": {"object": {"id": "add"}}
+        }
+      ]
+    },
+    {
+      "name": "Body Rune",
+      "play_id": "play:body-rune:348edc32",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "resource_change",
+          "predicate": "add_resource",
+          "evidence": "basic_rune:body",
+          "payload": {"source": "basic_rune", "amounts": [{"unit": "rune", "domain": "body", "value": 1}]}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Calm Rune",
+      "play_id": "play:calm-rune:ec9305ca",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "resource_change",
+          "predicate": "add_resource",
+          "evidence": "basic_rune:calm",
+          "payload": {"source": "basic_rune", "amounts": [{"unit": "rune", "domain": "calm", "value": 1}]}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Chaos Rune",
+      "play_id": "play:chaos-rune:a76048a5",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "resource_change",
+          "predicate": "add_resource",
+          "evidence": "basic_rune:chaos",
+          "payload": {"source": "basic_rune", "amounts": [{"unit": "rune", "domain": "chaos", "value": 1}]}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Fury Rune",
+      "play_id": "play:fury-rune:ec493974",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "resource_change",
+          "predicate": "add_resource",
+          "evidence": "basic_rune:fury",
+          "payload": {"source": "basic_rune", "amounts": [{"unit": "rune", "domain": "fury", "value": 1}]}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Mind Rune",
+      "play_id": "play:mind-rune:63eb0fd3",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "resource_change",
+          "predicate": "add_resource",
+          "evidence": "basic_rune:mind",
+          "payload": {"source": "basic_rune", "amounts": [{"unit": "rune", "domain": "mind", "value": 1}]}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Order Rune",
+      "play_id": "play:order-rune:0b77d967",
+      "expected_facts": [
+        {
+          "semantic_role": "payoff_output",
+          "fact_type": "resource_change",
+          "predicate": "add_resource",
+          "evidence": "basic_rune:order",
+          "payload": {"source": "basic_rune", "amounts": [{"unit": "rune", "domain": "order", "value": 1}]}
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Pyke, Dockside Butcher",
+      "play_id": "play:pyke-dockside-butcher:0a7bbbac",
+      "expected_facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "additional_cost",
+          "predicate": "pay",
+          "evidence": "You may pay :rb_rune_fury: as an additional cost to play me",
+          "payload": {
+            "costs": [{"resource": "rune", "domain": "fury", "amount": 1, "symbol": ":rb_rune_fury:"}]
+          }
+        }
+      ],
+      "forbidden_facts": [
+        {
+          "semantic_role": "cost_or_requirement",
+          "predicate": "pay",
+          "payload": {
+            "costs": [{"symbol": "pay :rb_rune_fury:"}]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Convergent Mutation",
+      "play_id": "play:convergent-mutation:981352cf",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "evidence": "This turn, increase its Might to the Might of another friendly unit",
+          "payload": {
+            "duration": "this_turn",
+            "target": {"kind": "unit", "controller": "friendly", "reference": "chosen_unit"},
+            "amounts": [{"value": "match_source_might", "unit": "might"}]
+          }
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Tricksy Tentacles",
+      "play_id": "play:tricksy-tentacles:121533c8",
+      "expected_facts": [
+        {
+          "semantic_role": "event_produced",
+          "fact_type": "movement",
+          "predicate": "move",
+          "evidence": "Move any number of enemy units with the same controller and a total Might of 8 or less to a single location",
+          "payload": {
+            "target": {"kind": "unit", "controller": "opponent"},
+            "destination": {"zone": "location"}
+          }
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Inferna",
+      "play_id": "play:inferna:389a2508",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "evidence": "[Assault 2] (+2 :rb_might: while I'm an attacker.)",
+          "payload": {
+            "duration": "while",
+            "conditions": [{"state": "while_attacker"}],
+            "amounts": [{"value": 2, "unit": "might"}],
+            "target": {"kind": "card", "scope": "self"}
+          }
+        }
+      ],
+      "forbidden_facts": []
+    },
+    {
+      "name": "Shen, Kinkou",
+      "play_id": "play:shen-kinkou:e3f28633",
+      "expected_facts": [
+        {
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "evidence": "[Shield 2] (+2 :rb_might: while I'm a defender.)",
+          "payload": {
+            "duration": "while",
+            "conditions": [{"state": "while_defender"}],
+            "amounts": [{"value": 2, "unit": "might"}],
+            "target": {"kind": "card", "scope": "self"}
+          }
+        }
+      ],
+      "forbidden_facts": []
+    }
+  ],
+  "relation_expectations": [
+    {
+      "name": "Convergent Mutation similar variable Might buff",
+      "source_play_id": "play:convergent-mutation:981352cf",
+      "target_play_id": "play:deathgrip:bcba5fad",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:stat_family:",
+      "broad": false
+    },
+    {
+      "name": "Premonition similar multi-card draw",
+      "source_play_id": "play:premonition:af8850f1",
+      "target_play_id": "play:progress-day:28a28b70",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:draw_cards:multi",
+      "broad": false
+    },
+    {
+      "name": "Tricksy Tentacles similar enemy movement to location",
+      "source_play_id": "play:tricksy-tentacles:121533c8",
+      "target_play_id": "play:temptation:3963c47d",
+      "relation_type": "similar_effect",
+      "reason_prefix": "output:event_produced:movement:move:unit_moved",
+      "broad": false
+    },
+    {
+      "name": "Minefield and Virtuoso similar card movement to trash",
+      "source_play_id": "play:minefield:74a8186e",
+      "target_play_id": "play:virtuoso:45a055f3",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:move_to_zone:card:trash",
+      "broad": false
+    },
+    {
+      "name": "Poppy similar large self cost reduction",
+      "source_play_id": "play:poppy-defender-of-the-meek:689e74c0",
+      "target_play_id": "play:here-to-help:21d9f335",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:cost_reduction:play_cost_reduced:energy:large",
+      "broad": false
+    },
+    {
+      "name": "Raging Firebrand similar large spell cost reduction",
+      "source_play_id": "play:raging-firebrand:0fe72c50",
+      "target_play_id": "play:reinforce:617f08c4",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:cost_reduction:play_cost_reduced:energy:large",
+      "broad": false
+    },
+    {
+      "name": "Irelia and Vex similar exact spell cost reduction",
+      "source_play_id": "play:irelia-graceful:e8452ca1",
+      "target_play_id": "play:vex-cheerless:13c868ee",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:cost_reduction_exact:play_cost_reduced:energy:1:spell:active",
+      "broad": false
+    },
+    {
+      "name": "Monch and Spoils similar exact unit cost reduction",
+      "source_play_id": "play:monch:c2f3fc08",
+      "target_play_id": "play:spoils-of-war:8bed8853",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:cost_reduction_exact:play_cost_reduced:energy:2:unit:active",
+      "broad": false
+    },
+    {
+      "name": "Draven and Kha'Zix similar temporary self Might buff",
+      "source_play_id": "play:draven-vanquisher:0b326b1d",
+      "target_play_id": "play:kha-zix-mutating-horror:fdcc125e",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:stat_self:might_modified:might:positive:2:this_turn:active",
+      "broad": false
+    },
+    {
+      "name": "Garen and Inferna similar Assault 2 combat Might",
+      "source_play_id": "play:garen-rugged:397ab8eb",
+      "target_play_id": "play:inferna:389a2508",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:combat_might_modifier:might_modified:might:positive:2:self:while_attacker:active",
+      "broad": false
+    },
+    {
+      "name": "Garen and Shen similar Shield 2 combat Might",
+      "source_play_id": "play:garen-rugged:397ab8eb",
+      "target_play_id": "play:shen-kinkou:e3f28633",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:combat_might_modifier:might_modified:might:positive:2:self:while_defender:active",
+      "broad": false
+    },
+    {
+      "name": "Brutalizer and Soul Sword similar attached Might modifier",
+      "source_play_id": "play:brutalizer:0ddb4008",
+      "target_play_id": "play:soul-sword:60beff9b",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:stat_attached:might_modified:might:positive:activation=attached;inactive_until_attached;applies_to=top_most_card",
+      "broad": false
+    },
+    {
+      "name": "Dr. Mundo and Draven similar variable self Might scaling",
+      "source_play_id": "play:dr-mundo-expert:88e3fed0",
+      "target_play_id": "play:draven-showboat:21b20369",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:stat_self_scaling:might_modified:might:variable:active",
+      "broad": false
+    },
+    {
+      "name": "Petal Pixie and Sett similar self-scaling Might",
+      "source_play_id": "play:petal-pixie:f551a78c",
+      "target_play_id": "play:sett-kingpin:72c3c44d",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:stat_self_scaling:might_modified:might:scaling:active",
+      "broad": false
+    },
+    {
+      "name": "Annie and Void Gate similar spell-or-ability Bonus Damage",
+      "source_play_id": "play:annie-fiery:a0afde4e",
+      "target_play_id": "play:void-gate:ed74c390",
+      "relation_type": "similar_effect",
+      "reason_prefix": "output:state_or_modifier:static_modifier:modify_stat:bonus_damage_added:1:bonus_damage:damage:::static:target_source=spell_or_ability",
+      "broad": false
+    },
+    {
+      "name": "Kha'Zix and Yasuo similar Might-scaled damage",
+      "source_play_id": "play:kha-zix-evolving-hunter:5af6b733",
+      "target_play_id": "play:yasuo-remorseful:174cb5c8",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:damage_scaling:self_might:unit[controller=opponent;location=here]",
+      "broad": false
+    },
+    {
+      "name": "Carnivorous Snapvine and Challenge similar mutual Might damage",
+      "source_play_id": "play:carnivorous-snapvine:13a6fa94",
+      "target_play_id": "play:challenge:45139d35",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:damage_scaling:mutual_might:each_other",
+      "broad": false
+    },
+    {
+      "name": "Block and Chakram Dancer similar temporary Shield grant",
+      "source_play_id": "play:block:5af86e4a",
+      "target_play_id": "play:chakram-dancer:c6071e2c",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:keyword_grant:shield:unit:this_turn:required:active",
+      "broad": false
+    },
+    {
+      "name": "Fortified Position and Block similar temporary Shield grant",
+      "source_play_id": "play:fortified-position:31bb26b4",
+      "target_play_id": "play:block:5af86e4a",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:keyword_grant_by_keyword:shield:unit:temporary:required:active",
+      "broad": false
+    },
+    {
+      "name": "Block and Yuumi similar temporary Tank grant",
+      "source_play_id": "play:block:5af86e4a",
+      "target_play_id": "play:yuumi-magical-cat:14e752b1",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:keyword_grant:tank:unit:this_turn:required:active",
+      "broad": false
+    },
+    {
+      "name": "Blood Rush and Lord Broadmane similar temporary Assault grant",
+      "source_play_id": "play:blood-rush:6133a3d6",
+      "target_play_id": "play:lord-broadmane:9143ae2d",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:keyword_grant:assault:unit:this_turn:required:active:require=duration=while,state=while_attacker",
+      "broad": false
+    },
+    {
+      "name": "Allay and Petricite similar Deflect grant",
+      "source_play_id": "play:allay-eager-admirer:93df3922",
+      "target_play_id": "play:petricite-monument:5883f7b0",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:keyword_grant:deflect:unit:ongoing:required:active",
+      "broad": false
+    },
+    {
+      "name": "Get Excited enables Flame Chompers discard trigger",
+      "source_play_id": "play:get-excited:06a9f254",
+      "target_play_id": "play:flame-chompers:a6e26638",
+      "relation_type": "enables",
+      "reason_prefix": "card_discarded_enables_self_discarded",
+      "broad": false
+    },
+    {
+      "name": "The Harrowing and Undying Loyalty similar unit from trash play",
+      "source_play_id": "play:the-harrowing:f22276b9",
+      "target_play_id": "play:undying-loyalty:2cf4bd34",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:play_from_zone:unit_played:unit:from=trash:active:cost=ignored",
+      "broad": false
+    },
+    {
+      "name": "Here to Help and Rift Herald similar unit from hand play",
+      "source_play_id": "play:here-to-help:21d9f335",
+      "target_play_id": "play:rift-herald:22b30b86",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:play_from_zone:unit_played:unit:from=hand:active",
+      "broad": false
+    },
+    {
+      "name": "Fizz and Annie similar spell from trash play",
+      "source_play_id": "play:fizz-trickster:3e947e55",
+      "target_play_id": "play:annie-stubborn:329d7cbc",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:play_from_zone:spell_played:spell:from=trash:active",
+      "broad": false
+    },
+    {
+      "name": "Glorious Executioner similar combat-win draw",
+      "source_play_id": "play:glorious-executioner:c8e2e2b2",
+      "target_play_id": "play:corrupt-enforcer:e366a9f4",
+      "relation_type": "similar_effect",
+      "reason_prefix": "output:payoff_output:card_flow:draw:card_drawn:1:card::::required:when=combat_won",
+      "broad": false
+    },
+    {
+      "name": "Poppy Paragon enables Blood Rose XP spend",
+      "source_play_id": "play:poppy-paragon:1f712391",
+      "target_play_id": "play:blood-rose:91bf769b",
+      "relation_type": "deck_synergy",
+      "reason_prefix": "cost:xp:3",
+      "broad": false
+    },
+    {
+      "name": "Poppy Paragon partially supports Conscription XP spend",
+      "source_play_id": "play:poppy-paragon:1f712391",
+      "target_play_id": "play:conscription:8d398958",
+      "relation_type": "deck_synergy",
+      "reason_prefix": "cost:xp:partial",
+      "broad": false
+    },
+    {
+      "name": "Call to Battle supports Stealthy Pursuer move-with permission",
+      "source_play_id": "play:call-to-battle:704c873c",
+      "target_play_id": "play:stealthy-pursuer:6eff10d8",
+      "relation_type": "deck_synergy",
+      "reason_prefix": "friendly_unit_moved_supports_move_with_unit_permission",
+      "directed": true,
+      "broad": false
+    },
+    {
+      "name": "Temptation supports Blast Cone enemy movement trigger",
+      "source_play_id": "play:temptation:3963c47d",
+      "target_play_id": "play:blast-cone:55eeaf2f",
+      "relation_type": "deck_synergy",
+      "reason_prefix": "enemy_unit_moved_supports_enemy_unit_move_trigger",
+      "directed": true,
+      "broad": false
+    },
+    {
+      "name": "Honeyfruit partially supports Marching Orders repeat Energy cost",
+      "source_play_id": "play:honeyfruit:51dd9a16",
+      "target_play_id": "play:marching-orders:57b91f18",
+      "relation_type": "deck_synergy",
+      "reason_prefix": "cost:energy:partial",
+      "broad": false
+    },
+    {
+      "name": "Gold partially supports Power Nexus rune cost",
+      "source_play_id": "play:gold:6cfbe394",
+      "target_play_id": "play:power-nexus:9604775f",
+      "relation_type": "deck_synergy",
+      "reason_prefix": "cost:rune:any",
+      "broad": false
+    },
+    {
+      "name": "Honeyfruit partially supports Power Nexus rune cost",
+      "source_play_id": "play:honeyfruit:51dd9a16",
+      "target_play_id": "play:power-nexus:9604775f",
+      "relation_type": "deck_synergy",
+      "reason_prefix": "cost:rune:any",
+      "broad": false
+    },
+    {
+      "name": "Ancient Henge variably supports Power Nexus rune cost",
+      "source_play_id": "play:ancient-henge:9117108a",
+      "target_play_id": "play:power-nexus:9604775f",
+      "relation_type": "deck_synergy",
+      "reason_prefix": "cost:rune:any",
+      "broad": false
+    },
+    {
+      "name": "Counter Strike and Unyielding Spirit similar damage prevention",
+      "source_play_id": "play:counter-strike:cfba558c",
+      "target_play_id": "play:unyielding-spirit:672c2b35",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:prevent:damage_dealt",
+      "broad": false
+    },
+    {
+      "name": "Highlander and Soraka similar death replacement",
+      "source_play_id": "play:highlander:fa089001",
+      "target_play_id": "play:soraka-wanderer:81c0ff4a",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:replacement:unit_dies:heal_exhaust_recall",
+      "broad": false
+    },
+    {
+      "name": "Fizz and Spectral Matron similar Energy 3 cap",
+      "source_play_id": "play:fizz-trickster:3e947e55",
+      "target_play_id": "play:spectral-matron:4cee4063",
+      "relation_type": "similar_effect",
+      "reason_prefix": "predicate:restriction_or_permission:restriction:cost_cap_constraint:card::::costs=cost<=rb_energy_3",
+      "broad": false
+    },
+    {
+      "name": "Lady and Lux similar Energy 5 threshold",
+      "source_play_id": "play:lady-of-luminosity-starter:b8a50096",
+      "target_play_id": "play:lux-illuminated:145673bb",
+      "relation_type": "similar_effect",
+      "reason_prefix": "predicate:restriction_or_permission:restriction:cost_threshold:card::::costs=energy>=5",
+      "broad": false
+    },
+    {
+      "name": "Atakhan friendly kill enables Carrion Dredger death trigger",
+      "source_play_id": "play:atakhan:a7ae219e",
+      "target_play_id": "play:carrion-dredger:a627978f",
+      "relation_type": "enables",
+      "reason_prefix": "friendly_unit_dies_enables_self_dies",
+      "broad": false
+    },
+    {
+      "name": "B.F. Sword attach enables Aphelios attach trigger",
+      "source_play_id": "play:b-f-sword:41b0e711",
+      "target_play_id": "play:aphelios-exalted:b81e7f1f",
+      "relation_type": "enables",
+      "reason_prefix": "equipment_attached_enables_equipment_attached",
+      "broad": false
+    },
+    {
+      "name": "Forgotten Monument and Tianna similar score prevention",
+      "source_play_id": "play:forgotten-monument:5c511235",
+      "target_play_id": "play:tianna-crownguard:2a0d765b",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:prevent:score",
+      "broad": false
+    },
+    {
+      "name": "Mirror Image supports Zilean token copy replacement",
+      "source_play_id": "play:mirror-image:287b0704",
+      "target_play_id": "play:zilean-time-mage:8fb4d0e9",
+      "relation_type": "deck_synergy",
+      "reason_prefix": "token_unit_created_supports_token_copy_replacement",
+      "broad": false
+    },
+    {
+      "name": "Altar and Gloomist similar optional draw with exhaust cost context",
+      "source_play_id": "play:altar-of-memories:2de88f83",
+      "target_play_id": "play:gloomist:c2b23126",
+      "relation_type": "similar_effect",
+      "reason_prefix": "output:payoff_output:card_flow:draw:card_drawn:1:card::::optional:cost=action=exhaust:self",
+      "supporting_fact_ids_include": [
+        "fact:play:altar-of-memories:2de88f83:rules_lines:0:cost_or_requirement:exhaust:0",
+        "fact:play:gloomist:c2b23126:rules_lines:0:cost_or_requirement:exhaust:0"
+      ],
+      "broad": false
+    },
+    {
+      "name": "B.F. Sword and Sacred Shears similar equip attach by rune cost",
+      "source_play_id": "play:b-f-sword:41b0e711",
+      "target_play_id": "play:sacred-shears:c89b9046",
+      "relation_type": "similar_effect",
+      "reason_prefix": "secondary:attachment:attach:gear:active:cost=rune=order",
+      "supporting_fact_ids_include": [
+        "fact:play:b-f-sword:41b0e711:rules_lines:0:cost_or_requirement:pay:0",
+        "fact:play:sacred-shears:c89b9046:rules_lines:0:cost_or_requirement:pay:0"
+      ],
+      "broad": false
+    },
+    {
+      "name": "Blood Rush and Cleave similar Assault grant while attacker",
+      "source_play_id": "play:blood-rush:6133a3d6",
+      "target_play_id": "play:cleave:bb22004c",
+      "relation_type": "similar_effect",
+      "reason_prefix": "output:state_or_modifier:keyword_grant:gain_keyword:keyword_granted:unit::this_turn:required:keywords=assault:require=duration=while,state=while_attacker",
+      "supporting_fact_ids_include": [
+        "fact:play:blood-rush:6133a3d6:rules_lines:2:restriction_or_permission:require:0",
+        "fact:play:cleave:bb22004c:rules_lines:1:restriction_or_permission:require:0"
+      ],
+      "broad": false
+    }
+  ],
+  "relation_invariants": [
+    "broad_relations_have_broad_reason",
+    "textual_fact_evidence_matches_source_line",
+    "no_duplicate_visual_relations",
+    "spell_card_can_be_countered_is_broad",
+    "generic_similarity_keys_are_skipped",
+    "derived_synergy_does_not_duplicate_enables",
+    "opponent_paid_costs_do_not_create_relation_context",
+    "cost_polarity_and_resource_synergy_are_consistent",
+    "combat_might_relations_preserve_attack_defense_context",
+    "damage_modifier_relations_preserve_source_target_duration",
+    "replacement_relations_preserve_prevented_event_and_mode",
+    "prevented_actions_do_not_emit_blocked_positive_facts",
+    "exclusive_choice_relations_do_not_mix_options",
+    "gear_effect_lines_are_attached_only",
+    "attached_context_relations_do_not_mix_static_and_attached",
+    "keyword_grant_relations_preserve_keyword_target_duration"
+  ],
+  "dataset_invariants": [
+    "manifest_covers_published_relation_types",
+    "published_relations_include_manifest_required_fields",
+    "cards_publish_high_signal_and_broad_counts",
+    "broad_only_cards_are_explicit",
+    "published_broad_relations_are_annotated",
+    "deck_synergy_visibility_is_explicit"
+  ]
+}

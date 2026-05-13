@@ -1,0 +1,237 @@
+{
+  "version": "2026-05-12",
+  "purpose": "Quality, audit, broadness, and blind-spot policy for semantic facts and web relations.",
+  "optional_governors": [
+    "you may",
+    " may pay",
+    " may exhaust",
+    " may discard",
+    " may kill",
+    " may play",
+    " may reveal"
+  ],
+  "relation_event_ignore": [
+    "battlefield_conquered",
+    "battlefield_held",
+    "card_played",
+    "gear_played",
+    "self_attacks",
+    "self_conquers",
+    "self_defends",
+    "self_enters",
+    "self_holds",
+    "self_leaves_board",
+    "self_moves",
+    "self_played",
+    "spell_played",
+    "unit_played"
+  ],
+  "effect_predicates_as_trigger": [
+    "damage",
+    "kill",
+    "move",
+    "play_token",
+    "ready",
+    "recycle"
+  ],
+  "relational_keywords": [
+    "when",
+    "if",
+    "would",
+    "then",
+    "deal",
+    "kill",
+    "move",
+    "ready",
+    "recycle",
+    "costs less",
+    "costs",
+    "enter",
+    "score",
+    "draw",
+    "channel",
+    "play",
+    "counter",
+    "stun",
+    "buff",
+    "gain control",
+    "take control",
+    "lose control",
+    "return",
+    "recall",
+    "banish",
+    "predict"
+  ],
+  "blind_spot_buckets": [
+    {
+      "id": "counter",
+      "tokens": ["counter"]
+    },
+    {
+      "id": "deck_manipulation/recycle",
+      "tokens": ["predict", "recycle", "look at the top", "reveal the top"]
+    },
+    {
+      "id": "movement/location",
+      "tokens": ["move", "recall", "base", "battlefield"]
+    },
+    {
+      "id": "stun",
+      "tokens": ["stun"]
+    },
+    {
+      "id": "stat/buff/damage_modifier",
+      "tokens": ["buff", "might", "bonus damage", "+", "-"]
+    },
+    {
+      "id": "damage",
+      "tokens": ["damage equal", "deal "]
+    },
+    {
+      "id": "kill/heal/replacement",
+      "tokens": ["kill", "die", "would die", "heal"]
+    },
+    {
+      "id": "cost/resource",
+      "tokens": ["cost", "pay", "spend", "channel", "rune", "energy", "xp"]
+    },
+    {
+      "id": "token/play",
+      "tokens": ["token"]
+    },
+    {
+      "id": "card_flow",
+      "tokens": ["draw", "discard", "hand"]
+    },
+    {
+      "id": "score/victory",
+      "tokens": ["score", "points", "victory", "win the game"]
+    },
+    {
+      "id": "attachment/copy",
+      "tokens": ["attach", "equipment", "effect text", "copy"]
+    },
+    {
+      "id": "control_change",
+      "tokens": ["gain control", "take control", "lose control"]
+    },
+    {
+      "id": "permission/restriction",
+      "tokens": ["can't", "cannot", "can be", "may play", "only", "prevent"]
+    }
+  ],
+  "default_blind_spot_bucket": "other",
+  "empty_text_blind_spot_bucket": "vanilla/no_text",
+  "broad_relation_count_threshold": 500,
+  "legacy_rule_count_max": 650,
+  "similarity": {
+    "max_similar_facts_per_key": 35,
+    "broad_similar_facts_per_key": 12,
+    "always_skip_keys": [
+      "output:payoff_output:card_flow:draw:card_drawn:1:card::::required",
+      "output:payoff_output:card_flow:draw:card_drawn:1:card::::optional",
+      "predicate:payoff_output:payoff:repeat_effect::::optional",
+      "output:state_or_modifier:state_modifier:ready:self_ready:card:::required",
+      "output:state_or_modifier:state_modifier:ready:self_ready:card:::optional",
+      "output:event_produced:card_flow:recycle:card_recycled:card[zone=main_deck]:::required",
+      "output:event_produced:card_flow:recycle:card_recycled:card[zone=main_deck]:::optional"
+    ],
+    "broad_key_markers": [
+      "repeat_effect",
+      "card_drawn:1:card",
+      "card_recycled",
+      "self_ready",
+      "secondary:require_state",
+      "secondary:stat_family"
+    ]
+  },
+  "domain_leakage": {
+    "parser_files": [
+      "scripts/04_cards_feature_extraction/extract_semantic_facts.py",
+      "scripts/04_cards_feature_extraction/build_card_relations.py",
+      "scripts/04_cards_feature_extraction/audit_semantic_facts.py",
+      "scripts/05_web_dataset/build_card_explorer_dataset.py",
+      "scripts/05_web_dataset/audit_card_explorer_dataset.py"
+    ],
+    "allowed_structural_terms": [
+      "card_type_ids",
+      "domain_ids",
+      "effect_lines",
+      "rules_lines",
+      "source_field",
+      "source_ref",
+      "tag",
+      "tags"
+    ],
+    "ignored_code_terms": [
+      "can be",
+      "costs",
+      "costs less",
+      "deal",
+      "die",
+      "discard",
+      "enter",
+      "here",
+      "if",
+      "may play",
+      "only",
+      "pay",
+      "return",
+      "then",
+      "when",
+      "would"
+    ],
+    "allowed_legacy_until_migrated": [
+      "attach",
+      "banish",
+      "battlefield",
+      "base",
+      "banished",
+      "bonus damage",
+      "bonus_damage",
+      "card",
+      "card_type",
+      "buff",
+      "card_recycled",
+      "channel",
+      "counter",
+      "cost",
+      "damage",
+      "copy",
+      "domain",
+      "draw",
+      "energy",
+      "equipment",
+      "gear",
+      "hand",
+      "heal",
+      "keyword",
+      "kill",
+      "main_deck",
+      "might",
+      "might_bonus",
+      "move",
+      "player",
+      "point",
+      "play",
+      "power",
+      "prevent",
+      "points",
+      "ready",
+      "recall",
+      "recycle",
+      "rune",
+      "score",
+      "self",
+      "spell",
+      "spell_or_ability",
+      "spend",
+      "stun",
+      "token",
+      "trash",
+      "unit",
+      "win the game",
+      "xp"
+    ]
+  }
+}

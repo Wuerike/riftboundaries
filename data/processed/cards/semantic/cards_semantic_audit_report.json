@@ -1,0 +1,1277 @@
+{
+  "version": "2026-05-12",
+  "inputs": {
+    "cards": "C:\\Users\\Wuerike\\workspace\\riftbound\\data\\processed\\cards\\normalized\\cards_normalized.json",
+    "facts": "C:\\Users\\Wuerike\\workspace\\riftbound\\data\\processed\\cards\\semantic\\cards_semantic_facts.jsonl",
+    "schema": "C:\\Users\\Wuerike\\workspace\\riftbound\\scripts\\04_cards_feature_extraction\\contracts\\semantic_facts_schema.json",
+    "ontology": "C:\\Users\\Wuerike\\workspace\\riftbound\\scripts\\04_cards_feature_extraction\\contracts\\semantic_ontology.json",
+    "golden_report": "C:\\Users\\Wuerike\\workspace\\riftbound\\data\\processed\\cards\\semantic\\cards_semantic_golden_report.json",
+    "quality_policy": "C:\\Users\\Wuerike\\workspace\\riftbound\\scripts\\04_cards_feature_extraction\\contracts\\semantic_quality_policy.json"
+  },
+  "summary": {
+    "card_count": 767,
+    "fact_count": 6311,
+    "cards_with_facts": 767,
+    "text_line_count": 1248,
+    "text_lines_with_facts": 1228,
+    "text_lines_without_facts": 20,
+    "text_line_fact_coverage": 0.984,
+    "error_count": 0,
+    "warning_count": 179,
+    "info_count": 0,
+    "golden_pass": true,
+    "legacy_rule_count": 622
+  },
+  "issue_counts": {
+    "multiple_relational_clause_groups_on_line": 90,
+    "optional_line_without_optional_modality": 88,
+    "payoff_without_output": 1
+  },
+  "facts_by_source_kind": {
+    "structural_field": 3796,
+    "contract_rule": 1893,
+    "legacy_rule": 622
+  },
+  "top_contract_rules": {
+    "activation_cost": 232,
+    "trigger_self_played": 127,
+    "draw_cards": 105,
+    "give_might": 76,
+    "move_unit": 64,
+    "play_token": 64,
+    "deal_damage": 56,
+    "attach_equipment": 48,
+    "buff_unit": 43,
+    "ready_unit": 40,
+    "recycle_card": 36,
+    "trigger_self_conquers": 35,
+    "intrinsic_combat_might_modifier": 34,
+    "look_reveal_top_deck": 33,
+    "gain_xp": 31,
+    "trigger_self_conquers_or_holds": 30,
+    "add_resource": 27,
+    "condition_while_attacker": 25,
+    "costs_less_energy": 25,
+    "trigger_self_dies": 24,
+    "channel_rune": 23,
+    "stun_unit": 23,
+    "target_has_keywords": 22,
+    "play_card_from_zone": 22,
+    "self_move_permission": 21,
+    "repeat_effect": 21,
+    "return_to_owner_hand": 20,
+    "trigger_self_moves": 20,
+    "discard_cards": 20,
+    "grant_keyword_to_target": 20,
+    "trigger_self_attacks": 19,
+    "banish_target": 18,
+    "weaponmaster_equip": 18,
+    "ready_self": 18,
+    "condition_while_defender": 18,
+    "deal_variable_damage": 18,
+    "self_enters_ready": 17,
+    "trigger_self_holds": 16,
+    "trigger_self_attacks_or_defends": 16,
+    "self_has_might_modifier": 15
+  },
+  "contract_rule_coverage": {
+    "contract_rule_count": 1893,
+    "legacy_rule_count": 622,
+    "contract_share": 0.3
+  },
+  "issues": [
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 123,
+      "fact_id": "fact:play:ancient-henge:9117108a:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:ancient-henge:9117108a",
+      "card_name": "Ancient Henge",
+      "detail": "clause:play:ancient-henge:9117108a:rules_lines:0:ability, clause:play:ancient-henge:9117108a:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 252,
+      "fact_id": "fact:play:armed-assailant:32d279bc:rules_lines:1:event_produced:attach:0",
+      "play_id": "play:armed-assailant:32d279bc",
+      "card_name": "Armed Assailant",
+      "detail": "clause:play:armed-assailant:32d279bc:rules_lines:1:ability, clause:play:armed-assailant:32d279bc:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 304,
+      "fact_id": "fact:play:ava-achiever:59c46b4f:rules_lines:0:event_produced:play:0",
+      "play_id": "play:ava-achiever:59c46b4f",
+      "card_name": "Ava Achiever",
+      "detail": "clause:play:ava-achiever:59c46b4f:rules_lines:0:ability, clause:play:ava-achiever:59c46b4f:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 315,
+      "fact_id": "fact:play:azir-ascendant:82d12920:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:azir-ascendant:82d12920",
+      "card_name": "Azir, Ascendant",
+      "detail": "clause:play:azir-ascendant:82d12920:rules_lines:0:ability, clause:play:azir-ascendant:82d12920:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 400,
+      "fact_id": "fact:play:bashful-bloom:a2a8b0d1:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:bashful-bloom:a2a8b0d1",
+      "card_name": "Bashful Bloom",
+      "detail": "clause:play:bashful-bloom:a2a8b0d1:rules_lines:0:ability, clause:play:bashful-bloom:a2a8b0d1:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 464,
+      "fact_id": "fact:play:black-flame-altar:32878e11:rules_lines:0:state_or_modifier:gain_keyword:0",
+      "play_id": "play:black-flame-altar:32878e11",
+      "card_name": "Black Flame Altar",
+      "detail": "clause:play:black-flame-altar:32878e11:rules_lines:0:ability, clause:play:black-flame-altar:32878e11:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 506,
+      "fact_id": "fact:play:blast-cone:55eeaf2f:rules_lines:1:event_produced:stun:0",
+      "play_id": "play:blast-cone:55eeaf2f",
+      "card_name": "Blast Cone",
+      "detail": "clause:play:blast-cone:55eeaf2f:rules_lines:1:ability, clause:play:blast-cone:55eeaf2f:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 647,
+      "fact_id": "fact:play:bone-skewer:34218ae3:rules_lines:1:event_produced:stun:0",
+      "play_id": "play:bone-skewer:34218ae3",
+      "card_name": "Bone Skewer",
+      "detail": "clause:play:bone-skewer:34218ae3:rules_lines:1:ability, clause:play:bone-skewer:34218ae3:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 818,
+      "fact_id": "fact:play:carrion-dredger:a627978f:rules_lines:0:identity_or_descriptor:has_keyword:0",
+      "play_id": "play:carrion-dredger:a627978f",
+      "card_name": "Carrion Dredger",
+      "detail": "clause:play:carrion-dredger:a627978f:rules_lines:0:ability, clause:play:carrion-dredger:a627978f:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 931,
+      "fact_id": "fact:play:combat-chef:404f2e45:rules_lines:0:event_produced:attach:0",
+      "play_id": "play:combat-chef:404f2e45",
+      "card_name": "Combat Chef",
+      "detail": "clause:play:combat-chef:404f2e45:rules_lines:0:ability, clause:play:combat-chef:404f2e45:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 1062,
+      "fact_id": "fact:play:crowd-favorite:59f362fc:rules_lines:1:cost_or_requirement:pay:0",
+      "play_id": "play:crowd-favorite:59f362fc",
+      "card_name": "Crowd Favorite",
+      "detail": "clause:play:crowd-favorite:59f362fc:rules_lines:1:ability, clause:play:crowd-favorite:59f362fc:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 1185,
+      "fact_id": "fact:play:daughter-of-the-void:41f2894f:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:daughter-of-the-void:41f2894f",
+      "card_name": "Daughter of the Void",
+      "detail": "clause:play:daughter-of-the-void:41f2894f:rules_lines:0:ability, clause:play:daughter-of-the-void:41f2894f:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 1301,
+      "fact_id": "fact:play:diana-lunari:4a172786:rules_lines:0:event_produced:recycle:0",
+      "play_id": "play:diana-lunari:4a172786",
+      "card_name": "Diana, Lunari",
+      "detail": "clause:play:diana-lunari:4a172786:rules_lines:0:ability, clause:play:diana-lunari:4a172786:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 1453,
+      "fact_id": "fact:play:dramatic-visionary:2074f413:rules_lines:0:event_produced:recycle:0",
+      "play_id": "play:dramatic-visionary:2074f413",
+      "card_name": "Dramatic Visionary",
+      "detail": "clause:play:dramatic-visionary:2074f413:rules_lines:0:ability, clause:play:dramatic-visionary:2074f413:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 1592,
+      "fact_id": "fact:play:ember-monk:c2ff3a3a:rules_lines:0:state_or_modifier:modify_stat:0",
+      "play_id": "play:ember-monk:c2ff3a3a",
+      "card_name": "Ember Monk",
+      "detail": "clause:play:ember-monk:c2ff3a3a:rules_lines:0:ability, clause:play:ember-monk:c2ff3a3a:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 1605,
+      "fact_id": "fact:play:emperor-of-the-sands:122152ab:rules_lines:0:state_or_modifier:gain_keyword:0",
+      "play_id": "play:emperor-of-the-sands:122152ab",
+      "card_name": "Emperor of the Sands",
+      "detail": "clause:play:emperor-of-the-sands:122152ab:rules_lines:0:ability, clause:play:emperor-of-the-sands:122152ab:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 1629,
+      "fact_id": "fact:play:energy-conduit:e3a1b101:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:energy-conduit:e3a1b101",
+      "card_name": "Energy Conduit",
+      "detail": "clause:play:energy-conduit:e3a1b101:rules_lines:0:ability, clause:play:energy-conduit:e3a1b101:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 1643,
+      "fact_id": "fact:play:enthralling-protector:ca6c0c98:rules_lines:1:cost_or_requirement:pay:0",
+      "play_id": "play:enthralling-protector:ca6c0c98",
+      "card_name": "Enthralling Protector",
+      "detail": "clause:play:enthralling-protector:ca6c0c98:rules_lines:1:ability, clause:play:enthralling-protector:ca6c0c98:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 1654,
+      "fact_id": "fact:play:enthusiastic-promoter:954cad7e:rules_lines:1:event_produced:buff:0",
+      "play_id": "play:enthusiastic-promoter:954cad7e",
+      "card_name": "Enthusiastic Promoter",
+      "detail": "clause:play:enthusiastic-promoter:954cad7e:rules_lines:1:ability, clause:play:enthusiastic-promoter:954cad7e:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 1717,
+      "fact_id": "fact:play:ezreal-dashing:293244ee:rules_lines:2:cost_or_requirement:pay:0",
+      "play_id": "play:ezreal-dashing:293244ee",
+      "card_name": "Ezreal, Dashing",
+      "detail": "clause:play:ezreal-dashing:293244ee:rules_lines:2:ability, clause:play:ezreal-dashing:293244ee:rules_lines:2:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 1856,
+      "fact_id": "fact:play:fiora-victorious:92559485:rules_lines:0:state_or_modifier:gain_keyword:0",
+      "play_id": "play:fiora-victorious:92559485",
+      "card_name": "Fiora, Victorious",
+      "detail": "clause:play:fiora-victorious:92559485:rules_lines:0:ability, clause:play:fiora-victorious:92559485:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 1864,
+      "fact_id": "fact:play:fiora-worthy:e3105fbc:rules_lines:0:state_or_modifier:ready:0",
+      "play_id": "play:fiora-worthy:e3105fbc",
+      "card_name": "Fiora, Worthy",
+      "detail": "clause:play:fiora-worthy:e3105fbc:rules_lines:0:ability, clause:play:fiora-worthy:e3105fbc:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 1870,
+      "fact_id": "fact:play:fire-below-the-mountain:2b9c0e7f:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:fire-below-the-mountain:2b9c0e7f",
+      "card_name": "Fire Below the Mountain",
+      "detail": "clause:play:fire-below-the-mountain:2b9c0e7f:rules_lines:0:ability, clause:play:fire-below-the-mountain:2b9c0e7f:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 1921,
+      "fact_id": "fact:play:flurry-of-feathers:ab222324:rules_lines:3:payoff_output:play_token:0",
+      "play_id": "play:flurry-of-feathers:ab222324",
+      "card_name": "Flurry of Feathers",
+      "detail": "clause:play:flurry-of-feathers:ab222324:rules_lines:3:ability, clause:play:flurry-of-feathers:ab222324:rules_lines:3:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 1963,
+      "fact_id": "fact:play:forgotten-library:f1e10333:rules_lines:0:event_produced:recycle:0",
+      "play_id": "play:forgotten-library:f1e10333",
+      "card_name": "Forgotten Library",
+      "detail": "clause:play:forgotten-library:f1e10333:rules_lines:0:ability, clause:play:forgotten-library:f1e10333:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 2018,
+      "fact_id": "fact:play:frisky-hunter:a3ac8a1f:rules_lines:0:payoff_output:play_token:0",
+      "play_id": "play:frisky-hunter:a3ac8a1f",
+      "card_name": "Frisky Hunter",
+      "detail": "clause:play:frisky-hunter:a3ac8a1f:rules_lines:0:ability, clause:play:frisky-hunter:a3ac8a1f:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 2075,
+      "fact_id": "fact:play:garen-rugged:397ab8eb:rules_lines:0:identity_or_descriptor:has_keyword:0",
+      "play_id": "play:garen-rugged:397ab8eb",
+      "card_name": "Garen, Rugged",
+      "detail": "clause:play:garen-rugged:397ab8eb:rules_lines:0:ability, clause:play:garen-rugged:397ab8eb:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 2173,
+      "fact_id": "fact:play:grand-duelist:53b0f72b:rules_lines:0:cost_or_requirement:exhaust:0",
+      "play_id": "play:grand-duelist:53b0f72b",
+      "card_name": "Grand Duelist",
+      "detail": "clause:play:grand-duelist:53b0f72b:rules_lines:0:ability, clause:play:grand-duelist:53b0f72b:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 2249,
+      "fact_id": "fact:play:guerilla-warfare:5df47749:rules_lines:0:payoff_output:return_to_hand:0",
+      "play_id": "play:guerilla-warfare:5df47749",
+      "card_name": "Guerilla Warfare",
+      "detail": "clause:play:guerilla-warfare:5df47749:rules_lines:0:ability, clause:play:guerilla-warfare:5df47749:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 2268,
+      "fact_id": "fact:play:gustwalker:e1514be6:rules_lines:1:identity_or_descriptor:has_keyword:0",
+      "play_id": "play:gustwalker:e1514be6",
+      "card_name": "Gustwalker",
+      "detail": "clause:play:gustwalker:e1514be6:rules_lines:1:ability, clause:play:gustwalker:e1514be6:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 2275,
+      "fact_id": "fact:play:gutter-palace:2fb2b882:rules_lines:1:cost_or_requirement:pay:0",
+      "play_id": "play:gutter-palace:2fb2b882",
+      "card_name": "Gutter Palace",
+      "detail": "clause:play:gutter-palace:2fb2b882:rules_lines:1:ability, clause:play:gutter-palace:2fb2b882:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 2291,
+      "fact_id": "fact:play:hand-of-noxus:7ff0f47b:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:hand-of-noxus:7ff0f47b",
+      "card_name": "Hand of Noxus",
+      "detail": "clause:play:hand-of-noxus:7ff0f47b:rules_lines:0:ability, clause:play:hand-of-noxus:7ff0f47b:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 2382,
+      "fact_id": "fact:play:heroic-charge:9df18b52:rules_lines:1:event_produced:stun:0",
+      "play_id": "play:heroic-charge:9df18b52",
+      "card_name": "Heroic Charge",
+      "detail": "clause:play:heroic-charge:9df18b52:rules_lines:1:ability, clause:play:heroic-charge:9df18b52:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 2399,
+      "fact_id": "fact:play:hextech-anomaly:bf2a39e8:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:hextech-anomaly:bf2a39e8",
+      "card_name": "Hextech Anomaly",
+      "detail": "clause:play:hextech-anomaly:bf2a39e8:rules_lines:0:ability, clause:play:hextech-anomaly:bf2a39e8:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 2453,
+      "fact_id": "fact:play:honeyfruit:51dd9a16:rules_lines:2:cost_or_requirement:pay:0",
+      "play_id": "play:honeyfruit:51dd9a16",
+      "card_name": "Honeyfruit",
+      "detail": "clause:play:honeyfruit:51dd9a16:rules_lines:2:ability, clause:play:honeyfruit:51dd9a16:rules_lines:2:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 2644,
+      "fact_id": "fact:play:ivern-nurturer:d2c1e478:rules_lines:0:event_produced:recycle:0",
+      "play_id": "play:ivern-nurturer:d2c1e478",
+      "card_name": "Ivern, Nurturer",
+      "detail": "clause:play:ivern-nurturer:d2c1e478:rules_lines:0:ability, clause:play:ivern-nurturer:d2c1e478:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 2675,
+      "fact_id": "fact:play:jaull-fish:d95a8327:rules_lines:1:state_or_modifier:reduce_cost:0",
+      "play_id": "play:jaull-fish:d95a8327",
+      "card_name": "Jaull-Fish",
+      "detail": "clause:play:jaull-fish:d95a8327:rules_lines:1:ability, clause:play:jaull-fish:d95a8327:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 2697,
+      "fact_id": "fact:play:jax-unrelenting:8670f403:rules_lines:0:event_produced:attach:0",
+      "play_id": "play:jax-unrelenting:8670f403",
+      "card_name": "Jax, Unrelenting",
+      "detail": "clause:play:jax-unrelenting:8670f403:rules_lines:0:ability, clause:play:jax-unrelenting:8670f403:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 2779,
+      "fact_id": "fact:play:kadregrin-the-infernal:fcefe851:rules_lines:0:payoff_output:draw:0",
+      "play_id": "play:kadregrin-the-infernal:fcefe851",
+      "card_name": "Kadregrin the Infernal",
+      "detail": "clause:play:kadregrin-the-infernal:fcefe851:rules_lines:0:ability, clause:play:kadregrin-the-infernal:fcefe851:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 3104,
+      "fact_id": "fact:play:lillia-fae-fawn:c29d3e8d:rules_lines:1:event_produced:move:0",
+      "play_id": "play:lillia-fae-fawn:c29d3e8d",
+      "card_name": "Lillia, Fae Fawn",
+      "detail": "clause:play:lillia-fae-fawn:c29d3e8d:rules_lines:1:ability, clause:play:lillia-fae-fawn:c29d3e8d:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 3194,
+      "fact_id": "fact:play:lucian-gunslinger:6cdb974d:rules_lines:1:event_produced:damage:0",
+      "play_id": "play:lucian-gunslinger:6cdb974d",
+      "card_name": "Lucian, Gunslinger",
+      "detail": "clause:play:lucian-gunslinger:6cdb974d:rules_lines:1:ability, clause:play:lucian-gunslinger:6cdb974d:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 3204,
+      "fact_id": "fact:play:lucian-merciless:297dd867:rules_lines:0:event_produced:attach:0",
+      "play_id": "play:lucian-merciless:297dd867",
+      "card_name": "Lucian, Merciless",
+      "detail": "clause:play:lucian-merciless:297dd867:rules_lines:0:ability, clause:play:lucian-merciless:297dd867:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 3222,
+      "fact_id": "fact:play:lux-crownguard:7b9e26a1:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:lux-crownguard:7b9e26a1",
+      "card_name": "Lux, Crownguard",
+      "detail": "clause:play:lux-crownguard:7b9e26a1:rules_lines:0:ability, clause:play:lux-crownguard:7b9e26a1:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 3289,
+      "fact_id": "fact:play:malzahar-fanatic:e463fe1c:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:malzahar-fanatic:e463fe1c",
+      "card_name": "Malzahar, Fanatic",
+      "detail": "clause:play:malzahar-fanatic:e463fe1c:rules_lines:0:ability, clause:play:malzahar-fanatic:e463fe1c:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 3295,
+      "fact_id": "fact:play:marai-spire:25523469:rules_lines:0:restriction_or_permission:require:0",
+      "play_id": "play:marai-spire:25523469",
+      "card_name": "Marai Spire",
+      "detail": "clause:play:marai-spire:25523469:rules_lines:0:ability, clause:play:marai-spire:25523469:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 3316,
+      "fact_id": "fact:play:master-bingwen:dc2575fe:rules_lines:0:event_produced:attach:0",
+      "play_id": "play:master-bingwen:dc2575fe",
+      "card_name": "Master Bingwen",
+      "detail": "clause:play:master-bingwen:dc2575fe:rules_lines:0:ability, clause:play:master-bingwen:dc2575fe:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 3524,
+      "fact_id": "fact:play:mosstomper:24625ebf:rules_lines:1:identity_or_descriptor:has_keyword:0",
+      "play_id": "play:mosstomper:24625ebf",
+      "card_name": "Mosstomper",
+      "detail": "clause:play:mosstomper:24625ebf:rules_lines:1:ability, clause:play:mosstomper:24625ebf:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 3569,
+      "fact_id": "fact:play:nami-headstrong:35c45fd5:rules_lines:1:event_produced:stun:0",
+      "play_id": "play:nami-headstrong:35c45fd5",
+      "card_name": "Nami, Headstrong",
+      "detail": "clause:play:nami-headstrong:35c45fd5:rules_lines:1:ability, clause:play:nami-headstrong:35c45fd5:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 3572,
+      "fact_id": "fact:play:nami-headstrong:35c45fd5:rules_lines:2:state_or_modifier:ready:0",
+      "play_id": "play:nami-headstrong:35c45fd5",
+      "card_name": "Nami, Headstrong",
+      "detail": "clause:play:nami-headstrong:35c45fd5:rules_lines:2:ability, clause:play:nami-headstrong:35c45fd5:rules_lines:2:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 3718,
+      "fact_id": "fact:play:ornn-forge-god:01d7efe1:rules_lines:1:event_produced:attach:0",
+      "play_id": "play:ornn-forge-god:01d7efe1",
+      "card_name": "Ornn, Forge God",
+      "detail": "clause:play:ornn-forge-god:01d7efe1:rules_lines:1:ability, clause:play:ornn-forge-god:01d7efe1:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 3785,
+      "fact_id": "fact:play:petal-pixie:f551a78c:rules_lines:0:state_or_modifier:modify_stat:0",
+      "play_id": "play:petal-pixie:f551a78c",
+      "card_name": "Petal Pixie",
+      "detail": "clause:play:petal-pixie:f551a78c:rules_lines:0:ability, clause:play:petal-pixie:f551a78c:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 3966,
+      "fact_id": "fact:play:prodigal-explorer:2af5627e:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:prodigal-explorer:2af5627e",
+      "card_name": "Prodigal Explorer",
+      "detail": "clause:play:prodigal-explorer:2af5627e:rules_lines:0:ability, clause:play:prodigal-explorer:2af5627e:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 4150,
+      "fact_id": "fact:play:red-brambleback:5b4a4085:rules_lines:2:targeting_or_scope:reference_keyword:0",
+      "play_id": "play:red-brambleback:5b4a4085",
+      "card_name": "Red Brambleback",
+      "detail": "clause:play:red-brambleback:5b4a4085:rules_lines:2:ability, clause:play:red-brambleback:5b4a4085:rules_lines:2:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 4202,
+      "fact_id": "fact:play:relentless-storm:48cdbb7c:rules_lines:0:cost_or_requirement:exhaust:0",
+      "play_id": "play:relentless-storm:48cdbb7c",
+      "card_name": "Relentless Storm",
+      "detail": "clause:play:relentless-storm:48cdbb7c:rules_lines:0:ability, clause:play:relentless-storm:48cdbb7c:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 4541,
+      "fact_id": "fact:play:scryer-s-bloom:cf6902d1:rules_lines:1:cost_or_requirement:pay:0",
+      "play_id": "play:scryer-s-bloom:cf6902d1",
+      "card_name": "Scryer's Bloom",
+      "detail": "clause:play:scryer-s-bloom:cf6902d1:rules_lines:1:ability, clause:play:scryer-s-bloom:cf6902d1:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 4574,
+      "fact_id": "fact:play:seal-of-discord:2f1c93d8:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:seal-of-discord:2f1c93d8",
+      "card_name": "Seal of Discord",
+      "detail": "clause:play:seal-of-discord:2f1c93d8:rules_lines:0:ability, clause:play:seal-of-discord:2f1c93d8:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 4581,
+      "fact_id": "fact:play:seal-of-focus:46cd31aa:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:seal-of-focus:46cd31aa",
+      "card_name": "Seal of Focus",
+      "detail": "clause:play:seal-of-focus:46cd31aa:rules_lines:0:ability, clause:play:seal-of-focus:46cd31aa:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 4588,
+      "fact_id": "fact:play:seal-of-insight:50c75766:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:seal-of-insight:50c75766",
+      "card_name": "Seal of Insight",
+      "detail": "clause:play:seal-of-insight:50c75766:rules_lines:0:ability, clause:play:seal-of-insight:50c75766:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 4595,
+      "fact_id": "fact:play:seal-of-rage:066d5ae8:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:seal-of-rage:066d5ae8",
+      "card_name": "Seal of Rage",
+      "detail": "clause:play:seal-of-rage:066d5ae8:rules_lines:0:ability, clause:play:seal-of-rage:066d5ae8:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 4602,
+      "fact_id": "fact:play:seal-of-strength:57429223:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:seal-of-strength:57429223",
+      "card_name": "Seal of Strength",
+      "detail": "clause:play:seal-of-strength:57429223:rules_lines:0:ability, clause:play:seal-of-strength:57429223:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 4609,
+      "fact_id": "fact:play:seal-of-unity:f6d58275:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:seal-of-unity:f6d58275",
+      "card_name": "Seal of Unity",
+      "detail": "clause:play:seal-of-unity:f6d58275:rules_lines:0:ability, clause:play:seal-of-unity:f6d58275:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 4622,
+      "fact_id": "fact:play:sentinel-adept:7a25c078:rules_lines:0:event_produced:attach:0",
+      "play_id": "play:sentinel-adept:7a25c078",
+      "card_name": "Sentinel Adept",
+      "detail": "clause:play:sentinel-adept:7a25c078:rules_lines:0:ability, clause:play:sentinel-adept:7a25c078:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 4661,
+      "fact_id": "fact:play:shadow-s-call:21fa8205:rules_lines:0:payoff_output:draw:0",
+      "play_id": "play:shadow-s-call:21fa8205",
+      "card_name": "Shadow's Call",
+      "detail": "clause:play:shadow-s-call:21fa8205:rules_lines:0:ability, clause:play:shadow-s-call:21fa8205:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 4679,
+      "fact_id": "fact:play:shadow:c3ae12be:rules_lines:1:cost_or_requirement:pay:0",
+      "play_id": "play:shadow:c3ae12be",
+      "card_name": "Shadow",
+      "detail": "clause:play:shadow:c3ae12be:rules_lines:1:ability, clause:play:shadow:c3ae12be:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 4737,
+      "fact_id": "fact:play:show-of-strength:08603631:rules_lines:1:payoff_output:draw:0",
+      "play_id": "play:show-of-strength:08603631",
+      "card_name": "Show of Strength",
+      "detail": "clause:play:show-of-strength:08603631:rules_lines:1:ability, clause:play:show-of-strength:08603631:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 4816,
+      "fact_id": "fact:play:sivir-mercenary:c937a7c0:rules_lines:1:restriction_or_permission:move:0",
+      "play_id": "play:sivir-mercenary:c937a7c0",
+      "card_name": "Sivir, Mercenary",
+      "detail": "clause:play:sivir-mercenary:c937a7c0:rules_lines:1:ability, clause:play:sivir-mercenary:c937a7c0:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 4838,
+      "fact_id": "fact:play:skyward-strike:06248a21:rules_lines:1:event_produced:stun:0",
+      "play_id": "play:skyward-strike:06248a21",
+      "card_name": "Skyward Strike",
+      "detail": "clause:play:skyward-strike:06248a21:rules_lines:1:ability, clause:play:skyward-strike:06248a21:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 5000,
+      "fact_id": "fact:play:sprite-burst:2dd1c3cb:rules_lines:0:payoff_output:play_token:0",
+      "play_id": "play:sprite-burst:2dd1c3cb",
+      "card_name": "Sprite Burst",
+      "detail": "clause:play:sprite-burst:2dd1c3cb:rules_lines:0:ability, clause:play:sprite-burst:2dd1c3cb:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 5009,
+      "fact_id": "fact:play:sprite-call:160152fa:rules_lines:2:payoff_output:play_token:0",
+      "play_id": "play:sprite-call:160152fa",
+      "card_name": "Sprite Call",
+      "detail": "clause:play:sprite-call:160152fa:rules_lines:2:ability, clause:play:sprite-call:160152fa:rules_lines:2:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 5019,
+      "fact_id": "fact:play:sprite-fountain:c26beabb:rules_lines:1:payoff_output:play_token:0",
+      "play_id": "play:sprite-fountain:c26beabb",
+      "card_name": "Sprite Fountain",
+      "detail": "clause:play:sprite-fountain:c26beabb:rules_lines:1:ability, clause:play:sprite-fountain:c26beabb:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 5032,
+      "fact_id": "fact:play:sprite-mother:ff918cbf:rules_lines:0:payoff_output:play_token:0",
+      "play_id": "play:sprite-mother:ff918cbf",
+      "card_name": "Sprite Mother",
+      "detail": "clause:play:sprite-mother:ff918cbf:rules_lines:0:ability, clause:play:sprite-mother:ff918cbf:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 5043,
+      "fact_id": "fact:play:sprite-queen:2c1926cf:rules_lines:0:payoff_output:play_token:0",
+      "play_id": "play:sprite-queen:2c1926cf",
+      "card_name": "Sprite Queen",
+      "detail": "clause:play:sprite-queen:2c1926cf:rules_lines:0:ability, clause:play:sprite-queen:2c1926cf:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 5195,
+      "fact_id": "fact:play:sun-disc:348149db:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:sun-disc:348149db",
+      "card_name": "Sun Disc",
+      "detail": "clause:play:sun-disc:348149db:rules_lines:0:ability, clause:play:sun-disc:348149db:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 5199,
+      "fact_id": "fact:play:sunken-temple:689eb488:rules_lines:0:payoff_output:draw:0",
+      "play_id": "play:sunken-temple:689eb488",
+      "card_name": "Sunken Temple",
+      "detail": "clause:play:sunken-temple:689eb488:rules_lines:0:ability, clause:play:sunken-temple:689eb488:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 5235,
+      "fact_id": "fact:play:swift-scout:66b43574:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:swift-scout:66b43574",
+      "card_name": "Swift Scout",
+      "detail": "clause:play:swift-scout:66b43574:rules_lines:0:ability, clause:play:swift-scout:66b43574:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 5320,
+      "fact_id": "fact:play:teemo-strategist:6c7b5feb:rules_lines:1:event_produced:damage:0",
+      "play_id": "play:teemo-strategist:6c7b5feb",
+      "card_name": "Teemo, Strategist",
+      "detail": "clause:play:teemo-strategist:6c7b5feb:rules_lines:1:ability, clause:play:teemo-strategist:6c7b5feb:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 5485,
+      "fact_id": "fact:play:trapping-grounds:0c4aa341:rules_lines:0:payoff_output:play_token:0",
+      "play_id": "play:trapping-grounds:0c4aa341",
+      "card_name": "Trapping Grounds",
+      "detail": "clause:play:trapping-grounds:0c4aa341:rules_lines:0:ability, clause:play:trapping-grounds:0c4aa341:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 5524,
+      "fact_id": "fact:play:trevor-snoozebottom:e87e027c:rules_lines:1:payoff_output:play_token:0",
+      "play_id": "play:trevor-snoozebottom:e87e027c",
+      "card_name": "Trevor Snoozebottom",
+      "detail": "clause:play:trevor-snoozebottom:e87e027c:rules_lines:1:ability, clause:play:trevor-snoozebottom:e87e027c:rules_lines:1:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 5618,
+      "fact_id": "fact:play:ultrasoft-poro:31a30f68:rules_lines:0:cost_or_requirement:pay:0",
+      "play_id": "play:ultrasoft-poro:31a30f68",
+      "card_name": "Ultrasoft Poro",
+      "detail": "clause:play:ultrasoft-poro:31a30f68:rules_lines:0:ability, clause:play:ultrasoft-poro:31a30f68:rules_lines:0:keyword"
+    },
+    {
+      "severity": "warning",
+      "code": "multiple_relational_clause_groups_on_line",
+      "line_number": 5679,
+      "fact_id": "fact:play:unsung-hero:12083b84:rules_lines:0:identity_or_descriptor:has_keyword:0",
+      "play_id": "play:unsung-hero:12083b84",
+      "card_name": "Unsung Hero",
+      "detail": "clause:play:unsung-hero:12083b84:rules_lines:0:ability, clause:play:unsung-hero:12083b84:rules_lines:0:keyword"
+    }
+  ],
+  "coverage": {
+    "top_uncovered_text_lines": [
+      {
+        "play_id": "play:bandle-tree:1887131e",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "line": "You may hide an additional card here."
+      },
+      {
+        "play_id": "play:baron-pit:245edbb0",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "line": "(You can't start the game with a token battlefield.)"
+      },
+      {
+        "play_id": "play:blue-sentinel:1175ef0a",
+        "source_field": "rules_lines",
+        "line_index": 1,
+        "line": "Your hold effects for holding here trigger an additional time."
+      },
+      {
+        "play_id": "play:caitlyn-patrolling:4a8d3da6",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "line": "I must be assigned combat damage last."
+      },
+      {
+        "play_id": "play:curtain-call:ca540b49",
+        "source_field": "rules_lines",
+        "line_index": 1,
+        "line": "Choose one you haven't already chosen —"
+      },
+      {
+        "play_id": "play:disposal-order:68d05fb8",
+        "source_field": "rules_lines",
+        "line_index": 1,
+        "line": "Choose one —"
+      },
+      {
+        "play_id": "play:experimental-hexplate:cb371eec",
+        "source_field": "effect_lines",
+        "line_index": 0,
+        "line": "I am a Mech."
+      },
+      {
+        "play_id": "play:flurry-of-feathers:ab222324",
+        "source_field": "rules_lines",
+        "line_index": 1,
+        "line": "Choose one —"
+      },
+      {
+        "play_id": "play:gearhead:a59c38ca",
+        "source_field": "rules_lines",
+        "line_index": 1,
+        "line": "Each Equipment attached to me gives double its base Might bonus."
+      },
+      {
+        "play_id": "play:heimerdinger-inventor:2b2dc5bb",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "line": "I have all :rb_exhaust: abilities of all friendly legends, units, and gear."
+      },
+      {
+        "play_id": "play:maduli-the-gatekeeper:29bfb45b",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "line": "I can't be readied."
+      },
+      {
+        "play_id": "play:red-brambleback:5b4a4085",
+        "source_field": "rules_lines",
+        "line_index": 1,
+        "line": "Your conquer effects for conquering here trigger an additional time."
+      },
+      {
+        "play_id": "play:renata-glasc-mastermind:fa1087ce",
+        "source_field": "rules_lines",
+        "line_index": 2,
+        "line": "Use my abilities only while I'm at a battlefield."
+      },
+      {
+        "play_id": "play:rocket-barrage:1ee001f2",
+        "source_field": "rules_lines",
+        "line_index": 1,
+        "line": "Choose one —"
+      },
+      {
+        "play_id": "play:rumble-scrapper:c635249a",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "line": "Your Mechs have +1 :rb_might: (including me)."
+      },
+      {
+        "play_id": "play:scuttle-crab:8c3955ab",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "line": "(Units with 0 :rb_might: can conquer and hold.)"
+      },
+      {
+        "play_id": "play:sky-splitter:98da3e56",
+        "source_field": "rules_lines",
+        "line_index": 1,
+        "line": "This spell's Energy cost is reduced by the highest Might among units you control."
+      },
+      {
+        "play_id": "play:skyfall-of-areion:91394768",
+        "source_field": "effect_lines",
+        "line_index": 0,
+        "line": "My hold effects are also conquer effects, and vice versa."
+      },
+      {
+        "play_id": "play:soraka-wanderer:81c0ff4a",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "line": "I must be assigned combat damage last."
+      },
+      {
+        "play_id": "play:wuju-bladesman-starter:17a1e7bb",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "line": "While a friendly unit defends alone, it gets +2 :rb_might:."
+      }
+    ],
+    "top_uncovered_relational_text_lines": [
+      {
+        "play_id": "play:curtain-call:ca540b49",
+        "source_field": "rules_lines",
+        "line_index": 1,
+        "line": "Choose one you haven't already chosen —"
+      }
+    ],
+    "top_fact_dense_lines": [
+      {
+        "play_id": "play:deceiver:5673f5c7",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 7,
+        "line": "When you conquer or hold, you may discard 1 and exhaust me to play a ready Reflection unit token there. It becomes a copy of another unit there. Give it [Temporary]."
+      },
+      {
+        "play_id": "play:scryer-s-bloom:cf6902d1",
+        "source_field": "rules_lines",
+        "line_index": 1,
+        "fact_count": 7,
+        "line": "Kill this, :rb_energy_1:, :rb_exhaust:: [Predict 2], then draw 1. Gain 1 XP. (To Predict 2, look at the top two cards of your Main Deck. Recycle any of them and put the rest back in any order.)"
+      },
+      {
+        "play_id": "play:bashful-bloom:a2a8b0d1",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 6,
+        "line": ":rb_energy_4:, :rb_exhaust:: Play a ready 3 :rb_might: Sprite unit token with [Temporary]. This ability costs :rb_energy_1: less for each friendly unit with [Temporary]."
+      },
+      {
+        "play_id": "play:virtuoso:45a055f3",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 6,
+        "line": "When you play a spell, if you spent :rb_energy_4: or more, you may banish it. Then, if there are four spells banished with me, put each in its trash, channel 4 runes, and draw 1."
+      },
+      {
+        "play_id": "play:yuumi-magical-cat:14e752b1",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 6,
+        "line": "When I attack or defend, give one of your other units here +3 :rb_might: and [Tank] this turn. (It must be assigned combat damage first.)"
+      },
+      {
+        "play_id": "play:arachnoid-horror:a077432b",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "[Hunt 2] (When I conquer or hold, gain 2 XP.)"
+      },
+      {
+        "play_id": "play:armed-assailant:32d279bc",
+        "source_field": "rules_lines",
+        "line_index": 1,
+        "fact_count": 5,
+        "line": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for :rb_rune_rainbow: less, even if it's already attached.)"
+      },
+      {
+        "play_id": "play:azir-ascendant:82d12920",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": ":rb_rune_calm:: [Action] — Choose a unit you control. Move me to its location and it to my original location. If it's equipped, you may attach one of its Equipment to me. Use only once per turn."
+      },
+      {
+        "play_id": "play:baited-hook:e48e39f6",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": ":rb_energy_1::rb_rune_order:, :rb_exhaust:: Kill a friendly unit. Look at the top 5 cards of your Main Deck. You may banish a unit from among them that has Might up to 1 more than the killed unit and play it, ignoring its cost. Then recycle the rest."
+      },
+      {
+        "play_id": "play:bloodharbor-ripper:a9ea31a4",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": ":rb_energy_1:, :rb_exhaust:: Return a friendly unit at a battlefield to its owner's hand. Play a Gold gear token exhausted. (It has \"[Reaction][>] Kill this, :rb_exhaust:: [Add] :rb_rune_rainbow:.\")"
+      },
+      {
+        "play_id": "play:combat-chef:404f2e45",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for :rb_rune_rainbow: less, even if it's already attached.)"
+      },
+      {
+        "play_id": "play:crowd-favorite:59f362fc",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "[Hunt] (When I conquer or hold, gain 1 XP.)"
+      },
+      {
+        "play_id": "play:deadly-flourish:c7f1dfd1",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "Deal 3 to an enemy unit. When it dies this turn, play a Gold gear token exhausted. (It has \"[Reaction][>] Kill this, :rb_exhaust:: [Add] :rb_rune_rainbow:.\")"
+      },
+      {
+        "play_id": "play:dramatic-visionary:2074f413",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "[Deathknell][>] [Predict 2]. (When I die, look at the top two cards of your Main Deck. Recycle any of them and put the rest back in any order.)"
+      },
+      {
+        "play_id": "play:enthralling-protector:ca6c0c98",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "[Hunt] (When I conquer or hold, gain 1 XP.)"
+      },
+      {
+        "play_id": "play:forgotten-library:f1e10333",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "While you control this battlefield, when you play a spell, if you spent :rb_energy_4: or more, [Predict]. (Look at the top card of your Main Deck. You may recycle it.)"
+      },
+      {
+        "play_id": "play:gemhand-hunter:66eb2764",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "[Hunt] (When I conquer or hold, gain 1 XP.)"
+      },
+      {
+        "play_id": "play:green-father:0015a332",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "When you conquer or hold, you may exhaust me to replace that battlefield with a Brush battlefield token. (Bird, Cat, Dog, Poro, and Ivern units have +1 :rb_might: in Brush. It can be swapped back when scored.)"
+      },
+      {
+        "play_id": "play:gustwalker:e1514be6",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "[Hunt 2] (When I conquer or hold, gain 2 XP.)"
+      },
+      {
+        "play_id": "play:herald-of-spring:4439e8b0",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "[Hunt] (When I conquer or hold, gain 1 XP.)"
+      },
+      {
+        "play_id": "play:hunter-s-machete:968edf6e",
+        "source_field": "effect_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "[Hunt] (When I conquer or hold, gain 1 XP.)"
+      },
+      {
+        "play_id": "play:ivern-nurturer:d2c1e478",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "When you play me or when I hold, look at the top 3 cards of your Main Deck. You may reveal a unit from among them and draw it. Recycle the rest. Then if you revealed a Bird, Cat, Dog, or Poro, do this: [Buff] a friendly unit. (Give it a +1 :rb_might: buff if it doesn't have one.)"
+      },
+      {
+        "play_id": "play:jax-unrelenting:8670f403",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for :rb_rune_rainbow: less, even if it's already attached.)"
+      },
+      {
+        "play_id": "play:kha-zix-evolving-hunter:5af6b733",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "[Hunt] (When I conquer or hold, gain 1 XP.)"
+      },
+      {
+        "play_id": "play:lucian-merciless:297dd867",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for :rb_rune_rainbow: less, even if it's already attached.)"
+      },
+      {
+        "play_id": "play:master-bingwen:dc2575fe",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for :rb_rune_rainbow: less, even if it's already attached.)"
+      },
+      {
+        "play_id": "play:master-yi-tempered:d4d91114",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "[Hunt 2] (When I conquer or hold, gain 2 XP.)"
+      },
+      {
+        "play_id": "play:mosstomper:24625ebf",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "[Hunt 2] (When I conquer or hold, gain 2 XP.)"
+      },
+      {
+        "play_id": "play:ornn-forge-god:01d7efe1",
+        "source_field": "rules_lines",
+        "line_index": 1,
+        "fact_count": 5,
+        "line": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for :rb_rune_rainbow: less, even if it's already attached.)"
+      },
+      {
+        "play_id": "play:reinforce:617f08c4",
+        "source_field": "rules_lines",
+        "line_index": 0,
+        "fact_count": 5,
+        "line": "Look at the top 5 cards of your Main Deck. You may banish a unit from among them, then play it, reducing its cost by :rb_energy_5:. Recycle the remaining cards."
+      }
+    ]
+  },
+  "relations_readiness": {
+    "produced_events": {
+      "unit_moved": 86,
+      "damage_dealt": 75,
+      "token_created": 64,
+      "equipment_attached": 57,
+      "card_recycled": 46,
+      "unit_buffed": 43,
+      "unit_stunned": 26,
+      "card_discarded": 23,
+      "card_banished": 19,
+      "unit_dies": 19,
+      "self_dies": 18,
+      "card_played": 11,
+      "unit_played": 11,
+      "spell_countered": 9,
+      "gear_dies": 9,
+      "friendly_unit_dies": 8,
+      "control_changed": 5,
+      "equipment_detached": 3,
+      "spell_played": 3,
+      "gear_played": 2,
+      "enemy_unit_dies": 2,
+      "card_moved": 1,
+      "rune_recycled": 1
+    },
+    "observed_events": {
+      "self_played": 127,
+      "self_conquers": 50,
+      "self_holds": 31,
+      "self_attacks": 27,
+      "self_dies": 24,
+      "battlefield_conquered": 21,
+      "self_moves": 20,
+      "battlefield_held": 17,
+      "spell_played": 9,
+      "self_defends": 8,
+      "friendly_unit_dies": 5,
+      "combat_won": 5,
+      "unit_played": 4,
+      "equipment_attached": 2,
+      "rune_recycled": 1,
+      "enemy_unit_dies": 1,
+      "unit_moved": 1,
+      "self_discarded": 1,
+      "card_recycled": 1,
+      "unit_buffed": 1,
+      "unit_stunned": 1,
+      "self_leaves_board": 1
+    },
+    "output_ids": {
+      "might_modified": 154,
+      "card_drawn": 105,
+      "unit_moved": 74,
+      "play_cost_reduced": 65,
+      "equipment_attached": 57,
+      "card_recycled": 46,
+      "keyword_granted": 44,
+      "unit_buffed": 43,
+      "unit_ready": 40,
+      "resource_added": 33,
+      "unit_recalled": 32,
+      "xp_gained": 31,
+      "unit_stunned": 26,
+      "rune_channeled": 24,
+      "gold_gear_token_created": 24,
+      "card_discarded": 23,
+      "card_banished": 19,
+      "self_ready": 18,
+      "recruit_unit_token_created": 13,
+      "card_played": 11,
+      "unit_played": 11,
+      "gear_cost_reduced": 10,
+      "spell_countered": 9,
+      "card_returned_to_hand": 9,
+      "sprite_unit_token_created": 8,
+      "sand_soldier_unit_token_created": 6,
+      "bird_unit_token_created": 6,
+      "token_enters_ready": 5,
+      "bonus_damage_added": 4,
+      "mech_unit_token_created": 4,
+      "control_gained": 4,
+      "card_copied": 4,
+      "play_cost_increased": 4,
+      "equipment_detached": 3,
+      "spell_played": 3,
+      "reflection_unit_token_created": 3,
+      "deck_card_put_top_or_bottom": 2,
+      "gear_played": 2,
+      "game_won": 2,
+      "battlefield_replaced": 1,
+      "damage_dealt": 1,
+      "control_lost": 1,
+      "tag_gained": 1,
+      "damage_modified": 1,
+      "rune_recycled": 1,
+      "token_copied": 1
+    },
+    "web_uses": {
+      "similarity": 6311,
+      "filters": 5834,
+      "deck_synergy": 1830,
+      "enables": 1207,
+      "enabled_by": 358
+    },
+    "role_payload_issues": {
+      "multiple_relational_clause_groups_on_line": 90,
+      "optional_line_without_optional_modality": 88,
+      "payoff_without_output": 1
+    },
+    "relational_text_lines_with_facts": 1068,
+    "relational_text_lines_without_facts": 1,
+    "produced_events_without_observers": {
+      "spell_countered": 9,
+      "gear_dies": 9,
+      "token_created": 64,
+      "equipment_detached": 3,
+      "damage_dealt": 75,
+      "card_banished": 19,
+      "unit_dies": 19,
+      "card_discarded": 23,
+      "card_moved": 1,
+      "control_changed": 5
+    },
+    "observed_events_without_producers": {
+      "combat_won": 5,
+      "self_discarded": 1
+    }
+  }
+}

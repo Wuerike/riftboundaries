@@ -1,0 +1,2305 @@
+{
+  "version": "2026-05-12",
+  "purpose": "Curated minimum expected semantic facts for the current extractor. These examples use real cards from data/processed/cards/normalized/cards_normalized.json.",
+  "source": "data/processed/cards/normalized/cards_normalized.json",
+  "schema": "scripts/04_cards_feature_extraction/contracts/semantic_facts_schema.json",
+  "comparison_mode": "minimum_expected_facts",
+  "notes": [
+    "These examples are not complete card parses. They define the minimum facts the semantic extractor must recover for representative language patterns.",
+    "Each expected fact should map back to an exact source line and evidence substring.",
+    "The same source line can produce trigger_observed, cost_or_requirement, event_produced, payoff_output, and state_or_modifier facts linked by clause_group_id."
+  ],
+  "examples": [
+    {
+      "play_id": "play:harnessed-dragon:c4bb02f1",
+      "name": "Harnessed Dragon",
+      "why": "Simple self-play trigger that produces an enemy unit death event.",
+      "card_snapshot": {
+        "domain_ids": [
+          "order"
+        ],
+        "card_type_ids": [
+          "unit"
+        ],
+        "energy": 8,
+        "might": 6,
+        "power": 2
+      },
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "When you play me, kill an enemy unit."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:harnessed-dragon:0:trigger:self_played",
+          "clause_group_id": "golden:harnessed-dragon:rules_lines:0:group0",
+          "semantic_role": "trigger_observed",
+          "fact_type": "event_trigger",
+          "predicate": "observe_event",
+          "payload": {
+            "event": {
+              "id": "self_played",
+              "subject": "self"
+            },
+            "modality": "required"
+          },
+          "evidence": "When you play me"
+        },
+        {
+          "fact_id": "golden:harnessed-dragon:0:event:enemy_unit_dies",
+          "clause_group_id": "golden:harnessed-dragon:rules_lines:0:group0",
+          "semantic_role": "event_produced",
+          "fact_type": "removal",
+          "predicate": "kill",
+          "payload": {
+            "event": {
+              "id": "enemy_unit_dies",
+              "produced": true
+            },
+            "target": {
+              "kind": "unit",
+              "controller": "opponent",
+              "scope": "enemy"
+            }
+          },
+          "evidence": "kill an enemy unit"
+        }
+      ],
+      "web_expectations": {
+        "enabled_by_event_ids": [
+          "self_played"
+        ],
+        "enables_event_ids": [
+          "enemy_unit_dies"
+        ],
+        "enables_output_ids": [],
+        "filters": [
+          "trigger:self_played",
+          "action:kill",
+          "target:enemy_unit"
+        ],
+        "similarity_tags": [
+          "removal",
+          "on_play_effect"
+        ]
+      }
+    },
+    {
+      "play_id": "play:altar-of-memories:2de88f83",
+      "name": "Altar of Memories",
+      "why": "Friendly death trigger with optional exhaust cost and multiple deck payoffs.",
+      "card_snapshot": {
+        "domain_ids": [
+          "order"
+        ],
+        "card_type_ids": [
+          "gear"
+        ],
+        "energy": 2,
+        "might": null,
+        "power": null
+      },
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "When a friendly unit dies, you may exhaust me to draw 1, then put a card from your hand on the top or bottom of your Main Deck."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:altar-of-memories:0:trigger:friendly_unit_dies",
+          "clause_group_id": "golden:altar-of-memories:rules_lines:0:group0",
+          "semantic_role": "trigger_observed",
+          "fact_type": "event_trigger",
+          "predicate": "observe_event",
+          "payload": {
+            "event": {
+              "id": "friendly_unit_dies",
+              "subject": "friendly_unit"
+            },
+            "modality": "required"
+          },
+          "evidence": "When a friendly unit dies"
+        },
+        {
+          "fact_id": "golden:altar-of-memories:0:cost:exhaust_self",
+          "clause_group_id": "golden:altar-of-memories:rules_lines:0:group0",
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "exhaust",
+          "payload": {
+            "costs": [
+              {
+                "action": "exhaust",
+                "subject": "self"
+              }
+            ],
+            "modality": "optional"
+          },
+          "evidence": "you may exhaust me"
+        },
+        {
+          "fact_id": "golden:altar-of-memories:0:payoff:draw_1",
+          "clause_group_id": "golden:altar-of-memories:rules_lines:0:group0",
+          "semantic_role": "payoff_output",
+          "fact_type": "card_flow",
+          "predicate": "draw",
+          "payload": {
+            "outputs": [
+              {
+                "id": "card_drawn",
+                "action": "draw",
+                "object": "card"
+              }
+            ],
+            "amounts": [
+              {
+                "value": 1,
+                "unit": "card"
+              }
+            ]
+          },
+          "evidence": "draw 1"
+        },
+        {
+          "fact_id": "golden:altar-of-memories:0:payoff:put_card_top_bottom",
+          "clause_group_id": "golden:altar-of-memories:rules_lines:0:group0",
+          "semantic_role": "payoff_output",
+          "fact_type": "card_flow",
+          "predicate": "move",
+          "payload": {
+            "outputs": [
+              {
+                "id": "deck_card_put_top_or_bottom",
+                "action": "move",
+                "object": "card"
+              }
+            ],
+            "object": {
+              "kind": "card",
+              "zone": "hand"
+            },
+            "target": {
+              "zone": "main_deck",
+              "location": "top_or_bottom"
+            }
+          },
+          "evidence": "put a card from your hand on the top or bottom of your Main Deck"
+        }
+      ],
+      "web_expectations": {
+        "enabled_by_event_ids": [
+          "friendly_unit_dies"
+        ],
+        "enables_event_ids": [],
+        "enables_output_ids": [
+          "card_drawn",
+          "deck_card_put_top_or_bottom"
+        ],
+        "filters": [
+          "trigger:friendly_unit_dies",
+          "cost:exhaust_self",
+          "action:draw"
+        ],
+        "similarity_tags": [
+          "death_payoff",
+          "card_selection"
+        ]
+      }
+    },
+    {
+      "play_id": "play:battle-mistress:72ac42f9",
+      "name": "Battle Mistress",
+      "why": "Two independent triggers on one card: rune recycle creates a token, enemy death readies self.",
+      "card_snapshot": {
+        "domain_ids": [
+          "body",
+          "chaos"
+        ],
+        "card_type_ids": [
+          "legend"
+        ],
+        "energy": null,
+        "might": null,
+        "power": null
+      },
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "When you recycle a rune, you may exhaust me to play a Gold gear token exhausted."
+        },
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": "When one or more enemy units die, ready me."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:battle-mistress:0:trigger:rune_recycled",
+          "clause_group_id": "golden:battle-mistress:rules_lines:0:group0",
+          "semantic_role": "trigger_observed",
+          "fact_type": "event_trigger",
+          "predicate": "observe_event",
+          "payload": {
+            "event": {
+              "id": "rune_recycled",
+              "subject": "you"
+            },
+            "modality": "required"
+          },
+          "evidence": "When you recycle a rune"
+        },
+        {
+          "fact_id": "golden:battle-mistress:0:cost:exhaust_self",
+          "clause_group_id": "golden:battle-mistress:rules_lines:0:group0",
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "exhaust",
+          "payload": {
+            "costs": [
+              {
+                "action": "exhaust",
+                "subject": "self"
+              }
+            ],
+            "modality": "optional"
+          },
+          "evidence": "you may exhaust me"
+        },
+        {
+          "fact_id": "golden:battle-mistress:0:payoff:gold_token",
+          "clause_group_id": "golden:battle-mistress:rules_lines:0:group0",
+          "semantic_role": "payoff_output",
+          "fact_type": "token_creation",
+          "predicate": "play_token",
+          "payload": {
+            "event": {
+              "id": "token_created",
+              "produced": true
+            },
+            "outputs": [
+              {
+                "id": "gold_gear_token_created",
+                "action": "play_token",
+                "object": "Gold gear token"
+              }
+            ],
+            "object": {
+              "kind": "token",
+              "card_types": [
+                "gear"
+              ],
+              "tags": [
+                "Gold"
+              ],
+              "state": [
+                "exhausted"
+              ]
+            }
+          },
+          "evidence": "play a Gold gear token exhausted"
+        },
+        {
+          "fact_id": "golden:battle-mistress:1:trigger:enemy_unit_dies",
+          "clause_group_id": "golden:battle-mistress:rules_lines:1:group0",
+          "semantic_role": "trigger_observed",
+          "fact_type": "event_trigger",
+          "predicate": "observe_event",
+          "payload": {
+            "event": {
+              "id": "enemy_unit_dies",
+              "subject": "enemy_unit",
+              "amount": "one_or_more"
+            }
+          },
+          "evidence": "When one or more enemy units die"
+        },
+        {
+          "fact_id": "golden:battle-mistress:1:modifier:ready_self",
+          "clause_group_id": "golden:battle-mistress:rules_lines:1:group0",
+          "semantic_role": "state_or_modifier",
+          "fact_type": "state_modifier",
+          "predicate": "ready",
+          "payload": {
+            "target": {
+              "kind": "card",
+              "scope": "self"
+            },
+            "outputs": [
+              {
+                "id": "self_ready",
+                "action": "ready",
+                "object": "self"
+              }
+            ]
+          },
+          "evidence": "ready me"
+        }
+      ],
+      "web_expectations": {
+        "enabled_by_event_ids": [
+          "rune_recycled",
+          "enemy_unit_dies"
+        ],
+        "enables_event_ids": [
+          "token_created"
+        ],
+        "enables_output_ids": [
+          "gold_gear_token_created",
+          "self_ready"
+        ],
+        "filters": [
+          "trigger:rune_recycled",
+          "trigger:enemy_unit_dies",
+          "token:Gold_gear"
+        ],
+        "similarity_tags": [
+          "token_payoff",
+          "death_payoff",
+          "ready_self"
+        ]
+      }
+    },
+    {
+      "play_id": "play:sprite-fountain:c26beabb",
+      "name": "Sprite Fountain",
+      "why": "Keyword reminder, on-play token creation, and Deathknell repeat effect need to stay linked but separate.",
+      "card_snapshot": {
+        "domain_ids": [
+          "mind"
+        ],
+        "card_type_ids": [
+          "gear"
+        ],
+        "energy": 2,
+        "might": null,
+        "power": 1
+      },
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "[Temporary] (Kill this at the start of its controller's Beginning Phase, before scoring.)"
+        },
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": "When you play this, play a ready 3 :rb_might: Sprite unit token with [Temporary] to your base."
+        },
+        {
+          "source_field": "rules_lines",
+          "line_index": 2,
+          "line_text": "[Deathknell][>] Repeat this gear's play effect. (When this dies, get the effect.)"
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:sprite-fountain:0:keyword:temporary",
+          "clause_group_id": "golden:sprite-fountain:rules_lines:0:group0",
+          "semantic_role": "identity_or_descriptor",
+          "fact_type": "keyword_marker",
+          "predicate": "has_keyword",
+          "payload": {
+            "object": {
+              "kind": "keyword",
+              "id": "temporary"
+            }
+          },
+          "evidence": "[Temporary]"
+        },
+        {
+          "fact_id": "golden:sprite-fountain:0:event:temporary_self_dies",
+          "clause_group_id": "golden:sprite-fountain:rules_lines:0:group0",
+          "semantic_role": "event_produced",
+          "fact_type": "produced_event",
+          "predicate": "kill",
+          "payload": {
+            "event": {
+              "id": "self_dies",
+              "produced": true
+            },
+            "conditions": [
+              {
+                "timing": "start_of_controller_beginning_phase",
+                "before": "scoring"
+              }
+            ]
+          },
+          "evidence": "Kill this at the start of its controller's Beginning Phase, before scoring"
+        },
+        {
+          "fact_id": "golden:sprite-fountain:1:trigger:self_played",
+          "clause_group_id": "golden:sprite-fountain:rules_lines:1:group0",
+          "semantic_role": "trigger_observed",
+          "fact_type": "event_trigger",
+          "predicate": "observe_event",
+          "payload": {
+            "event": {
+              "id": "self_played",
+              "subject": "self"
+            }
+          },
+          "evidence": "When you play this"
+        },
+        {
+          "fact_id": "golden:sprite-fountain:1:payoff:sprite_token",
+          "clause_group_id": "golden:sprite-fountain:rules_lines:1:group0",
+          "semantic_role": "payoff_output",
+          "fact_type": "token_creation",
+          "predicate": "play_token",
+          "payload": {
+            "event": {
+              "id": "token_created",
+              "produced": true
+            },
+            "outputs": [
+              {
+                "id": "sprite_unit_token_created",
+                "action": "play_token",
+                "object": "Sprite unit token"
+              }
+            ],
+            "object": {
+              "kind": "token",
+              "card_types": [
+                "unit"
+              ],
+              "tags": [
+                "Sprite"
+              ],
+              "keywords": [
+                "temporary"
+              ],
+              "stats": {
+                "might": 3
+              },
+              "state": [
+                "ready"
+              ]
+            },
+            "target": {
+              "location": "your_base"
+            }
+          },
+          "evidence": "play a ready 3 :rb_might: Sprite unit token with [Temporary] to your base"
+        },
+        {
+          "fact_id": "golden:sprite-fountain:2:keyword:deathknell",
+          "clause_group_id": "golden:sprite-fountain:rules_lines:2:group0",
+          "semantic_role": "identity_or_descriptor",
+          "fact_type": "keyword_marker",
+          "predicate": "has_keyword",
+          "payload": {
+            "object": {
+              "kind": "keyword",
+              "id": "deathknell"
+            }
+          },
+          "evidence": "[Deathknell]"
+        },
+        {
+          "fact_id": "golden:sprite-fountain:2:trigger:self_dies",
+          "clause_group_id": "golden:sprite-fountain:rules_lines:2:group0",
+          "semantic_role": "trigger_observed",
+          "fact_type": "event_trigger",
+          "predicate": "observe_event",
+          "payload": {
+            "event": {
+              "id": "self_dies",
+              "subject": "self"
+            }
+          },
+          "evidence": "When this dies"
+        },
+        {
+          "fact_id": "golden:sprite-fountain:2:payoff:repeat_play_effect",
+          "clause_group_id": "golden:sprite-fountain:rules_lines:2:group0",
+          "semantic_role": "payoff_output",
+          "fact_type": "payoff",
+          "predicate": "repeat_effect",
+          "payload": {
+            "outputs": [
+              {
+                "action": "repeat_effect",
+                "object": "this_gear_play_effect"
+              }
+            ]
+          },
+          "evidence": "Repeat this gear's play effect"
+        }
+      ],
+      "web_expectations": {
+        "enabled_by_event_ids": [
+          "self_played",
+          "self_dies"
+        ],
+        "enables_event_ids": [
+          "self_dies",
+          "token_created"
+        ],
+        "enables_output_ids": [
+          "sprite_unit_token_created"
+        ],
+        "filters": [
+          "keyword:temporary",
+          "keyword:deathknell",
+          "token:Sprite_unit"
+        ],
+        "similarity_tags": [
+          "token_payoff",
+          "deathknell_payoff",
+          "repeat_play_effect"
+        ]
+      }
+    },
+    {
+      "play_id": "play:poro-snax:089d7772",
+      "name": "Poro Snax",
+      "why": "On-play draw plus activated ability with resource costs, exhaust cost, and self-kill cost.",
+      "card_snapshot": {
+        "domain_ids": [
+          "calm"
+        ],
+        "card_type_ids": [
+          "gear"
+        ],
+        "energy": 1,
+        "might": null,
+        "power": 1
+      },
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "When you play this, draw 1."
+        },
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": ":rb_energy_1::rb_rune_calm:, :rb_exhaust:, Kill this: Draw 1."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:poro-snax:0:trigger:self_played",
+          "clause_group_id": "golden:poro-snax:rules_lines:0:group0",
+          "semantic_role": "trigger_observed",
+          "fact_type": "event_trigger",
+          "predicate": "observe_event",
+          "payload": {
+            "event": {
+              "id": "self_played",
+              "subject": "self"
+            }
+          },
+          "evidence": "When you play this"
+        },
+        {
+          "fact_id": "golden:poro-snax:0:payoff:draw_1",
+          "clause_group_id": "golden:poro-snax:rules_lines:0:group0",
+          "semantic_role": "payoff_output",
+          "fact_type": "card_flow",
+          "predicate": "draw",
+          "payload": {
+            "amounts": [
+              {
+                "value": 1,
+                "unit": "card"
+              }
+            ],
+            "outputs": [
+              {
+                "id": "card_drawn",
+                "action": "draw",
+                "object": "card"
+              }
+            ]
+          },
+          "evidence": "draw 1"
+        },
+        {
+          "fact_id": "golden:poro-snax:1:cost:activation",
+          "clause_group_id": "golden:poro-snax:rules_lines:1:group0",
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "pay",
+          "payload": {
+            "costs": [
+              {
+                "resource": "energy",
+                "amount": 1
+              },
+              {
+                "resource": "rune",
+                "domain": "calm",
+                "amount": 1
+              },
+              {
+                "action": "exhaust",
+                "subject": "self"
+              },
+              {
+                "action": "kill",
+                "subject": "self",
+                "event": "self_dies"
+              }
+            ]
+          },
+          "evidence": ":rb_energy_1::rb_rune_calm:, :rb_exhaust:, Kill this"
+        },
+        {
+          "fact_id": "golden:poro-snax:1:event:self_dies_cost",
+          "clause_group_id": "golden:poro-snax:rules_lines:1:group0",
+          "semantic_role": "event_produced",
+          "fact_type": "produced_event",
+          "predicate": "kill",
+          "payload": {
+            "event": {
+              "id": "self_dies",
+              "produced": true
+            },
+            "target": {
+              "kind": "card",
+              "scope": "self"
+            }
+          },
+          "evidence": "Kill this"
+        },
+        {
+          "fact_id": "golden:poro-snax:1:payoff:draw_1",
+          "clause_group_id": "golden:poro-snax:rules_lines:1:group0",
+          "semantic_role": "payoff_output",
+          "fact_type": "card_flow",
+          "predicate": "draw",
+          "payload": {
+            "amounts": [
+              {
+                "value": 1,
+                "unit": "card"
+              }
+            ],
+            "outputs": [
+              {
+                "id": "card_drawn",
+                "action": "draw",
+                "object": "card"
+              }
+            ]
+          },
+          "evidence": "Draw 1"
+        }
+      ],
+      "web_expectations": {
+        "enabled_by_event_ids": [
+          "self_played"
+        ],
+        "enables_event_ids": [
+          "self_dies"
+        ],
+        "enables_output_ids": [
+          "card_drawn"
+        ],
+        "filters": [
+          "action:draw",
+          "cost:energy",
+          "cost:rune_calm",
+          "cost:exhaust_self",
+          "cost:kill_self"
+        ],
+        "similarity_tags": [
+          "card_draw",
+          "activated_gear"
+        ]
+      }
+    },
+    {
+      "play_id": "play:safety-inspector:f2278612",
+      "name": "Safety Inspector",
+      "why": "Additional XP cost changes the later kill effect, so cost and conditional exception must be explicit.",
+      "card_snapshot": {
+        "domain_ids": [
+          "order"
+        ],
+        "card_type_ids": [
+          "unit"
+        ],
+        "energy": 5,
+        "might": 3,
+        "power": 1
+      },
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "You may spend 3 XP as an additional cost to play me."
+        },
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": "When you play me, each player must kill one of their units. If you paid my additional cost, you don't kill a unit this way."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:safety-inspector:0:cost:spend_3_xp",
+          "clause_group_id": "golden:safety-inspector:rules_lines:0:group0",
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "additional_cost",
+          "predicate": "spend",
+          "payload": {
+            "costs": [
+              {
+                "resource": "xp",
+                "amount": 3
+              }
+            ],
+            "modality": "optional",
+            "conditions": [
+              {
+                "applies_to": "play_self"
+              }
+            ]
+          },
+          "evidence": "You may spend 3 XP as an additional cost to play me"
+        },
+        {
+          "fact_id": "golden:safety-inspector:1:trigger:self_played",
+          "clause_group_id": "golden:safety-inspector:rules_lines:1:group0",
+          "semantic_role": "trigger_observed",
+          "fact_type": "event_trigger",
+          "predicate": "observe_event",
+          "payload": {
+            "event": {
+              "id": "self_played",
+              "subject": "self"
+            }
+          },
+          "evidence": "When you play me"
+        },
+        {
+          "fact_id": "golden:safety-inspector:1:event:each_player_kills_unit",
+          "clause_group_id": "golden:safety-inspector:rules_lines:1:group0",
+          "semantic_role": "event_produced",
+          "fact_type": "removal",
+          "predicate": "kill",
+          "payload": {
+            "event": {
+              "id": "unit_dies",
+              "produced": true
+            },
+            "target": {
+              "kind": "unit",
+              "controller": "each_player",
+              "amount": 1
+            },
+            "modality": "must"
+          },
+          "evidence": "each player must kill one of their units"
+        },
+        {
+          "fact_id": "golden:safety-inspector:1:restriction:paid_cost_prevents_self_kill",
+          "clause_group_id": "golden:safety-inspector:rules_lines:1:group0",
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "prevent",
+          "payload": {
+            "conditions": [
+              {
+                "if": "additional_cost_paid"
+              }
+            ],
+            "modifiers": [
+              {
+                "action": "kill",
+                "target": "your_unit",
+                "polarity": "prevention"
+              }
+            ]
+          },
+          "evidence": "If you paid my additional cost, you don't kill a unit this way"
+        }
+      ],
+      "web_expectations": {
+        "enabled_by_event_ids": [
+          "self_played"
+        ],
+        "enables_event_ids": [
+          "unit_dies"
+        ],
+        "enables_output_ids": [],
+        "filters": [
+          "cost:xp",
+          "action:kill",
+          "target:each_player_unit"
+        ],
+        "similarity_tags": [
+          "additional_cost_changes_effect",
+          "symmetric_removal"
+        ]
+      }
+    },
+    {
+      "play_id": "play:ornn-s-forge:0b5db274",
+      "name": "Ornn's Forge",
+      "why": "Static conditional cost reduction for a class of cards, not a trigger.",
+      "card_snapshot": {
+        "domain_ids": [
+          "colorless"
+        ],
+        "card_type_ids": [
+          "battlefield"
+        ],
+        "energy": null,
+        "might": null,
+        "power": null
+      },
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "While you control this battlefield, the first friendly non-token gear played each turn costs :rb_energy_1: less."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:ornn-s-forge:0:condition:control_battlefield",
+          "clause_group_id": "golden:ornn-s-forge:rules_lines:0:group0",
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "require",
+          "payload": {
+            "conditions": [
+              {
+                "state": "you_control_this_battlefield"
+              }
+            ],
+            "duration": "while"
+          },
+          "evidence": "While you control this battlefield"
+        },
+        {
+          "fact_id": "golden:ornn-s-forge:0:modifier:first_gear_cost_less",
+          "clause_group_id": "golden:ornn-s-forge:rules_lines:0:group0",
+          "semantic_role": "state_or_modifier",
+          "fact_type": "static_modifier",
+          "predicate": "reduce_cost",
+          "payload": {
+            "target": {
+              "kind": "card",
+              "card_types": [
+                "gear"
+              ],
+              "controller": "friendly",
+              "exclude": [
+                "token"
+              ],
+              "ordinal": "first_each_turn"
+            },
+            "amounts": [
+              {
+                "value": 1,
+                "unit": "energy",
+                "symbol": ":rb_energy_1:"
+              }
+            ],
+            "outputs": [
+              {
+                "id": "gear_cost_reduced",
+                "action": "reduce_cost",
+                "object": "gear"
+              }
+            ],
+            "duration": "each_turn"
+          },
+          "evidence": "the first friendly non-token gear played each turn costs :rb_energy_1: less"
+        }
+      ],
+      "web_expectations": {
+        "enabled_by_event_ids": [],
+        "enables_event_ids": [],
+        "enables_output_ids": [
+          "gear_cost_reduced"
+        ],
+        "filters": [
+          "modifier:cost_reduction",
+          "target:friendly_non_token_gear"
+        ],
+        "similarity_tags": [
+          "cost_reduction",
+          "gear_support"
+        ]
+      }
+    },
+    {
+      "play_id": "play:renata-glasc-industrialist:8a112b17",
+      "name": "Renata Glasc, Industrialist",
+      "why": "Static token entry-state modifier that should combine with token producers.",
+      "card_snapshot": {
+        "domain_ids": [
+          "order"
+        ],
+        "card_type_ids": [
+          "unit"
+        ],
+        "energy": 4,
+        "might": 4,
+        "power": 1
+      },
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "Your tokens enter ready."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:renata-glasc-industrialist:0:modifier:tokens_enter_ready",
+          "clause_group_id": "golden:renata-glasc-industrialist:rules_lines:0:group0",
+          "semantic_role": "state_or_modifier",
+          "fact_type": "entry_state",
+          "predicate": "enter_ready",
+          "payload": {
+            "target": {
+              "kind": "token",
+              "controller": "you"
+            },
+            "event": {
+              "id": "token_enters",
+              "subject": "your_token"
+            },
+            "outputs": [
+              {
+                "id": "token_enters_ready",
+                "action": "enter_ready",
+                "object": "your_token"
+              }
+            ],
+            "modifiers": [
+              {
+                "state": "ready"
+              }
+            ]
+          },
+          "evidence": "Your tokens enter ready"
+        }
+      ],
+      "web_expectations": {
+        "enabled_by_event_ids": [
+          "token_created"
+        ],
+        "enables_event_ids": [
+          "token_enters"
+        ],
+        "enables_output_ids": [
+          "token_enters_ready"
+        ],
+        "filters": [
+          "modifier:token_entry_state",
+          "state:ready"
+        ],
+        "similarity_tags": [
+          "token_support",
+          "entry_state_modifier"
+        ]
+      }
+    },
+    {
+      "play_id": "play:abandon:03e0b30c",
+      "name": "Abandon",
+      "why": "Counter plus return-to-hand replacement and Predict recycle should create relation-bearing facts.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": "Counter a spell. Return it to its owner's hand instead of putting it in their trash."
+        },
+        {
+          "source_field": "rules_lines",
+          "line_index": 2,
+          "line_text": "[Predict]. (Look at the top card of your Main Deck. You may recycle it.)"
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:abandon:1:event:counter_spell",
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "semantic_role": "event_produced",
+          "fact_type": "produced_event",
+          "predicate": "counter",
+          "payload": {
+            "event": {
+              "id": "spell_countered",
+              "produced": true
+            },
+            "target": {
+              "kind": "spell"
+            },
+            "outputs": [
+              {
+                "id": "spell_countered",
+                "action": "counter"
+              }
+            ]
+          },
+          "evidence": "Counter a spell"
+        },
+        {
+          "fact_id": "golden:abandon:2:event:card_recycled",
+          "source_field": "rules_lines",
+          "line_index": 2,
+          "semantic_role": "event_produced",
+          "fact_type": "card_flow",
+          "predicate": "recycle",
+          "payload": {
+            "event": {
+              "id": "card_recycled",
+              "produced": true
+            },
+            "outputs": [
+              {
+                "id": "card_recycled",
+                "action": "recycle"
+              }
+            ]
+          },
+          "evidence": "You may recycle it"
+        }
+      ]
+    },
+    {
+      "play_id": "play:wind-wall:96af2272",
+      "name": "Wind Wall",
+      "why": "Simple counter spell should be comparable to Abandon.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": "Counter a spell."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:wind-wall:1:event:counter_spell",
+          "semantic_role": "event_produced",
+          "fact_type": "produced_event",
+          "predicate": "counter",
+          "payload": {
+            "event": {
+              "id": "spell_countered",
+              "produced": true
+            },
+            "target": {
+              "kind": "spell"
+            }
+          },
+          "evidence": "Counter a spell"
+        }
+      ]
+    },
+    {
+      "play_id": "play:karma-channeler:7a5457ee",
+      "name": "Karma, Channeler",
+      "why": "Card recycle observer and buff payoff should connect to Predict cards.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": "When you recycle one or more cards to your Main Deck, buff a friendly unit. (If it doesn't have a buff, it gets a +1 :rb_might: buff. Runes aren't cards.)"
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:karma-channeler:1:trigger:card_recycled",
+          "semantic_role": "trigger_observed",
+          "fact_type": "event_trigger",
+          "predicate": "observe_event",
+          "payload": {
+            "event": {
+              "id": "card_recycled",
+              "subject": "you"
+            }
+          },
+          "evidence": "When you recycle one or more cards to your Main Deck"
+        },
+        {
+          "fact_id": "golden:karma-channeler:1:event:buff",
+          "semantic_role": "event_produced",
+          "fact_type": "state_modifier",
+          "predicate": "buff",
+          "payload": {
+            "event": {
+              "id": "unit_buffed",
+              "produced": true
+            },
+            "outputs": [
+              {
+                "id": "unit_buffed",
+                "action": "buff"
+              }
+            ]
+          },
+          "evidence": "buff a friendly unit"
+        }
+      ]
+    },
+    {
+      "play_id": "play:eclipse:e147d1e4",
+      "name": "Eclipse",
+      "why": "Predict on a non-counter card should also produce card_recycled.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 2,
+          "line_text": "[Predict]. (Look at the top card of your Main Deck. You may recycle it.)"
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:eclipse:2:event:card_recycled",
+          "semantic_role": "event_produced",
+          "fact_type": "card_flow",
+          "predicate": "recycle",
+          "payload": {
+            "event": {
+              "id": "card_recycled",
+              "produced": true
+            }
+          },
+          "evidence": "You may recycle it"
+        }
+      ]
+    },
+    {
+      "play_id": "play:ravenbloom-conservatory:388622e7",
+      "name": "Ravenbloom Conservatory",
+      "why": "Reveal-top-card and fallback recycle should no longer be uncovered.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "When you defend here, reveal the top card of your Main Deck. If it's a spell, put it in your hand. Otherwise, recycle it."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:ravenbloom-conservatory:0:payoff:reveal",
+          "semantic_role": "payoff_output",
+          "fact_type": "card_flow",
+          "predicate": "reveal",
+          "payload": {
+            "amounts": [
+              {
+                "value": 1,
+                "unit": "card"
+              }
+            ]
+          },
+          "evidence": "reveal the top card of your Main Deck"
+        },
+        {
+          "fact_id": "golden:ravenbloom-conservatory:0:event:recycle",
+          "semantic_role": "event_produced",
+          "fact_type": "card_flow",
+          "predicate": "recycle",
+          "payload": {
+            "event": {
+              "id": "card_recycled",
+              "produced": true
+            }
+          },
+          "evidence": "recycle it"
+        }
+      ]
+    },
+    {
+      "play_id": "play:riposte:d8988aaf",
+      "name": "Riposte",
+      "why": "Counter embedded after target selection should still become a counter fact.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": "Choose a friendly unit and a spell. Counter that spell and give that unit +:rb_might: equal to that spell's Energy cost this turn."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:riposte:1:event:counter_spell",
+          "semantic_role": "event_produced",
+          "fact_type": "produced_event",
+          "predicate": "counter",
+          "payload": {
+            "event": {
+              "id": "spell_countered",
+              "produced": true
+            },
+            "target": {
+              "kind": "spell"
+            }
+          },
+          "evidence": "Counter that spell"
+        }
+      ]
+    },
+    {
+      "play_id": "play:highlander:fa089001",
+      "name": "Highlander",
+      "why": "Recall-style replacement text should emit movement for relation coverage.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": "Choose a friendly unit. The next time it would die this turn, heal it, exhaust it, and recall it instead. (Send it to base. This isn't a move.)"
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:highlander:1:event:recall",
+          "semantic_role": "event_produced",
+          "fact_type": "movement",
+          "predicate": "return_to_hand",
+          "payload": {
+            "event": {
+              "id": "unit_moved",
+              "produced": true
+            },
+            "outputs": [
+              {
+                "id": "unit_recalled",
+                "action": "return_to_hand"
+              }
+            ]
+          },
+          "evidence": "recall it instead"
+        }
+      ]
+    },
+    {
+      "play_id": "play:the-list:dc6594e5",
+      "name": "The List",
+      "why": "Activated named-tag debuff should remain comparable to other temporary Might debuffs.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": ":rb_exhaust:: Give a unit with the named tag -2 :rb_might: this turn."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:the-list:1:cost:exhaust",
+          "semantic_role": "cost_or_requirement",
+          "fact_type": "activated_ability_cost",
+          "predicate": "pay",
+          "payload": {
+            "costs": [
+              {
+                "action": "exhaust",
+                "subject": "self"
+              }
+            ]
+          },
+          "evidence": ":rb_exhaust:"
+        },
+        {
+          "fact_id": "golden:the-list:1:modifier:named_tag_debuff",
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "payload": {
+            "target": {
+              "kind": "unit",
+              "qualifier": "named_tag"
+            },
+            "amounts": [
+              {
+                "value": -2,
+                "unit": "might"
+              }
+            ],
+            "duration": "this_turn",
+            "outputs": [
+              {
+                "id": "might_modified"
+              }
+            ]
+          },
+          "evidence": "Give a unit with the named tag -2 :rb_might: this turn"
+        }
+      ]
+    },
+    {
+      "play_id": "play:aphelios-exalted:b81e7f1f",
+      "name": "Aphelios, Exalted",
+      "why": "Attachment trigger should be explicit instead of leaving the modal line uncovered.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "When you attach an Equipment to me, choose one that hasn't been chosen this turn —"
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:aphelios-exalted:0:trigger:equipment_attached",
+          "semantic_role": "trigger_observed",
+          "fact_type": "event_trigger",
+          "predicate": "observe_event",
+          "payload": {
+            "event": {
+              "id": "equipment_attached",
+              "subject": "equipment",
+              "target": "self"
+            }
+          },
+          "evidence": "When you attach an Equipment to me"
+        }
+      ]
+    },
+    {
+      "play_id": "play:ezreal-dashing:293244ee",
+      "name": "Ezreal, Dashing",
+      "why": "Self combat-damage prevention should be a restriction fact, not an uncovered line.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": "I don't deal combat damage."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:ezreal-dashing:1:restriction:no_combat_damage",
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "prevent",
+          "payload": {
+            "target": {
+              "kind": "damage",
+              "source": "self"
+            },
+            "damage_kind": "combat",
+            "polarity": "prevention"
+          },
+          "evidence": "I don't deal combat damage"
+        }
+      ]
+    },
+    {
+      "play_id": "play:lee-sin-ascetic:5a1ebe30",
+      "name": "Lee Sin, Ascetic",
+      "why": "Buff capacity text should be represented instead of remaining uncovered.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 2,
+          "line_text": "I can have any number of buffs."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:lee-sin-ascetic:2:permission:any_number_buffs",
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "permission",
+          "predicate": "buff",
+          "payload": {
+            "target": {
+              "kind": "card",
+              "scope": "self"
+            },
+            "limit": "any_number"
+          },
+          "evidence": "I can have any number of buffs"
+        }
+      ]
+    },
+    {
+      "play_id": "play:wizened-elder:a54d19e4",
+      "name": "Wizened Elder",
+      "why": "Self conditional Might modifier should become a relation-bearing fact.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "While I'm buffed, I have an additional +1 :rb_might:."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:wizened-elder:0:condition:while_buffed",
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "restriction",
+          "predicate": "require",
+          "payload": {
+            "conditions": [
+              {
+                "state": "while_buffed"
+              }
+            ],
+            "duration": "while"
+          },
+          "evidence": "While I'm buffed"
+        },
+        {
+          "fact_id": "golden:wizened-elder:0:modifier:self_might",
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "payload": {
+            "target": {
+              "kind": "card",
+              "scope": "self"
+            },
+            "amounts": [
+              {
+                "value": 1,
+                "unit": "might"
+              }
+            ],
+            "outputs": [
+              {
+                "id": "might_modified"
+              }
+            ]
+          },
+          "evidence": "I have an additional +1 :rb_might:"
+        }
+      ]
+    },
+    {
+      "play_id": "play:forbidding-waste:0c19865c",
+      "name": "Forbidding Waste",
+      "why": "Conditional battlefield debuff should not be lost because the target is pronoun-based.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "While a unit here is defending alone, it has -2 :rb_might:. (It's alone if there are no other friendly units here.)"
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:forbidding-waste:0:modifier:unit_debuff",
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "payload": {
+            "target": {
+              "kind": "unit"
+            },
+            "amounts": [
+              {
+                "value": -2,
+                "unit": "might"
+              }
+            ],
+            "outputs": [
+              {
+                "id": "might_modified"
+              }
+            ]
+          },
+          "evidence": "a unit here is defending alone, it has -2 :rb_might:"
+        }
+      ]
+    },
+    {
+      "play_id": "play:miss-fortune-buccaneer:462cb81d",
+      "name": "Miss Fortune, Buccaneer",
+      "why": "Play-location permissions should form precise clusters instead of movement broad relations.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "You may play me to an open battlefield."
+        },
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": "Friendly units may be played to open battlefields."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:miss-fortune-buccaneer:0:permission:self_open_battlefield",
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "permission",
+          "predicate": "play",
+          "payload": {
+            "target": {
+              "kind": "card",
+              "scope": "self"
+            },
+            "destination": {
+              "zone": "battlefield",
+              "state": "open"
+            }
+          },
+          "evidence": "You may play me to an open battlefield"
+        },
+        {
+          "fact_id": "golden:miss-fortune-buccaneer:1:permission:friendly_units_open_battlefields",
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "semantic_role": "restriction_or_permission",
+          "fact_type": "permission",
+          "predicate": "play",
+          "payload": {
+            "target": {
+              "kind": "unit",
+              "controller": "friendly"
+            },
+            "destination": {
+              "zone": "battlefield",
+              "state": "open"
+            }
+          },
+          "evidence": "Friendly units may be played to open battlefields"
+        }
+      ]
+    },
+    {
+      "play_id": "play:bard-mercurial:a8725232",
+      "name": "Bard, Mercurial",
+      "why": "Additional legend exhaust cost and move-to-open-battlefield payoff should be visible.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "You may exhaust your legend as an additional cost to play me."
+        },
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": "When you play me, if you paid the additional cost, move any number of your units to an open battlefield."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:bard-mercurial:1:event:move_units_open_battlefield",
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "semantic_role": "event_produced",
+          "fact_type": "movement",
+          "predicate": "move",
+          "payload": {
+            "event": {
+              "id": "unit_moved",
+              "produced": true
+            },
+            "target": {
+              "kind": "unit",
+              "controller": "you"
+            },
+            "destination": {
+              "zone": "battlefield",
+              "state": "open"
+            },
+            "outputs": [
+              {
+                "id": "unit_moved"
+              }
+            ]
+          },
+          "evidence": "move any number of your units to an open battlefield"
+        }
+      ]
+    },
+    {
+      "play_id": "play:ancient-henge:9117108a",
+      "name": "Ancient Henge",
+      "why": "Add-resource effects should become resource_change facts rather than only keyword markers.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": ":rb_exhaust:: [Reaction] — Pay any amount of Energy to [Add] that much :rb_rune_rainbow:. (Abilities that add resources can't be reacted to.)"
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:ancient-henge:0:resource:add_rainbow",
+          "semantic_role": "payoff_output",
+          "fact_type": "resource_change",
+          "predicate": "add_resource",
+          "payload": {
+            "outputs": [
+              {
+                "id": "resource_added"
+              }
+            ],
+            "amounts": [
+              {
+                "value": "variable",
+                "unit": "rune",
+                "domain": "any"
+              }
+            ]
+          },
+          "evidence": "[Add] that much :rb_rune_rainbow:"
+        }
+      ]
+    },
+    {
+      "play_id": "play:deathgrip:bcba5fad",
+      "name": "Deathgrip",
+      "why": "Friendly-unit kill cost should produce a death event, and variable Might payoff should be explicit.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": "Kill a friendly unit. If you do, give +:rb_might: equal to its Might to another friendly unit this turn."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:deathgrip:1:event:friendly_unit_dies",
+          "semantic_role": "event_produced",
+          "fact_type": "removal",
+          "predicate": "kill",
+          "payload": {
+            "event": {
+              "id": "friendly_unit_dies",
+              "produced": true
+            },
+            "target": {
+              "kind": "unit",
+              "controller": "friendly"
+            }
+          },
+          "evidence": "Kill a friendly unit"
+        },
+        {
+          "fact_id": "golden:deathgrip:1:modifier:source_might",
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "payload": {
+            "target": {
+              "kind": "unit",
+              "controller": "friendly"
+            },
+            "amounts": [
+              {
+                "value": "source_might",
+                "unit": "might"
+              }
+            ],
+            "duration": "this_turn",
+            "outputs": [
+              {
+                "id": "might_modified"
+              }
+            ]
+          },
+          "evidence": "give +:rb_might: equal to its Might to another friendly unit this turn"
+        }
+      ]
+    },
+    {
+      "play_id": "play:acceptable-losses:23e05503",
+      "name": "Acceptable Losses",
+      "why": "Each-player gear removal should not be uncovered.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": "Each player kills one of their gear."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:acceptable-losses:1:event:gear_dies",
+          "semantic_role": "event_produced",
+          "fact_type": "removal",
+          "predicate": "kill",
+          "payload": {
+            "event": {
+              "id": "gear_dies",
+              "produced": true
+            },
+            "target": {
+              "kind": "gear",
+              "controller": "each_player",
+              "amount": 1
+            }
+          },
+          "evidence": "Each player kills one of their gear"
+        }
+      ]
+    },
+    {
+      "play_id": "play:flame-chompers:a6e26638",
+      "name": "Flame Chompers",
+      "why": "Self-discard triggers and pay-to-play-self clauses should become explicit event facts.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "When you discard me, you may pay :rb_rune_fury: to play me."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:flame-chompers:0:trigger:self_discarded",
+          "semantic_role": "trigger_observed",
+          "fact_type": "event_trigger",
+          "predicate": "observe_event",
+          "payload": {
+            "event": {
+              "id": "self_discarded",
+              "subject": "self"
+            }
+          },
+          "evidence": "When you discard me"
+        },
+        {
+          "fact_id": "golden:flame-chompers:0:event:play_self",
+          "semantic_role": "event_produced",
+          "fact_type": "produced_event",
+          "predicate": "play",
+          "payload": {
+            "event": {
+              "id": "card_played",
+              "produced": true
+            },
+            "target": {
+              "kind": "card",
+              "scope": "self"
+            },
+            "modality": "optional"
+          },
+          "evidence": "you may pay :rb_rune_fury: to play me"
+        }
+      ]
+    },
+    {
+      "play_id": "play:desert-s-call:c06bad0a",
+      "name": "Desert's Call",
+      "why": "Multi-word token names should be extracted as token_creation facts.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": "Play a 2 :rb_might: Sand Soldier unit token."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:deserts-call:1:token:sand_soldier",
+          "semantic_role": "payoff_output",
+          "fact_type": "token_creation",
+          "predicate": "play_token",
+          "payload": {
+            "event": {
+              "id": "token_created",
+              "produced": true
+            },
+            "object": {
+              "kind": "token",
+              "card_types": ["unit"],
+              "tags": ["Sand Soldier"],
+              "stats": {
+                "might": 2
+              }
+            },
+            "outputs": [
+              {
+                "id": "sand_soldier_unit_token_created"
+              }
+            ]
+          },
+          "evidence": "Play a 2 :rb_might: Sand Soldier unit token"
+        }
+      ]
+    },
+    {
+      "play_id": "play:zilean-time-mage:8fb4d0e9",
+      "name": "Zilean, Time Mage",
+      "why": "Token-copy replacement effects should be represented without hand-authored relations.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "Once each turn, if you would play a token unit while I'm at a battlefield, you may play that token and an additional copy of it instead."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:zilean-time-mage:0:replacement:token_copy",
+          "semantic_role": "state_or_modifier",
+          "fact_type": "replacement_effect",
+          "predicate": "copy",
+          "payload": {
+            "target": {
+              "kind": "token",
+              "card_types": ["unit"]
+            },
+            "outputs": [
+              {
+                "id": "token_copied"
+              }
+            ],
+            "replacement": "additional_copy",
+            "modality": "optional"
+          },
+          "evidence": "if you would play a token unit while I'm at a battlefield, you may play that token and an additional copy of it instead"
+        }
+      ]
+    },
+    {
+      "play_id": "play:spinning-axe:54c823a0",
+      "name": "Spinning Axe",
+      "why": "Attach reminder text should produce equipment attachment events, not detachment events.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": "[Equip] :rb_rune_rainbow: (:rb_rune_rainbow:: Attach this to a unit you control.)"
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:spinning-axe:1:event:equipment_attached",
+          "semantic_role": "event_produced",
+          "fact_type": "produced_event",
+          "predicate": "attach",
+          "payload": {
+            "event": {
+              "id": "equipment_attached",
+              "produced": true
+            },
+            "target": {
+              "kind": "unit",
+              "controller": "you"
+            },
+            "outputs": [
+              {
+                "id": "equipment_attached"
+              }
+            ]
+          },
+          "evidence": "Attach this to a unit you control"
+        }
+      ]
+    },
+    {
+      "play_id": "play:blitzcrank-impassive:19f338cd",
+      "name": "Blitzcrank, Impassive",
+      "why": "Self return-to-owner-hand text should not be left as only a trigger.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 2,
+          "line_text": "When I hold, return me to my owner's hand."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:blitzcrank-impassive:2:payoff:return_to_hand",
+          "semantic_role": "payoff_output",
+          "fact_type": "movement",
+          "predicate": "return_to_hand",
+          "payload": {
+            "event": {
+              "id": "card_moved",
+              "produced": true
+            },
+            "target": {
+              "zone": "hand",
+              "owner": "my"
+            },
+            "outputs": [
+              {
+                "id": "unit_recalled"
+              }
+            ]
+          },
+          "evidence": "return me to my owner's hand"
+        }
+      ]
+    },
+    {
+      "play_id": "play:the-academy:f9fe7741",
+      "name": "The Academy",
+      "why": "Granting Repeat to the next spell should become a keyword grant, not only a keyword marker.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "When you hold here, give your next spell this turn [Repeat] equal to its base cost. (You may pay the additional cost to repeat the spell's effect.)"
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:the-academy:0:keyword:repeat",
+          "semantic_role": "state_or_modifier",
+          "fact_type": "keyword_grant",
+          "predicate": "gain_keyword",
+          "payload": {
+            "target": {
+              "kind": "spell",
+              "controller": "you"
+            },
+            "keywords": [
+              "repeat"
+            ],
+            "duration": "this_turn",
+            "outputs": [
+              {
+                "id": "keyword_granted"
+              }
+            ]
+          },
+          "evidence": "give your next spell this turn [Repeat] equal to its base cost"
+        }
+      ]
+    },
+    {
+      "play_id": "play:rumble-hotheaded:118ba12c",
+      "name": "Rumble, Hotheaded",
+      "why": "Composite recycle/play-from-trash/cost-reduction text should produce reusable facts.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": "When I conquer, you may recycle another friendly unit to play a Mech from your trash. Reduce its Energy cost by the Might of the unit you recycled."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:rumble-hotheaded:1:event:card_recycled",
+          "semantic_role": "event_produced",
+          "fact_type": "card_flow",
+          "predicate": "recycle",
+          "payload": {
+            "event": {
+              "id": "card_recycled",
+              "produced": true
+            },
+            "target": {
+              "kind": "unit",
+              "controller": "friendly"
+            },
+            "outputs": [
+              {
+                "id": "card_recycled"
+              }
+            ]
+          },
+          "evidence": "recycle another friendly unit"
+        },
+        {
+          "fact_id": "golden:rumble-hotheaded:1:event:play_mech_from_trash",
+          "semantic_role": "event_produced",
+          "fact_type": "produced_event",
+          "predicate": "play",
+          "payload": {
+            "event": {
+              "id": "card_played",
+              "produced": true
+            },
+            "target": {
+              "kind": "card",
+              "zone": "trash"
+            },
+            "outputs": [
+              {
+                "id": "card_played"
+              }
+            ]
+          },
+          "evidence": "play a Mech from your trash"
+        },
+        {
+          "fact_id": "golden:rumble-hotheaded:1:modifier:reduce_cost",
+          "semantic_role": "state_or_modifier",
+          "fact_type": "static_modifier",
+          "predicate": "reduce_cost",
+          "payload": {
+            "amounts": [
+              {
+                "value": "variable",
+                "unit": "energy"
+              }
+            ],
+            "outputs": [
+              {
+                "id": "play_cost_reduced"
+              }
+            ]
+          },
+          "evidence": "Reduce its Energy cost by the Might of the unit you recycled"
+        }
+      ]
+    },
+    {
+      "play_id": "play:janna-savior:3e9ef70d",
+      "name": "Janna, Savior",
+      "why": "Move up to one enemy unit from here to base should not parse the target as only 'up'.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": "When you play me, heal your units here, then move up to one enemy unit from here to its base."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:janna-savior:1:event:enemy_unit_moved",
+          "semantic_role": "event_produced",
+          "fact_type": "movement",
+          "predicate": "move",
+          "payload": {
+            "event": {
+              "id": "unit_moved",
+              "produced": true
+            },
+            "target": {
+              "kind": "unit",
+              "controller": "opponent",
+              "location": "here"
+            },
+            "destination": {
+              "zone": "base"
+            },
+            "outputs": [
+              {
+                "id": "unit_moved"
+              }
+            ]
+          },
+          "evidence": "move up to one enemy unit from here to its base"
+        }
+      ]
+    },
+    {
+      "play_id": "play:ravenborn-tome:f46fe953",
+      "name": "Ravenborn Tome",
+      "why": "Next-spell Bonus Damage should become a damage modifier fact.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": ":rb_exhaust:: The next spell you play this turn deals 1 Bonus Damage. (Each instance of damage the spell deals is increased by 1.)"
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:ravenborn-tome:0:modifier:bonus_damage",
+          "semantic_role": "state_or_modifier",
+          "fact_type": "static_modifier",
+          "predicate": "modify_stat",
+          "payload": {
+            "target": {
+              "kind": "damage",
+              "source": "next_spell"
+            },
+            "amounts": [
+              {
+                "value": 1,
+                "unit": "bonus_damage"
+              }
+            ],
+            "duration": "this_turn",
+            "outputs": [
+              {
+                "id": "bonus_damage_added"
+              }
+            ]
+          },
+          "evidence": "The next spell you play this turn deals 1 Bonus Damage"
+        }
+      ]
+    },
+    {
+      "play_id": "play:fiora-peerless:f8a59eeb",
+      "name": "Fiora, Peerless",
+      "why": "Might doubling should be represented as a stat modifier instead of an unlinked trigger.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "When I attack or defend one on one, double my Might this combat."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:fiora-peerless:0:modifier:double_might",
+          "semantic_role": "state_or_modifier",
+          "fact_type": "stat_change",
+          "predicate": "modify_stat",
+          "payload": {
+            "stat": "might",
+            "multiplier": 2,
+            "duration": "this_combat",
+            "outputs": [
+              {
+                "id": "might_modified"
+              }
+            ]
+          },
+          "evidence": "double my Might this combat"
+        }
+      ]
+    },
+    {
+      "play_id": "play:purifier:3e9bbd4c",
+      "name": "Purifier",
+      "why": "Equipment granting Assault should become a keyword grant, not just an Assault marker.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "Your Equipment each give [Assault]. (+1 :rb_might: while equipped unit is an attacker.)"
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:purifier:0:keyword:assault",
+          "semantic_role": "state_or_modifier",
+          "fact_type": "keyword_grant",
+          "predicate": "gain_keyword",
+          "payload": {
+            "keywords": [
+              "assault"
+            ],
+            "outputs": [
+              {
+                "id": "keyword_granted"
+              }
+            ]
+          },
+          "evidence": "Your Equipment each give [Assault]"
+        }
+      ]
+    },
+    {
+      "play_id": "play:fortified-position:31bb26b4",
+      "name": "Fortified Position",
+      "why": "Temporary Shield gain should produce a keyword grant with combat duration.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "When you defend here, choose a unit. It gains [Shield 2] this combat. (+2 :rb_might: while it's a defender.)"
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:fortified-position:0:keyword:shield",
+          "semantic_role": "state_or_modifier",
+          "fact_type": "keyword_grant",
+          "predicate": "gain_keyword",
+          "payload": {
+            "keywords": [
+              "shield"
+            ],
+            "duration": "this_combat",
+            "outputs": [
+              {
+                "id": "keyword_granted"
+              }
+            ]
+          },
+          "evidence": "It gains [Shield 2] this combat"
+        }
+      ]
+    },
+    {
+      "play_id": "play:combat-chef:404f2e45",
+      "name": "Combat Chef",
+      "why": "Weaponmaster reminder text should produce equipment attachment and equip cost-reduction facts.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 0,
+          "line_text": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for :rb_rune_rainbow: less, even if it's already attached.)"
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:combat-chef:0:event:equipment_attached",
+          "semantic_role": "event_produced",
+          "fact_type": "produced_event",
+          "predicate": "attach",
+          "payload": {
+            "event": {
+              "id": "equipment_attached",
+              "produced": true
+            },
+            "target": {
+              "kind": "card",
+              "scope": "self"
+            },
+            "outputs": [
+              {
+                "id": "equipment_attached"
+              }
+            ]
+          },
+          "evidence": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for :rb_rune_rainbow: less"
+        },
+        {
+          "fact_id": "golden:combat-chef:0:modifier:equip_cost_reduced",
+          "semantic_role": "state_or_modifier",
+          "fact_type": "static_modifier",
+          "predicate": "reduce_cost",
+          "payload": {
+            "target": {
+              "kind": "gear",
+              "controller": "you"
+            },
+            "outputs": [
+              {
+                "id": "gear_cost_reduced"
+              }
+            ]
+          },
+          "evidence": "[Weaponmaster] (When you play me, you may [Equip] one of your Equipment to me for :rb_rune_rainbow: less"
+        }
+      ]
+    },
+    {
+      "play_id": "play:confront:dca66872",
+      "name": "Confront",
+      "why": "Units you play this turn enter ready should be modeled as an entry-state modifier.",
+      "source_lines": [
+        {
+          "source_field": "rules_lines",
+          "line_index": 1,
+          "line_text": "Units you play this turn enter ready. Draw 1."
+        }
+      ],
+      "minimum_expected_facts": [
+        {
+          "fact_id": "golden:confront:1:modifier:enter_ready",
+          "semantic_role": "state_or_modifier",
+          "fact_type": "entry_state",
+          "predicate": "enter_ready",
+          "payload": {
+            "target": {
+              "kind": "unit"
+            },
+            "outputs": [
+              {
+                "id": "token_enters_ready"
+              }
+            ]
+          },
+          "evidence": "Units you play this turn enter ready"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,285 @@
+{
+  "version": "2026-05-12",
+  "extractor": "semantic_facts",
+  "inputs": {
+    "cards": "C:\\Users\\Wuerike\\workspace\\riftbound\\data\\processed\\cards\\normalized\\cards_normalized.json",
+    "inventory": "C:\\Users\\Wuerike\\workspace\\riftbound\\data\\processed\\cards\\inventory\\cards_text_inventory.json",
+    "taxonomy": "C:\\Users\\Wuerike\\workspace\\riftbound\\scripts\\04_cards_feature_extraction\\contracts\\feature_relation_taxonomy.json",
+    "alignment": "C:\\Users\\Wuerike\\workspace\\riftbound\\data\\processed\\cards\\inventory\\cards_taxonomy_alignment.json",
+    "schema": "C:\\Users\\Wuerike\\workspace\\riftbound\\scripts\\04_cards_feature_extraction\\contracts\\semantic_facts_schema.json",
+    "ontology": "C:\\Users\\Wuerike\\workspace\\riftbound\\scripts\\04_cards_feature_extraction\\contracts\\semantic_ontology.json",
+    "extraction_rules": "C:\\Users\\Wuerike\\workspace\\riftbound\\scripts\\04_cards_feature_extraction\\contracts\\semantic_extraction_rules.json"
+  },
+  "summary": {
+    "card_count": 767,
+    "fact_count": 6311,
+    "cards_with_facts": 767,
+    "text_line_count": 1248,
+    "text_lines_with_facts": 1228,
+    "text_lines_without_facts": 20,
+    "text_line_fact_coverage": 0.984,
+    "legacy_rule_count": 622,
+    "contract_rule_count": 1893
+  },
+  "facts_by_source_kind": {
+    "structural_field": 3796,
+    "contract_rule": 1893,
+    "legacy_rule": 622
+  },
+  "top_contract_rules": {
+    "activation_cost": 232,
+    "trigger_self_played": 127,
+    "draw_cards": 105,
+    "give_might": 76,
+    "move_unit": 64,
+    "play_token": 64,
+    "deal_damage": 56,
+    "attach_equipment": 48,
+    "buff_unit": 43,
+    "ready_unit": 40,
+    "recycle_card": 36,
+    "trigger_self_conquers": 35,
+    "intrinsic_combat_might_modifier": 34,
+    "look_reveal_top_deck": 33,
+    "gain_xp": 31,
+    "trigger_self_conquers_or_holds": 30,
+    "add_resource": 27,
+    "condition_while_attacker": 25,
+    "costs_less_energy": 25,
+    "trigger_self_dies": 24,
+    "channel_rune": 23,
+    "stun_unit": 23,
+    "target_has_keywords": 22,
+    "play_card_from_zone": 22,
+    "self_move_permission": 21,
+    "repeat_effect": 21,
+    "return_to_owner_hand": 20,
+    "trigger_self_moves": 20,
+    "discard_cards": 20,
+    "grant_keyword_to_target": 20,
+    "trigger_self_attacks": 19,
+    "banish_target": 18,
+    "weaponmaster_equip": 18,
+    "ready_self": 18,
+    "condition_while_defender": 18,
+    "deal_variable_damage": 18,
+    "self_enters_ready": 17,
+    "trigger_self_holds": 16,
+    "trigger_self_attacks_or_defends": 16,
+    "self_has_might_modifier": 15
+  },
+  "contract_rule_coverage": {
+    "contract_rule_count": 1893,
+    "legacy_rule_count": 622,
+    "contract_share": 0.3
+  },
+  "by_semantic_role": {
+    "identity_or_descriptor": 4247,
+    "event_produced": 477,
+    "state_or_modifier": 373,
+    "trigger_observed": 358,
+    "payoff_output": 357,
+    "cost_or_requirement": 265,
+    "restriction_or_permission": 125,
+    "targeting_or_scope": 109
+  },
+  "by_fact_type": {
+    "identity_reference": 2395,
+    "stat_change": 1537,
+    "keyword_marker": 457,
+    "event_trigger": 358,
+    "card_flow": 236,
+    "activated_ability_cost": 232,
+    "state_modifier": 128,
+    "produced_event": 114,
+    "movement": 109,
+    "keyword_reference": 107,
+    "static_modifier": 97,
+    "resource_change": 89,
+    "restriction": 79,
+    "damage": 75,
+    "token_creation": 64,
+    "keyword_grant": 44,
+    "permission": 39,
+    "removal": 38,
+    "additional_cost": 33,
+    "entry_state": 26,
+    "payoff": 21,
+    "score_change": 13,
+    "replacement_effect": 9,
+    "control_change": 5,
+    "copy_effect": 4,
+    "target_scope": 2
+  },
+  "by_predicate": {
+    "has_stat": 1395,
+    "has_domain": 849,
+    "has_tag": 779,
+    "has_card_type": 767,
+    "has_keyword": 457,
+    "observe_event": 358,
+    "pay": 247,
+    "modify_stat": 159,
+    "reference_keyword": 107,
+    "draw": 105,
+    "move": 103,
+    "damage": 76,
+    "reduce_cost": 75,
+    "play_token": 64,
+    "kill": 58,
+    "ready": 58,
+    "attach": 57,
+    "require": 49,
+    "recycle": 47,
+    "gain_keyword": 45,
+    "buff": 44,
+    "play": 42,
+    "return_to_hand": 41,
+    "add_resource": 33,
+    "gain_xp": 31,
+    "stun": 26,
+    "look": 25,
+    "prevent": 25,
+    "channel": 24,
+    "enter_ready": 23,
+    "discard": 23,
+    "repeat_effect": 21,
+    "banish": 19,
+    "score": 13,
+    "exhaust": 11,
+    "counter": 9,
+    "reveal": 8,
+    "cost_cap_constraint": 8,
+    "spend": 5,
+    "copy": 5,
+    "gain_control": 4,
+    "increase_cost": 4,
+    "detach": 3,
+    "cost_threshold": 3,
+    "enter_exhausted": 3,
+    "choose": 2,
+    "lose_control": 1
+  },
+  "top_uncovered_text_lines": [
+    {
+      "play_id": "play:bandle-tree:1887131e",
+      "source_field": "rules_lines",
+      "line_index": 0,
+      "line": "You may hide an additional card here."
+    },
+    {
+      "play_id": "play:baron-pit:245edbb0",
+      "source_field": "rules_lines",
+      "line_index": 0,
+      "line": "(You can't start the game with a token battlefield.)"
+    },
+    {
+      "play_id": "play:skyfall-of-areion:91394768",
+      "source_field": "effect_lines",
+      "line_index": 0,
+      "line": "My hold effects are also conquer effects, and vice versa."
+    },
+    {
+      "play_id": "play:experimental-hexplate:cb371eec",
+      "source_field": "effect_lines",
+      "line_index": 0,
+      "line": "I am a Mech."
+    },
+    {
+      "play_id": "play:wuju-bladesman-starter:17a1e7bb",
+      "source_field": "rules_lines",
+      "line_index": 0,
+      "line": "While a friendly unit defends alone, it gets +2 :rb_might:."
+    },
+    {
+      "play_id": "play:disposal-order:68d05fb8",
+      "source_field": "rules_lines",
+      "line_index": 1,
+      "line": "Choose one —"
+    },
+    {
+      "play_id": "play:flurry-of-feathers:ab222324",
+      "source_field": "rules_lines",
+      "line_index": 1,
+      "line": "Choose one —"
+    },
+    {
+      "play_id": "play:curtain-call:ca540b49",
+      "source_field": "rules_lines",
+      "line_index": 1,
+      "line": "Choose one you haven't already chosen —"
+    },
+    {
+      "play_id": "play:sky-splitter:98da3e56",
+      "source_field": "rules_lines",
+      "line_index": 1,
+      "line": "This spell's Energy cost is reduced by the highest Might among units you control."
+    },
+    {
+      "play_id": "play:rocket-barrage:1ee001f2",
+      "source_field": "rules_lines",
+      "line_index": 1,
+      "line": "Choose one —"
+    },
+    {
+      "play_id": "play:scuttle-crab:8c3955ab",
+      "source_field": "rules_lines",
+      "line_index": 0,
+      "line": "(Units with 0 :rb_might: can conquer and hold.)"
+    },
+    {
+      "play_id": "play:caitlyn-patrolling:4a8d3da6",
+      "source_field": "rules_lines",
+      "line_index": 0,
+      "line": "I must be assigned combat damage last."
+    },
+    {
+      "play_id": "play:maduli-the-gatekeeper:29bfb45b",
+      "source_field": "rules_lines",
+      "line_index": 0,
+      "line": "I can't be readied."
+    },
+    {
+      "play_id": "play:red-brambleback:5b4a4085",
+      "source_field": "rules_lines",
+      "line_index": 1,
+      "line": "Your conquer effects for conquering here trigger an additional time."
+    },
+    {
+      "play_id": "play:heimerdinger-inventor:2b2dc5bb",
+      "source_field": "rules_lines",
+      "line_index": 0,
+      "line": "I have all :rb_exhaust: abilities of all friendly legends, units, and gear."
+    },
+    {
+      "play_id": "play:blue-sentinel:1175ef0a",
+      "source_field": "rules_lines",
+      "line_index": 1,
+      "line": "Your hold effects for holding here trigger an additional time."
+    },
+    {
+      "play_id": "play:gearhead:a59c38ca",
+      "source_field": "rules_lines",
+      "line_index": 1,
+      "line": "Each Equipment attached to me gives double its base Might bonus."
+    },
+    {
+      "play_id": "play:renata-glasc-mastermind:fa1087ce",
+      "source_field": "rules_lines",
+      "line_index": 2,
+      "line": "Use my abilities only while I'm at a battlefield."
+    },
+    {
+      "play_id": "play:rumble-scrapper:c635249a",
+      "source_field": "rules_lines",
+      "line_index": 0,
+      "line": "Your Mechs have +1 :rb_might: (including me)."
+    },
+    {
+      "play_id": "play:soraka-wanderer:81c0ff4a",
+      "source_field": "rules_lines",
+      "line_index": 0,
+      "line": "I must be assigned combat damage last."
+    }
+  ]
+}

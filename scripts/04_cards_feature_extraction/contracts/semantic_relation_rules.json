@@ -1,0 +1,311 @@
+{
+  "version": "2026-05-12",
+  "purpose": "Declarative rules for deriving card-to-card relations from semantic facts.",
+  "event_enables": [
+    {
+      "rule_id": "card_recycled_enables_card_recycled",
+      "source_event": "card_recycled",
+      "target_event": "card_recycled",
+      "relation_types": ["enables", "enabled_by"],
+      "strength": 0.9,
+      "reason": "card_recycled_enables_card_recycled"
+    },
+    {
+      "rule_id": "rune_recycled_enables_rune_recycled",
+      "source_event": "rune_recycled",
+      "target_event": "rune_recycled",
+      "relation_types": ["enables", "enabled_by"],
+      "strength": 0.9,
+      "reason": "rune_recycled_enables_rune_recycled"
+    },
+    {
+      "rule_id": "unit_stunned_enables_unit_stunned",
+      "source_event": "unit_stunned",
+      "target_event": "unit_stunned",
+      "relation_types": ["enables", "enabled_by"],
+      "strength": 0.88,
+      "reason": "unit_stunned_enables_unit_stunned"
+    },
+    {
+      "rule_id": "unit_buffed_enables_unit_buffed",
+      "source_event": "unit_buffed",
+      "target_event": "unit_buffed",
+      "relation_types": ["enables", "enabled_by"],
+      "strength": 0.86,
+      "reason": "unit_buffed_enables_unit_buffed"
+    },
+    {
+      "rule_id": "spell_played_enables_spell_played",
+      "source_event": "spell_played",
+      "target_event": "spell_played",
+      "relation_types": ["enables", "enabled_by"],
+      "strength": 0.82,
+      "reason": "spell_played_enables_spell_played"
+    },
+    {
+      "rule_id": "card_discarded_enables_self_discarded",
+      "source_event": "card_discarded",
+      "target_event": "self_discarded",
+      "source_selector": {
+        "predicate": "discard",
+        "payload_absent": ["target"]
+      },
+      "relation_types": ["enables", "enabled_by"],
+      "strength": 0.78,
+      "reason": "card_discarded_enables_self_discarded"
+    },
+    {
+      "rule_id": "enemy_unit_dies_enables_enemy_unit_dies",
+      "source_event": "enemy_unit_dies",
+      "target_event": "enemy_unit_dies",
+      "relation_types": ["enables", "enabled_by"],
+      "strength": 0.95,
+      "reason": "enemy_unit_dies_enables_enemy_unit_dies"
+    },
+    {
+      "rule_id": "self_unit_dies_enables_friendly_unit_dies",
+      "source_event": "self_dies",
+      "target_event": "friendly_unit_dies",
+      "source_card_types": ["unit"],
+      "relation_types": ["enables", "enabled_by"],
+      "strength": 0.85,
+      "reason": "self_unit_dies_enables_friendly_unit_dies"
+    },
+    {
+      "rule_id": "generic_unit_death_enables_friendly_unit_dies",
+      "source_event": "unit_dies",
+      "target_event": "friendly_unit_dies",
+      "relation_types": ["enables", "enabled_by"],
+      "strength": 0.7,
+      "reason": "generic_unit_death_enables_friendly_unit_dies"
+    },
+    {
+      "rule_id": "friendly_unit_dies_enables_friendly_unit_dies",
+      "source_event": "friendly_unit_dies",
+      "target_event": "friendly_unit_dies",
+      "relation_types": ["enables", "enabled_by"],
+      "strength": 0.92,
+      "reason": "friendly_unit_dies_enables_friendly_unit_dies"
+    },
+    {
+      "rule_id": "friendly_unit_dies_enables_self_dies",
+      "source_event": "friendly_unit_dies",
+      "target_event": "self_dies",
+      "relation_types": ["enables", "enabled_by"],
+      "strength": 0.84,
+      "reason": "friendly_unit_dies_enables_self_dies"
+    },
+    {
+      "rule_id": "generic_unit_death_enables_enemy_unit_dies",
+      "source_event": "unit_dies",
+      "target_event": "enemy_unit_dies",
+      "relation_types": ["enables", "enabled_by"],
+      "strength": 0.7,
+      "reason": "generic_unit_death_enables_enemy_unit_dies"
+    },
+    {
+      "rule_id": "equipment_attached_enables_equipment_attached",
+      "source_event": "equipment_attached",
+      "target_event": "equipment_attached",
+      "relation_types": ["enables", "enabled_by"],
+      "strength": 0.82,
+      "reason": "equipment_attached_enables_equipment_attached"
+    }
+  ],
+  "identity_event_relations": [
+    {
+      "rule_id": "spell_card_can_be_countered",
+      "source_selector": {
+        "predicate": "has_card_type",
+        "payload": {
+          "object.id": "spell"
+        }
+      },
+      "target_selector": {
+        "predicate": "counter",
+        "event_id": "spell_countered"
+      },
+      "relation_types": ["enables", "enabled_by"],
+      "event_id": "spell_played",
+      "strength": 0.48,
+      "reason": "spell_card_can_be_countered",
+      "broad": true
+    }
+  ],
+  "direct_synergy": [
+    {
+      "rule_id": "token_created_to_token_entry_modifier",
+      "source_selector": {
+        "fact_type": "token_creation",
+        "event_id": "token_created"
+      },
+      "target_selector": {
+        "semantic_role": "state_or_modifier",
+        "event_id": "token_enters"
+      },
+      "relation_type": "deck_synergy",
+      "event_id": "token_created",
+      "target_event_id": "token_enters",
+      "strength": 0.82,
+      "reason": "token_created_to_token_entry_modifier"
+    },
+    {
+      "rule_id": "token_unit_created_supports_token_copy_replacement",
+      "source_selector": {
+        "fact_type": "token_creation",
+        "event_id": "token_created",
+        "payload": {
+          "object.kind": "token",
+          "object.card_types.0": "unit"
+        }
+      },
+      "target_selector": {
+        "semantic_role": "state_or_modifier",
+        "fact_type": "replacement_effect",
+        "predicate": "copy",
+        "payload": {
+          "target.kind": "token",
+          "target.card_types.0": "unit",
+          "outputs.0.id": "token_copied"
+        }
+      },
+      "relation_type": "deck_synergy",
+      "event_id": "token_created",
+      "target_event_id": "unit_played",
+      "strength": 0.66,
+      "reason": "token_unit_created_supports_token_copy_replacement"
+    },
+    {
+      "rule_id": "friendly_unit_moved_supports_move_with_unit_permission_you",
+      "source_selector": {
+        "event_id": "unit_moved",
+        "payload": {
+          "target.controller": "you"
+        }
+      },
+      "target_selector": {
+        "semantic_role": "restriction_or_permission",
+        "predicate": "move",
+        "payload": {
+          "conditions.0.event_ref": "friendly_unit_moves_from_my_location"
+        }
+      },
+      "relation_type": "deck_synergy",
+      "event_id": "unit_moved",
+      "strength": 0.66,
+      "reason": "friendly_unit_moved_supports_move_with_unit_permission"
+    },
+    {
+      "rule_id": "friendly_unit_moved_supports_move_with_unit_permission_friendly",
+      "source_selector": {
+        "event_id": "unit_moved",
+        "payload": {
+          "target.controller": "friendly"
+        }
+      },
+      "target_selector": {
+        "semantic_role": "restriction_or_permission",
+        "predicate": "move",
+        "payload": {
+          "conditions.0.event_ref": "friendly_unit_moves_from_my_location"
+        }
+      },
+      "relation_type": "deck_synergy",
+      "event_id": "unit_moved",
+      "strength": 0.66,
+      "reason": "friendly_unit_moved_supports_move_with_unit_permission"
+    },
+    {
+      "rule_id": "enemy_unit_moved_supports_enemy_unit_move_trigger",
+      "source_selector": {
+        "event_id": "unit_moved",
+        "payload": {
+          "target.controller": "opponent",
+          "target.kind": "unit"
+        }
+      },
+      "target_selector": {
+        "semantic_role": "trigger_observed",
+        "event_id": "unit_moved",
+        "payload": {
+          "event.target.controller": "opponent",
+          "event.target.kind": "unit"
+        }
+      },
+      "relation_type": "deck_synergy",
+      "event_id": "unit_moved",
+      "target_event_id": "unit_moved",
+      "strength": 0.68,
+      "reason": "enemy_unit_moved_supports_enemy_unit_move_trigger"
+    }
+  ],
+  "resource_synergy": {
+    "enabled": true,
+    "relation_type": "deck_synergy",
+    "strength": 0.68,
+    "reason_from_key": true,
+    "producer_key_prefix": "cost:"
+  },
+  "tag_target_synergy": {
+    "enabled": true,
+    "relation_type": "deck_synergy",
+    "strength": 0.66,
+    "reason_prefix": "target_tag:",
+    "max_targets_per_tag": 30
+  },
+  "derived_synergy": {
+    "enabled": false,
+    "source_relation_type": "enables",
+    "relation_type": "deck_synergy",
+    "strength_delta": -0.12,
+    "reason_prefix": "synergy_from_"
+  },
+  "similarity": {
+    "enabled": true,
+    "relation_type": "similar_effect",
+    "strength": 0.72,
+    "roles": [
+      "event_produced",
+      "payoff_output",
+      "restriction_or_permission",
+      "state_or_modifier"
+    ],
+    "restriction_predicate_allowlist": ["cost_cap_constraint", "cost_threshold", "move", "play", "prevent", "require"],
+    "secondary_key_families": [
+      "attachment_action",
+      "attached_stat_modifier",
+      "card_draw",
+      "combat_might_modifier",
+      "control_change",
+      "cost_reduction",
+      "copy_effect",
+      "damage_amount",
+      "damage_scaling",
+      "damage_target",
+      "damage_threshold",
+      "damage_modifier",
+      "keyword_grant",
+      "keyword_grant_by_keyword",
+      "movement_permission",
+      "movement_target_destination",
+      "movement_to_zone",
+      "play_from_zone",
+      "play_restriction",
+      "prevention",
+      "replacement",
+      "removal_target",
+      "require_state",
+      "score_amount",
+      "self_stat_modifier",
+      "state_action",
+      "stat_modifier",
+      "swap_stat",
+      "temporary_grant"
+    ],
+    "ignored_fact_types": [
+      "identity_reference",
+      "keyword_reference",
+      "keyword_marker"
+    ]
+  }
+}
