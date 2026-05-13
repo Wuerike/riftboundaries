@@ -357,8 +357,6 @@ Arquivos de contexto:
 - scripts/04_cards_feature_extraction/contracts/feature_relation_taxonomy.json
 - scripts/04_cards_feature_extraction/contracts/semantic_facts_schema.json
 - scripts/04_cards_feature_extraction/contracts/semantic_golden_examples.json
-- web/ideias.md
-- web/tasks.md
 
 Tarefa:
 1. Analise as familias candidatas e unidades mais frequentes do inventario.
