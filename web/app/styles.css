@@ -1,16 +1,21 @@
 ﻿:root {
-  --bg: #f6f8fb;
-  --panel: #ffffff;
-  --panel-soft: #f2f5f8;
-  --ink: #141923;
-  --muted: #687586;
-  --line: #dbe3ec;
-  --accent: #e0523f;
-  --teal: #0f8b8d;
-  --gold: #b77a1b;
-  --blue: #3b82f6;
-  --green: #2f9e72;
-  --shadow: 0 18px 44px rgba(20, 25, 35, 0.12);
+  --bg: #090b0f;
+  --panel: #111821;
+  --panel-soft: #17202b;
+  --panel-raised: #1c2531;
+  --panel-sunken: #0c1118;
+  --ink: #f5efe4;
+  --muted: #9aa7b4;
+  --line: #2a3542;
+  --line-strong: #3d4a59;
+  --accent: #e0643d;
+  --teal: #28b7a7;
+  --gold: #d99a32;
+  --gold-soft: #f2c46f;
+  --blue: #6aa4ff;
+  --green: #38c987;
+  --row-hover: #182a2a;
+  --shadow: 0 22px 54px rgba(0, 0, 0, 0.42);
 }
 
 * {
@@ -20,6 +25,7 @@
 html {
   min-width: 320px;
   background: var(--bg);
+  color-scheme: dark;
 }
 
 body {
@@ -40,18 +46,19 @@ input {
 button {
   border: 1px solid var(--line);
   border-radius: 7px;
-  background: var(--panel);
+  background: var(--panel-raised);
   color: var(--ink);
   cursor: pointer;
 }
 
 button:hover {
-  border-color: var(--teal);
+  border-color: var(--gold);
+  background: #242c36;
 }
 
 button:focus-visible,
 input:focus-visible {
-  outline: 3px solid rgba(15, 139, 141, 0.24);
+  outline: 3px solid rgba(217, 154, 50, 0.28);
   outline-offset: 2px;
 }
 
@@ -96,7 +103,10 @@ p {
   height: 44px;
   flex: 0 0 44px;
   overflow: hidden;
+  border: 1px solid rgba(242, 196, 111, 0.38);
   border-radius: 10px;
+  padding: 2px;
+  background: #05080c;
   filter: drop-shadow(0 8px 14px rgba(9, 13, 19, 0.32));
 }
 
@@ -109,6 +119,7 @@ p {
 
 .brand strong {
   display: block;
+  color: var(--ink);
   font-size: 20px;
   line-height: 1.05;
 }
@@ -140,8 +151,12 @@ p {
   border: 1px solid var(--line);
   border-radius: 7px;
   padding: 0 12px;
-  background: var(--panel);
+  background: var(--panel-sunken);
   color: var(--ink);
+}
+
+.search-box input::placeholder {
+  color: #7f8c9b;
 }
 
 .search-box button,
@@ -162,7 +177,7 @@ p {
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 6px;
-  background: #ffffff;
+  background: var(--panel-raised);
   box-shadow: var(--shadow);
 }
 
@@ -186,7 +201,7 @@ p {
 
 .search-suggestion:hover,
 .search-suggestion:focus-visible {
-  background: #eaf8f6;
+  background: rgba(40, 183, 167, 0.13);
 }
 
 .search-suggestion img {
@@ -194,7 +209,7 @@ p {
   height: 58px;
   border-radius: 5px;
   object-fit: cover;
-  background: #e1e7ee;
+  background: var(--panel-sunken);
 }
 
 .search-suggestion strong,
@@ -222,8 +237,8 @@ p {
   height: 30px;
   place-items: center;
   border-radius: 6px;
-  background: #e6f5f2;
-  color: var(--teal);
+  background: rgba(217, 154, 50, 0.15);
+  color: var(--gold-soft);
   font-size: 12px;
   font-style: normal;
   font-weight: 900;
@@ -292,9 +307,9 @@ p {
 }
 
 .chip.active {
-  border-color: var(--teal);
-  background: #dff4f0;
-  color: #075e61;
+  border-color: var(--gold);
+  background: rgba(217, 154, 50, 0.16);
+  color: var(--gold-soft);
 }
 
 .filter-summary {
@@ -336,7 +351,7 @@ p {
   height: 210px;
   border-radius: 7px;
   object-fit: cover;
-  background: #e1e7ee;
+  background: var(--panel-sunken);
 }
 
 .focus-copy {
@@ -362,7 +377,7 @@ p {
   min-height: 25px;
   border-radius: 7px;
   padding: 4px 8px;
-  background: #edf2f7;
+  background: var(--panel-soft);
   font-size: 12px;
 }
 
@@ -377,22 +392,22 @@ p {
 }
 
 .stat.energy {
-  background: #ffe6a8;
+  background: rgba(217, 154, 50, 0.18);
 }
 
 .stat.might {
-  background: #ffd4ca;
+  background: rgba(224, 100, 61, 0.18);
 }
 
 .stat.power {
-  background: #d7f0ec;
+  background: rgba(40, 183, 167, 0.16);
 }
 
 .rules {
   display: grid;
   gap: 6px;
   margin-top: 12px;
-  color: #334155;
+  color: #c7d1dc;
   font-size: 14px;
   line-height: 1.35;
 }
@@ -439,7 +454,7 @@ p {
   aspect-ratio: 744 / 1039;
   border-radius: 6px;
   object-fit: cover;
-  background: #e1e7ee;
+  background: var(--panel-sunken);
 }
 
 .card-thumb span {
@@ -463,7 +478,7 @@ p {
   height: 67px;
   border-radius: 6px;
   object-fit: cover;
-  background: #e1e7ee;
+  background: var(--panel-sunken);
 }
 
 .relation-card strong,
@@ -507,11 +522,15 @@ p {
 /* Official dataset table */
 
 body[data-layout="table"] {
-  background: #f6f8fb;
+  background:
+    radial-gradient(circle at 16% -12%, rgba(217, 154, 50, 0.16), transparent 34%),
+    radial-gradient(circle at 82% 2%, rgba(40, 183, 167, 0.1), transparent 30%),
+    linear-gradient(180deg, #0b0d12 0%, #090b0f 52%, #0d1015 100%);
 }
 
 .table-shell {
   min-height: 100vh;
+  color: var(--ink);
 }
 
 .table-header {
@@ -521,7 +540,8 @@ body[data-layout="table"] {
   align-items: center;
   padding: 12px 14px;
   border-bottom: 1px solid var(--line);
-  background: #ffffff;
+  background: rgba(12, 17, 24, 0.94);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.28);
 }
 
 .table-header .search-box {
@@ -539,7 +559,7 @@ body[data-layout="table"] {
 .table-filters {
   padding: 8px 12px;
   border-bottom: 1px solid var(--line);
-  background: #edf3f7;
+  background: rgba(15, 21, 29, 0.92);
 }
 
 .table-dropdowns {
@@ -562,13 +582,13 @@ body[data-layout="table"] {
   border: 1px solid var(--line);
   border-radius: 7px;
   padding: 0 8px;
-  background: #ffffff;
+  background: var(--panel);
   cursor: pointer;
   list-style: none;
 }
 
 .filter-dropdown summary:hover {
-  background: #f8fbfd;
+  background: var(--panel-raised);
 }
 
 .filter-dropdown summary::-webkit-details-marker {
@@ -585,7 +605,8 @@ body[data-layout="table"] {
 }
 
 .filter-dropdown[open] summary {
-  border-color: var(--teal);
+  border-color: var(--gold);
+  box-shadow: inset 0 0 0 1px rgba(217, 154, 50, 0.18);
 }
 
 .filter-dropdown[open] summary::after {
@@ -618,7 +639,7 @@ body[data-layout="table"] {
   border: 1px solid var(--line);
   border-radius: 7px;
   padding: 6px;
-  background: #ffffff;
+  background: var(--panel-raised);
   box-shadow: var(--shadow);
 }
 
@@ -634,13 +655,13 @@ body[data-layout="table"] {
 }
 
 .filter-menu label:hover {
-  background: #eaf8f6;
+  background: rgba(40, 183, 167, 0.13);
 }
 
 .filter-menu input {
   width: 16px;
   height: 16px;
-  accent-color: var(--teal);
+  accent-color: var(--gold);
 }
 
 .filter-menu span {
@@ -651,7 +672,7 @@ body[data-layout="table"] {
 .table-focus {
   padding: 10px 14px;
   border-bottom: 1px solid var(--line);
-  background: #ffffff;
+  background: rgba(12, 17, 24, 0.76);
 }
 
 .table-focus-card {
@@ -662,14 +683,14 @@ body[data-layout="table"] {
   width: 100%;
   min-height: 86px;
   border-color: var(--line);
-  background: #fbfcff;
+  background: linear-gradient(135deg, rgba(28, 37, 49, 0.96), rgba(17, 24, 33, 0.96));
   padding: 8px;
   text-align: left;
 }
 
 .table-focus-card:hover {
-  border-color: var(--teal);
-  background: #ecf8f6;
+  border-color: var(--gold);
+  background: linear-gradient(135deg, rgba(38, 43, 42, 0.98), rgba(19, 29, 31, 0.98));
 }
 
 .table-focus-card img {
@@ -677,7 +698,7 @@ body[data-layout="table"] {
   height: 86px;
   border-radius: 6px;
   object-fit: cover;
-  background: #e1e7ee;
+  background: var(--panel-sunken);
 }
 
 .table-focus-copy {
@@ -708,7 +729,7 @@ body[data-layout="table"] {
 .table-focus-rules {
   display: block;
   overflow: hidden;
-  color: #334155;
+  color: #c7d1dc;
   font-size: 13px;
   line-height: 1.35;
   text-overflow: ellipsis;
@@ -723,29 +744,29 @@ body[data-layout="table"] {
 .table-focus-rules .game-icon.power {
   width: 14px;
   height: 14px;
-  background: #26323a;
+  background: #e6edf3;
   vertical-align: -2px;
 }
 
 .table-focus-rules .game-symbol.might {
   width: 14px;
   height: 14px;
-  filter: brightness(0) saturate(100%) invert(16%) sepia(15%) saturate(924%) hue-rotate(169deg) brightness(92%) contrast(89%);
+  filter: brightness(0) saturate(100%) invert(93%) sepia(9%) saturate(451%) hue-rotate(176deg) brightness(98%) contrast(92%);
   vertical-align: -2px;
 }
 
 .table-focus-rules .game-symbol.exhaust {
   width: 15px;
   height: 15px;
-  filter: brightness(0) saturate(100%) invert(16%) sepia(15%) saturate(924%) hue-rotate(169deg) brightness(92%) contrast(89%);
+  filter: brightness(0) saturate(100%) invert(93%) sepia(9%) saturate(451%) hue-rotate(176deg) brightness(98%) contrast(92%);
   vertical-align: -3px;
 }
 
 .table-focus-rules .game-cost.energy {
   min-width: 18px;
   height: 18px;
-  background: #26323a;
-  color: #ffffff;
+  background: #e6edf3;
+  color: #111827;
   font-size: 11px;
 }
 
@@ -779,7 +800,8 @@ table {
   width: 100%;
   min-width: 980px;
   border-collapse: collapse;
-  background: #ffffff;
+  border: 1px solid var(--line);
+  background: var(--panel);
 }
 
 th {
@@ -787,8 +809,8 @@ th {
   top: 0;
   z-index: 1;
   border-bottom: 1px solid var(--line);
-  background: #eef3f7;
-  color: var(--muted);
+  background: #171f2a;
+  color: #d9b66f;
   font-size: 12px;
   text-align: left;
   text-transform: uppercase;
@@ -802,11 +824,16 @@ td {
 }
 
 tbody tr {
+  background: #101720;
   cursor: pointer;
 }
 
+tbody tr:nth-child(even) {
+  background: #121a23;
+}
+
 tbody tr:hover {
-  background: #effaf8;
+  background: var(--row-hover);
 }
 
 td img {
@@ -833,7 +860,7 @@ td small {
   gap: 12px;
   border-top: 1px solid var(--line);
   padding: 14px;
-  background: #f6f8fb;
+  background: rgba(9, 11, 15, 0.86);
 }
 
 .table-load-more span {
@@ -844,15 +871,15 @@ td small {
 
 .table-load-more button {
   min-height: 36px;
-  border-color: var(--teal);
-  background: #ffffff;
-  color: var(--teal);
+  border-color: rgba(217, 154, 50, 0.58);
+  background: rgba(217, 154, 50, 0.12);
+  color: var(--gold-soft);
   padding: 0 14px;
   font-weight: 900;
 }
 
 .table-load-more button:hover {
-  background: #eaf8f6;
+  background: rgba(217, 154, 50, 0.2);
 }
 
 .table-modal-backdrop {
@@ -862,7 +889,9 @@ td small {
   display: grid;
   place-items: center;
   padding: 22px;
-  background: rgba(15, 19, 26, 0.74);
+  background:
+    radial-gradient(circle at 50% 16%, rgba(217, 154, 50, 0.12), transparent 34%),
+    rgba(4, 6, 9, 0.82);
 }
 
 .table-modal {
@@ -873,12 +902,12 @@ td small {
   width: min(930px, 100%);
   max-height: min(780px, calc(100dvh - 44px));
   overflow: auto;
-  border: 1px solid #2d3540;
+  border: 1px solid rgba(217, 154, 50, 0.28);
   border-radius: 8px;
   padding: 20px;
-  background: #11161d;
+  background: linear-gradient(135deg, #141922 0%, #0d1117 100%);
   color: #f4f7fa;
-  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.48);
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.58);
 }
 
 .table-modal-art {
@@ -892,7 +921,7 @@ td small {
   height: 419px;
   border-radius: 7px;
   object-fit: contain;
-  background: #1b232d;
+  background: var(--panel-sunken);
   box-shadow: 0 18px 34px rgba(0, 0, 0, 0.38);
 }
 
@@ -909,8 +938,8 @@ td small {
 .table-modal-close {
   width: 38px;
   height: 38px;
-  border-color: #3b4654;
-  background: #1b232d;
+  border-color: var(--line-strong);
+  background: var(--panel-raised);
   color: #e6edf3;
   font-size: 24px;
   line-height: 1;
@@ -949,10 +978,10 @@ td small {
   min-height: 32px;
   align-items: center;
   gap: 7px;
-  border: 1px solid #364352;
+  border: 1px solid var(--line-strong);
   border-radius: 6px;
   padding: 5px 9px;
-  background: #18212b;
+  background: var(--panel-soft);
   color: #f1f5f9;
   font-size: 14px;
 }
@@ -1025,7 +1054,7 @@ td small {
 
 .tag {
   min-height: 28px;
-  background: #202936;
+  background: #202735;
   color: #d7dee8;
 }
 
@@ -1043,7 +1072,7 @@ td small {
   align-content: center;
   border-radius: 6px;
   padding: 10px 12px;
-  background: #1d222b;
+  background: var(--panel-soft);
 }
 
 .game-stat small,
@@ -1276,7 +1305,7 @@ td small {
   min-height: 54px;
   border-radius: 6px;
   padding: 9px 10px;
-  background: #1a222c;
+  background: var(--panel-soft);
 }
 
 .modal-info-item b {
@@ -1322,10 +1351,10 @@ td small {
   display: grid;
   gap: 2px;
   min-height: 54px;
-  border: 1px solid #364352;
+  border: 1px solid var(--line-strong);
   border-radius: 7px;
   padding: 8px;
-  background: #18212b;
+  background: var(--panel-soft);
   color: #aeb8c6;
   font-size: 12px;
 }
@@ -1338,9 +1367,9 @@ td small {
 .modal-view-relations {
   min-height: 42px;
   padding: 0 14px;
-  border-color: var(--teal);
-  background: var(--teal);
-  color: #ffffff;
+  border-color: var(--gold);
+  background: linear-gradient(180deg, #e2a23d, #b97220);
+  color: #120d07;
   font-weight: 900;
 }
 
@@ -1371,8 +1400,14 @@ td small {
     white-space: normal;
   }
 
-  .search-box {
+  .search-box,
+  .table-header .search-box {
     grid-template-columns: 1fr;
+  }
+
+  .table-header .search-box button,
+  .table-header > [data-action="clear"] {
+    width: 100%;
   }
 
   .table-modal {
