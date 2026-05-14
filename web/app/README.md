@@ -16,6 +16,8 @@ Abra:
 http://127.0.0.1:4173/web/app/
 ```
 
+`/web/` redireciona para `/web/app/`.
+
 O app carrega:
 
 ```txt
@@ -25,18 +27,15 @@ data/processed/web/relations/*.json sob demanda
 
 ## Recursos atuais
 
-- busca da carta foco na lateral, sem listagem fixa de cartas;
-- estado inicial sem carta foco, com resumo do dataset;
-- filtros por dominio, tipo, trigger, keyword, energy, might e modificador/predicado aplicados nas cartas relacionadas;
-- detalhe da carta foco com texto e contadores de relacao high-signal e broad;
-- marcador de variantes quando textos oficiais diferem entre impressoes;
-- secoes de relacao high-signal controladas pelo manifest do dataset;
-- cada relacao mostra reason/evidence compactos publicados nos shards;
-- lane secundaria para broad matches, sem entrar na contagem principal;
-- `deck_synergy` fica oculto por padrao quando o manifest marcar como experimental;
-- modal de carta relacionada com acao explicita para ver suas relacoes;
-- secoes minimizaveis quando o layout empilha em telas menores;
-- `Clear` limpa filtros, busca, modal e volta ao estado inicial;
-- layout responsivo com gaveta de filtros em telas pequenas.
+- tabela densa como experiencia oficial, ordenada por codigo da carta no set;
+- busca com sugestoes alfabeticas e abertura direta da carta foco;
+- filtros por set, dominio, keyword, trigger, modifier, energy e might;
+- renderizacao incremental da listagem inicial para reduzir custo de carregamento;
+- carta foco clicavel para abrir o modal de detalhes;
+- modal com imagem centralizada, atributos, tags, texto rico e botao `View Relations`;
+- historico de navegacao para voltar entre home, filtros, modais e listas de relacoes;
+- icones oficiais da Riot para energy, might, exhaust, rune rainbow, tipos, dominios e raridades quando disponiveis;
+- keywords renderizadas com cores alinhadas as cartas oficiais, incluindo o padrao `[Keyword][>]`;
+- `Clear` limpa filtros, busca, modal e volta ao estado inicial.
 
-Esta primeira versao nao depende de Node/NPM.
+O frontend nao depende de Node/NPM.
