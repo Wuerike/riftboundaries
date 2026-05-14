@@ -106,6 +106,7 @@ const state = {
   },
   selectedId: null,
   modalId: null,
+  openFilterKey: null,
   tableRowLimit: INITIAL_TABLE_ROW_LIMIT,
   searchText: "",
   filters: {
@@ -525,8 +526,9 @@ function tableFilterDropdowns() {
   const groups = FILTER_GROUPS.map((group) => {
     const selected = state.filters[group.key].size;
     const options = filterOptions(group);
+    const open = state.openFilterKey === group.key ? " open" : "";
     return `
-      <details class="filter-dropdown">
+      <details class="filter-dropdown" data-filter-dropdown="${escapeAttr(group.key)}"${open}>
         <summary>
           <span>${escapeHtml(group.title)}</span>
           <b>${selected ? `${selected} selected` : "All"}</b>
@@ -548,6 +550,13 @@ function tableFilterDropdowns() {
     `;
   }).join("");
   return `<div class="table-dropdowns">${groups}</div>`;
+}
+
+function closeFilterDropdowns() {
+  state.openFilterKey = null;
+  document.querySelectorAll("[data-filter-dropdown][open]").forEach((dropdown) => {
+    dropdown.open = false;
+  });
 }
 
 function pills(items = []) {
@@ -734,15 +743,15 @@ function tableRows(items) {
       const relation = item.relation;
       return `
         <tr role="button" tabindex="0" data-open-card="${escapeAttr(item.card.play_id)}">
-          <td><img src="${escapeAttr(item.card.image_url)}" alt="${escapeAttr(item.card.name)}" loading="lazy" /></td>
-          <td><strong>${escapeHtml(item.card.name)}</strong><small>${escapeHtml(cardPublicCodesText(item.card))}</small></td>
-          <td>${escapeHtml(item.lane === "listing" ? "Card" : relationBadge(item.lane))}</td>
-          <td>${escapeHtml((item.card.domain_ids || []).map(label).join(" / "))}</td>
-          <td>${escapeHtml((item.card.card_type_ids || []).map(label).join(", "))}</td>
-          <td>${escapeHtml(item.card.energy ?? "")}</td>
-          <td>${escapeHtml(item.card.might ?? "")}</td>
-          <td>${escapeHtml(relation?.strength ?? relationTotal(item.card))}</td>
-          <td>${escapeHtml(relation ? label(relation.match?.broad_reason || relation.match?.reason || "") : `${relationTotal(item.card)} high-signal`)}</td>
+          <td class="table-art-cell"><img src="${escapeAttr(item.card.image_url)}" alt="${escapeAttr(item.card.name)}" loading="lazy" /></td>
+          <td class="table-card-cell"><strong>${escapeHtml(item.card.name)}</strong><small>${escapeHtml(cardPublicCodesText(item.card))}</small></td>
+          <td data-label="Relation">${escapeHtml(item.lane === "listing" ? "Card" : relationBadge(item.lane))}</td>
+          <td data-label="Domain">${escapeHtml((item.card.domain_ids || []).map(label).join(" / "))}</td>
+          <td data-label="Type">${escapeHtml((item.card.card_type_ids || []).map(label).join(", "))}</td>
+          <td data-label="Energy">${escapeHtml(item.card.energy ?? "")}</td>
+          <td data-label="Might">${escapeHtml(item.card.might ?? "")}</td>
+          <td data-label="Score">${escapeHtml(relation?.strength ?? relationTotal(item.card))}</td>
+          <td data-label="Reason">${escapeHtml(relation ? label(relation.match?.broad_reason || relation.match?.reason || "") : `${relationTotal(item.card)} high-signal`)}</td>
         </tr>
       `;
     })
@@ -770,13 +779,13 @@ function tableFocusCard(card) {
           <strong>${escapeHtml(card.name)}</strong>
           <em>${escapeHtml((card.public_codes || []).join(", ") || "Card")}</em>
           <span class="table-focus-tags">${pills(card.domain_ids)}${pills(card.card_type_ids)}</span>
-          <span class="table-focus-rules">${(card.rules_lines || []).slice(0, 2).map((line) => richRuleLine(line)).join(" ")}</span>
         </span>
         <span class="table-focus-stats">
           ${stat(card.energy, "energy", "Energy")}
           ${stat(card.might, "might", "Might")}
           ${stat(card.power, "power", "Power")}
         </span>
+        <span class="table-focus-rules">${(card.rules_lines || []).slice(0, 2).map((line) => richRuleLine(line)).join(" ")}</span>
       </button>
     </section>
   `;
@@ -902,6 +911,7 @@ function setSelected(playId, options = {}) {
   if (!card) return;
   state.selectedId = playId;
   state.modalId = null;
+  state.openFilterKey = null;
   state.searchText = card.name;
   state.tableRowLimit = INITIAL_TABLE_ROW_LIMIT;
   render();
@@ -935,6 +945,7 @@ function toggleFilter(key, value) {
 function clearAll() {
   state.selectedId = null;
   state.modalId = null;
+  state.openFilterKey = null;
   state.tableRowLimit = INITIAL_TABLE_ROW_LIMIT;
   state.searchText = "";
   for (const bucket of Object.values(state.filters)) bucket.clear();
@@ -944,6 +955,7 @@ function clearAll() {
 
 function openCardDetails(playId, options = {}) {
   if (!state.cardsById.has(playId)) return;
+  state.openFilterKey = null;
   state.modalId = playId;
   render();
   commitHistory(options.history || "push");
@@ -983,12 +995,31 @@ document.addEventListener("change", (event) => {
   if (!checkbox) return;
   const bucket = state.filters[checkbox.dataset.filterCheck];
   if (!bucket) return;
+  state.openFilterKey = checkbox.dataset.filterCheck;
   if (checkbox.checked) bucket.add(checkbox.value);
   else bucket.delete(checkbox.value);
   state.tableRowLimit = INITIAL_TABLE_ROW_LIMIT;
   render();
   commitHistory("push");
 });
+
+document.addEventListener(
+  "toggle",
+  (event) => {
+    const dropdown = event.target.closest?.("[data-filter-dropdown]");
+    if (!dropdown) return;
+    const key = dropdown.dataset.filterDropdown;
+    if (dropdown.open) {
+      state.openFilterKey = key;
+      document.querySelectorAll("[data-filter-dropdown][open]").forEach((other) => {
+        if (other !== dropdown) other.open = false;
+      });
+      return;
+    }
+    if (state.openFilterKey === key) state.openFilterKey = null;
+  },
+  true,
+);
 
 document.addEventListener("click", (event) => {
   const suggestion = event.target.closest("[data-suggestion-card]");
@@ -999,6 +1030,7 @@ document.addEventListener("click", (event) => {
   }
 
   if (!event.target.closest("[data-search-form]")) hideSearchSuggestions();
+  if (!event.target.closest("[data-filter-dropdown]")) closeFilterDropdowns();
 
   const filter = event.target.closest("[data-filter]");
   if (filter) {
@@ -1045,6 +1077,7 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     closeCardDetails();
     hideSearchSuggestions();
+    closeFilterDropdowns();
   }
   if (event.key !== "Enter" && event.key !== " ") return;
   const detailTarget = event.target.closest("[data-open-card]");
