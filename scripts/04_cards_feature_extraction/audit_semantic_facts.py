@@ -18,6 +18,14 @@ DEFAULT_GOLDEN_REPORT = PROJECT_ROOT / "data" / "processed" / "cards" / "semanti
 DEFAULT_OUTPUT = PROJECT_ROOT / "data" / "processed" / "cards" / "semantic" / "cards_semantic_audit_report.json"
 DEFAULT_MARKDOWN = PROJECT_ROOT / "data" / "processed" / "cards" / "semantic" / "cards_semantic_audit_report.md"
 
+
+def repo_path(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 TEXT_SOURCE_FIELDS = ("rules_lines", "effect_lines")
 REPORT_LIMIT = 80
 
@@ -332,12 +340,12 @@ def audit_facts(
     return {
         "version": schema.get("version"),
         "inputs": {
-            "cards": str(DEFAULT_CARDS),
-            "facts": str(DEFAULT_FACTS),
-            "schema": str(DEFAULT_SCHEMA),
-            "ontology": str(CONTRACTS_DIR / "semantic_ontology.json"),
-            "golden_report": str(DEFAULT_GOLDEN_REPORT),
-            "quality_policy": str(DEFAULT_QUALITY_POLICY),
+            "cards": repo_path(DEFAULT_CARDS),
+            "facts": repo_path(DEFAULT_FACTS),
+            "schema": repo_path(DEFAULT_SCHEMA),
+            "ontology": repo_path(CONTRACTS_DIR / "semantic_ontology.json"),
+            "golden_report": repo_path(DEFAULT_GOLDEN_REPORT),
+            "quality_policy": repo_path(DEFAULT_QUALITY_POLICY),
         },
         "summary": {
             "card_count": len(cards),

@@ -1,6 +1,6 @@
 {
   "inputs": {
-    "cards": "C:/Users/Wuerike/workspace/riftbound/data/processed/cards/normalized/cards_normalized.json",
+    "cards": "data/processed/cards/normalized/cards_normalized.json",
     "card_count": 767,
     "source_fields": [
       "rules_lines",

@@ -24,6 +24,13 @@ SCHEMA_VERSION = "2026-05-12"
 DAMAGE_MODIFIER_OUTPUT_IDS = {"bonus_damage_added", "damage_modified"}
 
 
+def repo_path(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 def read_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -1962,10 +1969,10 @@ def build_relations(
     report = {
         "version": SCHEMA_VERSION,
         "inputs": {
-            "facts": str(DEFAULT_FACTS),
-            "schema": str(DEFAULT_SCHEMA),
-            "relation_rules": str(DEFAULT_RELATION_RULES),
-            "quality_policy": str(DEFAULT_QUALITY_POLICY),
+            "facts": repo_path(DEFAULT_FACTS),
+            "schema": repo_path(DEFAULT_SCHEMA),
+            "relation_rules": repo_path(DEFAULT_RELATION_RULES),
+            "quality_policy": repo_path(DEFAULT_QUALITY_POLICY),
         },
         "summary": {
             "fact_count": len(facts),

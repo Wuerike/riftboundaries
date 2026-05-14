@@ -20,6 +20,14 @@ DEFAULT_SCHEMA = CONTRACTS_DIR / "semantic_facts_schema.json"
 DEFAULT_OUTPUT = PROJECT_ROOT / "data" / "processed" / "cards" / "semantic" / "cards_semantic_facts.jsonl"
 DEFAULT_REPORT = PROJECT_ROOT / "data" / "processed" / "cards" / "semantic" / "cards_semantic_facts_report.json"
 
+
+def repo_path(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 SCHEMA_VERSION = "2026-05-12"
 EXTRACTOR_VERSION = "semantic_facts"
 NON_GRANTED_BRACKET_ACTION_KEYWORDS = {"stun"}
@@ -3034,13 +3042,13 @@ def main() -> None:
         cards,
         facts,
         {
-            "cards": str(args.cards),
-            "inventory": str(args.inventory),
-            "taxonomy": str(args.taxonomy),
-            "alignment": str(args.alignment),
-            "schema": str(args.schema),
-            "ontology": str(args.ontology),
-            "extraction_rules": str(args.extraction_rules),
+            "cards": repo_path(args.cards),
+            "inventory": repo_path(args.inventory),
+            "taxonomy": repo_path(args.taxonomy),
+            "alignment": repo_path(args.alignment),
+            "schema": repo_path(args.schema),
+            "ontology": repo_path(args.ontology),
+            "extraction_rules": repo_path(args.extraction_rules),
         },
     )
     write_json(args.report, report)

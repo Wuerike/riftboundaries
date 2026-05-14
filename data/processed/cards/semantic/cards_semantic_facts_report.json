@@ -2,13 +2,13 @@
   "version": "2026-05-12",
   "extractor": "semantic_facts",
   "inputs": {
-    "cards": "C:\\Users\\Wuerike\\workspace\\riftbound\\data\\processed\\cards\\normalized\\cards_normalized.json",
-    "inventory": "C:\\Users\\Wuerike\\workspace\\riftbound\\data\\processed\\cards\\inventory\\cards_text_inventory.json",
-    "taxonomy": "C:\\Users\\Wuerike\\workspace\\riftbound\\scripts\\04_cards_feature_extraction\\contracts\\feature_relation_taxonomy.json",
-    "alignment": "C:\\Users\\Wuerike\\workspace\\riftbound\\data\\processed\\cards\\inventory\\cards_taxonomy_alignment.json",
-    "schema": "C:\\Users\\Wuerike\\workspace\\riftbound\\scripts\\04_cards_feature_extraction\\contracts\\semantic_facts_schema.json",
-    "ontology": "C:\\Users\\Wuerike\\workspace\\riftbound\\scripts\\04_cards_feature_extraction\\contracts\\semantic_ontology.json",
-    "extraction_rules": "C:\\Users\\Wuerike\\workspace\\riftbound\\scripts\\04_cards_feature_extraction\\contracts\\semantic_extraction_rules.json"
+    "cards": "data/processed/cards/normalized/cards_normalized.json",
+    "inventory": "data/processed/cards/inventory/cards_text_inventory.json",
+    "taxonomy": "scripts/04_cards_feature_extraction/contracts/feature_relation_taxonomy.json",
+    "alignment": "data/processed/cards/inventory/cards_taxonomy_alignment.json",
+    "schema": "scripts/04_cards_feature_extraction/contracts/semantic_facts_schema.json",
+    "ontology": "scripts/04_cards_feature_extraction/contracts/semantic_ontology.json",
+    "extraction_rules": "scripts/04_cards_feature_extraction/contracts/semantic_extraction_rules.json"
   },
   "summary": {
     "card_count": 767,

@@ -13,6 +13,14 @@ DEFAULT_TAXONOMY = CONTRACTS_DIR / "feature_relation_taxonomy.json"
 DEFAULT_OUTPUT = PROJECT_ROOT / "data" / "processed" / "cards" / "inventory" / "cards_taxonomy_alignment.json"
 DEFAULT_MARKDOWN = PROJECT_ROOT / "data" / "processed" / "cards" / "inventory" / "cards_taxonomy_alignment.md"
 
+
+def repo_path(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 TOP_EXAMPLES_PER_GROUP = 12
 TOP_SEEDS_PER_TARGET = 30
 PRIORITY_RANK = {"high": 3, "medium": 2, "low": 1}
@@ -319,8 +327,8 @@ def build_alignment(inventory: dict[str, Any], taxonomy: dict[str, Any]) -> dict
 
     return {
         "inputs": {
-            "inventory": str(DEFAULT_INVENTORY).replace("\\", "/"),
-            "taxonomy": str(DEFAULT_TAXONOMY).replace("\\", "/"),
+            "inventory": repo_path(DEFAULT_INVENTORY),
+            "taxonomy": repo_path(DEFAULT_TAXONOMY),
             "inventory_summary": inventory.get("summary", {}),
             "taxonomy_version": taxonomy.get("version"),
         },
@@ -501,8 +509,8 @@ def main() -> None:
     inventory = read_json(args.inventory)
     taxonomy = read_json(args.taxonomy)
     alignment = build_alignment(inventory, taxonomy)
-    alignment["inputs"]["inventory"] = str(args.inventory).replace("\\", "/")
-    alignment["inputs"]["taxonomy"] = str(args.taxonomy).replace("\\", "/")
+    alignment["inputs"]["inventory"] = repo_path(args.inventory)
+    alignment["inputs"]["taxonomy"] = repo_path(args.taxonomy)
 
     write_json(args.output, alignment)
     write_markdown(args.markdown, alignment)

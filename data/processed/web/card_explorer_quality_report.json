@@ -38,8 +38,8 @@
     }
   },
   "inputs": {
-    "dataset": "C:\\Users\\Wuerike\\workspace\\riftbound\\data\\processed\\web\\card_explorer_index.json",
-    "quality_policy": "C:\\Users\\Wuerike\\workspace\\riftbound\\scripts\\04_cards_feature_extraction\\contracts\\semantic_quality_policy.json"
+    "dataset": "data/processed/web/card_explorer_index.json",
+    "quality_policy": "scripts/04_cards_feature_extraction/contracts/semantic_quality_policy.json"
   },
   "summary": {
     "card_count": 767,

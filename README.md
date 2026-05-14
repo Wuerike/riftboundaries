@@ -1,4 +1,4 @@
-﻿# Riftbound Semantic Card Explorer
+﻿# Riftboundaries - Riftbound Semantic Card Explorer
 
 Projeto para transformar dados oficiais de cartas e regras de Riftbound em um dataset semântico navegável por um frontend estático.
 

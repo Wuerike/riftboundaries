@@ -12,7 +12,7 @@ CONTRACTS_DIR = SCRIPT_DIR / "contracts"
 
 DEFAULT_FACTS = PROJECT_ROOT / "data" / "processed" / "cards" / "semantic" / "cards_semantic_facts.jsonl"
 DEFAULT_RELATIONS = PROJECT_ROOT / "data" / "processed" / "cards" / "relations" / "cards_card_relations.jsonl"
-DEFAULT_DATASET = PROJECT_ROOT / "data" / "processed" / "web" / "card_explorer_dataset.json"
+DEFAULT_DATASET = PROJECT_ROOT / "data" / "processed" / "web" / "card_explorer_index.json"
 DEFAULT_GOLDEN = CONTRACTS_DIR / "semantic_golden_examples.json"
 DEFAULT_REGRESSIONS = CONTRACTS_DIR / "semantic_regression_invariants.json"
 DEFAULT_REPORT = PROJECT_ROOT / "data" / "processed" / "cards" / "semantic" / "cards_semantic_golden_report.json"
@@ -1063,18 +1063,64 @@ def validate_relation_invariants(
     }
 
 
-def validate_dataset_invariants(regressions: dict[str, Any], dataset: dict[str, Any]) -> dict[str, Any]:
+def collect_published_dataset_relations(
+    dataset: dict[str, Any], dataset_path: Path | None
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    entries: list[dict[str, Any]] = []
+    failures: list[dict[str, Any]] = []
+    shard_cache: dict[str, dict[str, Any]] = {}
+    missing_shards: set[str] = set()
+    seen: set[tuple[str, str, str]] = set()
+
+    for card in dataset.get("cards", []) or []:
+        play_id = str(card.get("play_id") or "")
+        relations = card.get("relations", {}) or {}
+        for bucket in ("outgoing", "incoming"):
+            for relation in relations.get(bucket, []) or []:
+                relation_id = str(relation.get("relation_id") or id(relation))
+                key = (play_id, bucket, relation_id)
+                if key in seen:
+                    continue
+                seen.add(key)
+                entries.append({"play_id": play_id, "bucket": bucket, "relation": relation})
+
+        shard_ref = relations.get("shard")
+        if not dataset_path or not isinstance(shard_ref, str) or not shard_ref:
+            continue
+        if shard_ref in missing_shards:
+            continue
+        if shard_ref not in shard_cache:
+            shard_path = dataset_path.parent / shard_ref
+            if not shard_path.exists():
+                missing_shards.add(shard_ref)
+                failures.append({"kind": "dataset_relation_shard_missing", "shard": shard_ref})
+                continue
+            shard_cache[shard_ref] = read_json(shard_path)
+
+        shard_card = (shard_cache[shard_ref].get("cards", {}) or {}).get(play_id, {}) or {}
+        for relation in shard_card.get("outgoing", []) or []:
+            relation_id = str(relation.get("relation_id") or id(relation))
+            key = (play_id, "outgoing", relation_id)
+            if key in seen:
+                continue
+            seen.add(key)
+            entries.append({"play_id": play_id, "bucket": "outgoing", "relation": relation})
+
+    return entries, failures
+
+
+def validate_dataset_invariants(
+    regressions: dict[str, Any], dataset: dict[str, Any], dataset_path: Path | None = None
+) -> dict[str, Any]:
     enabled = set(regressions.get("dataset_invariants", []) or [])
-    failures = []
+    relation_entries, failures = collect_published_dataset_relations(dataset, dataset_path)
     cards = dataset.get("cards", []) or []
     manifest = dataset.get("manifest", {})
     relation_manifest = manifest.get("relation_types", {})
     relation_types = {
-        relation.get("relation_type")
-        for card in cards
-        for bucket in ("outgoing", "incoming")
-        for relation in card.get("relations", {}).get(bucket, []) or []
-        if relation.get("relation_type")
+        entry["relation"].get("relation_type")
+        for entry in relation_entries
+        if entry["relation"].get("relation_type")
     }
 
     if "manifest_covers_published_relation_types" in enabled:
@@ -1083,22 +1129,21 @@ def validate_dataset_invariants(regressions: dict[str, Any], dataset: dict[str, 
             failures.append({"kind": "manifest_missing_relation_types", "missing": missing})
 
     if "published_relations_include_manifest_required_fields" in enabled:
-        for card in cards:
-            for bucket in ("outgoing", "incoming"):
-                for relation in card.get("relations", {}).get(bucket, []) or []:
-                    relation_type = relation.get("relation_type")
-                    required = set((relation_manifest.get(relation_type) or {}).get("required_fields", []) or [])
-                    missing = sorted(field for field in required if field not in relation)
-                    if missing:
-                        failures.append(
-                            {
-                                "kind": "published_relation_missing_required_fields",
-                                "play_id": card.get("play_id"),
-                                "relation_id": relation.get("relation_id"),
-                                "relation_type": relation_type,
-                                "missing": missing,
-                            }
-                        )
+        for entry in relation_entries:
+            relation = entry["relation"]
+            relation_type = relation.get("relation_type")
+            required = set((relation_manifest.get(relation_type) or {}).get("required_fields", []) or [])
+            missing = sorted(field for field in required if field not in relation)
+            if missing:
+                failures.append(
+                    {
+                        "kind": "published_relation_missing_required_fields",
+                        "play_id": entry["play_id"],
+                        "relation_id": relation.get("relation_id"),
+                        "relation_type": relation_type,
+                        "missing": missing,
+                    }
+                )
 
     if "cards_publish_high_signal_and_broad_counts" in enabled:
         required = {"high_signal_relation_count", "broad_relation_count", "broad_only", "outgoing_high_signal_counts", "outgoing_broad_counts"}
@@ -1115,31 +1160,30 @@ def validate_dataset_invariants(regressions: dict[str, Any], dataset: dict[str, 
 
     if "published_broad_relations_are_annotated" in enabled:
         broad_reasons = set(manifest.get("broad_policy", {}).get("broad_reasons", []) or [])
-        for card in cards:
-            for bucket in ("outgoing", "incoming"):
-                for relation in card.get("relations", {}).get(bucket, []) or []:
-                    match = relation.get("match", {}) or {}
-                    reason = str(match.get("reason") or "")
-                    if reason not in broad_reasons and not match.get("broad") and not match.get("broad_reason"):
-                        continue
-                    if match.get("broad") is not True:
-                        failures.append(
-                            {
-                                "kind": "published_broad_relation_missing_flag",
-                                "play_id": card.get("play_id"),
-                                "relation_id": relation.get("relation_id"),
-                                "reason": reason,
-                            }
-                        )
-                    if not match.get("broad_reason"):
-                        failures.append(
-                            {
-                                "kind": "published_broad_relation_missing_reason",
-                                "play_id": card.get("play_id"),
-                                "relation_id": relation.get("relation_id"),
-                                "reason": reason,
-                            }
-                        )
+        for entry in relation_entries:
+            relation = entry["relation"]
+            match = relation.get("match", {}) or {}
+            reason = str(match.get("reason") or "")
+            if reason not in broad_reasons and not match.get("broad") and not match.get("broad_reason"):
+                continue
+            if match.get("broad") is not True:
+                failures.append(
+                    {
+                        "kind": "published_broad_relation_missing_flag",
+                        "play_id": entry["play_id"],
+                        "relation_id": relation.get("relation_id"),
+                        "reason": reason,
+                    }
+                )
+            if not match.get("broad_reason"):
+                failures.append(
+                    {
+                        "kind": "published_broad_relation_missing_reason",
+                        "play_id": entry["play_id"],
+                        "relation_id": relation.get("relation_id"),
+                        "reason": reason,
+                    }
+                )
 
     if "deck_synergy_visibility_is_explicit" in enabled:
         config = relation_manifest.get("deck_synergy")
@@ -1185,7 +1229,11 @@ def main() -> None:
         if regressions and relations
         else {"summary": {"pass": True}, "failures": []}
     )
-    dataset_report = validate_dataset_invariants(regressions, dataset) if regressions and dataset else {"summary": {"pass": True}, "failures": []}
+    dataset_report = (
+        validate_dataset_invariants(regressions, dataset, args.dataset)
+        if regressions and dataset
+        else {"summary": {"pass": True}, "failures": []}
+    )
     report["regressions"] = regression_report
     report["relation_expectations"] = relation_expectation_report
     report["relation_invariants"] = relation_report

@@ -1,10 +1,10 @@
 {
   "version": "2026-05-12",
   "inputs": {
-    "facts": "C:\\Users\\Wuerike\\workspace\\riftbound\\data\\processed\\cards\\semantic\\cards_semantic_facts.jsonl",
-    "schema": "C:\\Users\\Wuerike\\workspace\\riftbound\\scripts\\04_cards_feature_extraction\\contracts\\semantic_facts_schema.json",
-    "relation_rules": "C:\\Users\\Wuerike\\workspace\\riftbound\\scripts\\04_cards_feature_extraction\\contracts\\semantic_relation_rules.json",
-    "quality_policy": "C:\\Users\\Wuerike\\workspace\\riftbound\\scripts\\04_cards_feature_extraction\\contracts\\semantic_quality_policy.json"
+    "facts": "data/processed/cards/semantic/cards_semantic_facts.jsonl",
+    "schema": "scripts/04_cards_feature_extraction/contracts/semantic_facts_schema.json",
+    "relation_rules": "scripts/04_cards_feature_extraction/contracts/semantic_relation_rules.json",
+    "quality_policy": "scripts/04_cards_feature_extraction/contracts/semantic_quality_policy.json"
   },
   "summary": {
     "fact_count": 6311,

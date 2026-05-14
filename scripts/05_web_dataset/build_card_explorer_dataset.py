@@ -31,6 +31,15 @@ SNAPSHOT_DATE = date.today().isoformat()
 DEFAULT_SHARD_COUNT = 32
 DEFAULT_MAX_ARTIFACT_BYTES = 50 * 1024 * 1024
 RELATION_TYPES = ("enables", "enabled_by", "similar_effect", "deck_synergy")
+
+
+def repo_path(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 RELATION_TYPE_MANIFEST = {
     "enabled_by": {
         "label": "Enablers",
@@ -506,10 +515,10 @@ def build_dataset(
             },
         },
         "sources": {
-            "cards": str(DEFAULT_CARDS),
-            "facts": str(DEFAULT_FACTS),
-            "relations": str(DEFAULT_RELATIONS),
-            "quality_policy": str(DEFAULT_QUALITY_POLICY),
+            "cards": repo_path(DEFAULT_CARDS),
+            "facts": repo_path(DEFAULT_FACTS),
+            "relations": repo_path(DEFAULT_RELATIONS),
+            "quality_policy": repo_path(DEFAULT_QUALITY_POLICY),
         },
         "summary": {
             "card_count": len(web_cards),

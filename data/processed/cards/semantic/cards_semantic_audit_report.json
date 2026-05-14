@@ -1,12 +1,12 @@
 {
   "version": "2026-05-12",
   "inputs": {
-    "cards": "C:\\Users\\Wuerike\\workspace\\riftbound\\data\\processed\\cards\\normalized\\cards_normalized.json",
-    "facts": "C:\\Users\\Wuerike\\workspace\\riftbound\\data\\processed\\cards\\semantic\\cards_semantic_facts.jsonl",
-    "schema": "C:\\Users\\Wuerike\\workspace\\riftbound\\scripts\\04_cards_feature_extraction\\contracts\\semantic_facts_schema.json",
-    "ontology": "C:\\Users\\Wuerike\\workspace\\riftbound\\scripts\\04_cards_feature_extraction\\contracts\\semantic_ontology.json",
-    "golden_report": "C:\\Users\\Wuerike\\workspace\\riftbound\\data\\processed\\cards\\semantic\\cards_semantic_golden_report.json",
-    "quality_policy": "C:\\Users\\Wuerike\\workspace\\riftbound\\scripts\\04_cards_feature_extraction\\contracts\\semantic_quality_policy.json"
+    "cards": "data/processed/cards/normalized/cards_normalized.json",
+    "facts": "data/processed/cards/semantic/cards_semantic_facts.jsonl",
+    "schema": "scripts/04_cards_feature_extraction/contracts/semantic_facts_schema.json",
+    "ontology": "scripts/04_cards_feature_extraction/contracts/semantic_ontology.json",
+    "golden_report": "data/processed/cards/semantic/cards_semantic_golden_report.json",
+    "quality_policy": "scripts/04_cards_feature_extraction/contracts/semantic_quality_policy.json"
   },
   "summary": {
     "card_count": 767,

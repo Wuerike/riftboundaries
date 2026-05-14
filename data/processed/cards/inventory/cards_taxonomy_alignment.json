@@ -1,7 +1,7 @@
 {
   "inputs": {
-    "inventory": "C:/Users/Wuerike/workspace/riftbound/data/processed/cards/inventory/cards_text_inventory.json",
-    "taxonomy": "C:/Users/Wuerike/workspace/riftbound/scripts/04_cards_feature_extraction/contracts/feature_relation_taxonomy.json",
+    "inventory": "data/processed/cards/inventory/cards_text_inventory.json",
+    "taxonomy": "scripts/04_cards_feature_extraction/contracts/feature_relation_taxonomy.json",
     "inventory_summary": {
       "card_count": 767,
       "cards_with_text_count": 753,

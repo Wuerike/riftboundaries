@@ -12,6 +12,14 @@ DEFAULT_INPUT = PROJECT_ROOT / "data" / "processed" / "cards" / "normalized" / "
 DEFAULT_OUTPUT = PROJECT_ROOT / "data" / "processed" / "cards" / "inventory" / "cards_text_inventory.json"
 DEFAULT_MARKDOWN = PROJECT_ROOT / "data" / "processed" / "cards" / "inventory" / "cards_text_inventory.md"
 
+
+def repo_path(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 TEXT_SOURCE_FIELDS = ("rules_lines", "effect_lines")
 EXAMPLE_LIMIT = 6
 VARIANT_LIMIT = 10
@@ -751,7 +759,7 @@ def build_inventory(cards: list[dict[str, Any]]) -> dict[str, Any]:
 
     return {
         "inputs": {
-            "cards": str(DEFAULT_INPUT).replace("\\", "/"),
+            "cards": repo_path(DEFAULT_INPUT),
             "card_count": len(cards),
             "source_fields": list(TEXT_SOURCE_FIELDS),
         },
@@ -1589,7 +1597,7 @@ def main() -> None:
 
     cards = read_json(args.input)
     inventory = build_inventory(cards)
-    inventory["inputs"]["cards"] = str(args.input).replace("\\", "/")
+    inventory["inputs"]["cards"] = repo_path(args.input)
 
     write_json(args.output, inventory)
     write_markdown(args.markdown, inventory)

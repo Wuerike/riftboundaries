@@ -39,6 +39,15 @@ DEFAULT_BROAD_REASONS = {
     "output:event_produced:movement:move:unit_moved:from battlefield::required",
     "output:event_produced:card_flow:recycle:card_recycled:card::optional",
 }
+
+
+def repo_path(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 WEAK_EFFECT_TOKENS = (
     "add",
     "attach",
@@ -1267,8 +1276,8 @@ def build_report(
             },
         },
         "inputs": {
-            "dataset": str(dataset_path),
-            "quality_policy": str(quality_policy_path),
+            "dataset": repo_path(dataset_path),
+            "quality_policy": repo_path(quality_policy_path),
         },
         "summary": {
             "card_count": len(cards),

@@ -36,7 +36,7 @@ Report for the sharded card explorer dataset rooted at `data/processed/web/card_
 
 - shard_count: 32
 - max_artifact_bytes: 52428800
-- index_bytes: 1810234
+- index_bytes: 1810051
 - largest_relation_shard: 28.json (831989 bytes)
 - largest_fact_shard: 00.json (226211 bytes)
 
