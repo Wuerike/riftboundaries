@@ -284,7 +284,7 @@ function renderStartPanel() {
   return `
     <section class="start-panel">
       <div>
-        <div class="kicker">Riftbound Relation Explorer</div>
+        <div class="kicker">The Riftbound Relations Explorer</div>
         <h2>Search a focus card</h2>
         <p>Choose a card to inspect its enablers, enabled cards, and similar effects. The filters on the left apply after a focus card is selected.</p>
       </div>
