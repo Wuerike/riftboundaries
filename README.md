@@ -145,6 +145,18 @@ python -m http.server 4173 --bind 127.0.0.1
 
 Abra `http://127.0.0.1:4173/web/app/`.
 
+## Deploy no GitHub Pages
+
+O workflow `.github/workflows/deploy-pages.yml` publica o site em pushes para `main` e também pode ser executado manualmente em Actions.
+
+O artefato publicado contém apenas:
+
+- `web/app/`;
+- `data/processed/web/`;
+- um `index.html` raiz que redireciona para `web/app/`.
+
+No GitHub, configure `Settings > Pages > Build and deployment > Source` como `GitHub Actions`.
+
 ## Onde Enriquecer com Humano/LLM
 
 - `feature_relation_taxonomy.json`: revisar se as familias do inventario representam bem os papeis semanticos usados pelo frontend.

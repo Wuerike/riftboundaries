@@ -1,4 +1,5 @@
-const INDEX_URL = "/data/processed/web/card_explorer_index.json";
+const APP_BASE_URL = new URL(".", document.currentScript?.src || window.location.href);
+const INDEX_URL = new URL("../../data/processed/web/card_explorer_index.json", APP_BASE_URL);
 const FEEDBACK_FORM_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSe6fiSBTrWdTlfs2E-GiFe_XETKuHV2ylteB52gwls8jkDOtA/formResponse";
 const FEEDBACK_FORM_FIELD = "entry.102097080";
@@ -126,7 +127,7 @@ function relationEvidenceText(relation) {
 }
 
 function relationShardUrl(shardPath) {
-  return new URL(shardPath, new URL(INDEX_URL, window.location.origin)).pathname;
+  return new URL(shardPath, INDEX_URL).href;
 }
 
 async function loadRelationShard(shardPath) {
